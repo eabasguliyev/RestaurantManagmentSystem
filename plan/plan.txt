@@ -1,0 +1,34 @@
+//Main menu
+	//Admin login
+		// Admin bolmesine girish uchun username, password lazimdir.
+			//Daxil olunduqdan sonra Kitchen ya da Stock bolmesi sechilmelidir.
+	//Client login
+	// ...
+//Clientside 
+	// Stollar ekranda gorsenir.
+	// Client her hansi stolu sechir
+		//Client butun yemeklere baxir
+		//Client uchun yemekleri axtarish imkani
+			//Her hansi bir yemeye etrafli baxmaq imkani.
+				//Yemek haqqinda etrafli melumat ve toplam kkal
+			//Her hansi bir yemeyi order etmek imkani.
+				//Order sayi ve Order button
+					//Order olunarsa kitchen'a notification getmelidir/
+				//Isteye gore elave ingredient elave etmek imkani
+					// ...
+//KitchenSide
+	// Butun order'lar siralanir, her bir orderin yaninda stol nomresi.
+	// Order'larin accept ya da decline edilmesi.
+		//Orderlere olan action'a gore client'e notificaiton getmelidir.
+	// Butun yemekleri gormek imkani, yeni yemeklerin elave olunmasi, silinmesi ve update olunmasi
+	// Stock'a baxish imkani
+	// ...
+
+//StockSide
+	//Stockdaki butun ingredientler ekranda gorsedilir.
+	// Ingredient elave etmek
+	// Ingredient Silmek
+	// Ingredient sayi artirmaq
+	// Ingredient sayi azaltmaq
+	// Sifarish verildikden sonra buradaki ingridient sayi azalmalidir.
+	// ...

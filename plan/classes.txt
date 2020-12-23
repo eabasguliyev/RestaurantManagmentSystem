@@ -1,0 +1,84 @@
+// Base class
+
+#base_classes.h
+class Base
+	size_t id;
+	
+#admin.h
+class Admin: public Base
+	string username; 
+	string password;
+#table.h
+class Table: public Base
+	string table_no;
+	Order** orders;
+	string notfFromKitchen;
+	
+
+#order.h
+class Order: public Base
+	MealItem* meal;
+
+#notification.h
+class Notification: public Base
+	string from;
+	string date;
+	string message;
+	
+	
+#meal.h
+class Meal: public Base
+	RecipeItem** ingredients;
+	int ingredient_count;
+	string name;
+
+#ingredient.h	
+class Ingredient: public Base
+	string name;
+	double fats;
+	double protein;
+	double carbohydrates;
+	size_t kcal;
+
+
+#base_classes.h
+class ItemBase
+	size_t count
+
+#item_classes.h
+class MealItem: public ItemBase
+	Meal* meal;
+class RecipeItem: public ItemBase
+	Ingredient* ingredient;
+
+
+#database.h
+class Database
+	Notification * notifications;
+	Admin * admins;
+	Table * tables;
+	
+	
+#restaurant.h
+class Restaurant
+	string name;
+	string address;
+	string city;
+	Database * db;
+	
+
+#exception.h
+class Exception:
+	size_t triggered_line;
+	std::string triggered_time;
+	std::string source;
+	std::string text;
+	
+namespace ClientSide:
+	class ClientException: public Exception
+
+namespace AdminSide:
+	class AdminException: public Exception
+
+namespace DatabaseSide:
+	class DatabaseException: public Exception

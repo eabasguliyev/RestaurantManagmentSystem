@@ -147,7 +147,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Admin.cpp" />
+    <ClCompile Include="src\Base.cpp" />
+    <ClCompile Include="src\Ingredient.cpp" />
+    <ClCompile Include="src\ItemBase.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Meal.cpp" />
+    <ClCompile Include="src\Notification.cpp" />
+    <ClCompile Include="src\Order.cpp" />
+    <ClCompile Include="src\RecipeItem.cpp" />
+    <ClCompile Include="src\Table.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Admin.h" />
+    <ClInclude Include="src\Base.h" />
+    <ClInclude Include="src\Ingredient.h" />
+    <ClInclude Include="src\ItemBase.h" />
+    <ClInclude Include="src\Meal.h" />
+    <ClInclude Include="src\Notification.h" />
+    <ClInclude Include="src\Order.h" />
+    <ClInclude Include="src\RecipeItem.h" />
+    <ClInclude Include="src\Table.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

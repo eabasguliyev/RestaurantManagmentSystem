@@ -1,0 +1,63 @@
+			<<<Restaurant Management System>>>
+
+Bu program umumi restoranda olan her kes uchun hazirlanir, bu programin sizin sifarish layiheniz oldugunu dushunun.
+
+Bu program 3 hisseden ibaretdir ,Client,Kitchen,Stock:Programin gedishati esasen
+shekillerde verildiyi kimidi.
+
+PROGRAMA DAXIL OLAN KIMI ANA SEHIFE CLIENT UCHUN NEZERDE TUTULUB
+
+1)CLIENT -  SADECE EGER CLIENTDISE OTURDUGU MASA NOMRESINI DAXIL ETMELIDIR(
+MESELEN T-20)
+1)Butun yemekleri gormek imkani(siyahi sheklinde)
+2)Her bir yemeyi ayrica detalli baxmaq imkani
+3)Yemeyi sifarish imkani(burda eger istese ozunden de elave ingredientler elave ede biler(yemeyin son qiymeti deyishe biler))
+4)Yemeyi axtarish imkani olsun , ada gore axtarish
+Sechilen masadan ne sifarish verilse Kitchen e bildirish getmelidir,
+ve kitchenden de CLIENTE gonderilen bildirish var , o da masa nomresine gore gonderilecek
+
+AMMA UMUMILIKDE PROGRAMDA BASH VEREN HER BIR HADISE AYRICA fayla qeyd olunsun 
+meselen error_log.txt fayli ola  biler
+
+ANA SEHIFEDE CLIENT UCHUN NEZERDE TUTULMUSH HISSE VAR 
+HEMCHININ EGER PROGRAMA DAXIL OLAN SHEXS ADMINDIRSE 
+ADMIN BOLMESINI SECHIB (username,password) daxil edib,admin bolmesine keche biler
+
+2)ADMIN bolmesine - username,password daxil edib , daxil ola biler yalniz.
+bu bolmeye daxil olandan sonra sechim olaraq KITCHEN  ve ya STOCK seche biler
+
+2.1)Kitchen - 
+1)Butun sifarishleri gormek imkani
+2)Sifarishi qebul ve ya legv etme (ve sebeb bildirilsin legv olunubsa)
+3)umumi Restorandaki yemekleri gormek imkani ,yeni yemeklerin elave olunmasi,
+silinmesi ,update olunmasi ve s
+4)Stock a baxish imkani
+
+
+
+
+2.2)Stock - 
+1)Butun ingredientleri gormek imkani - 
+2)Ingredient elave etmek
+3)Ingredient silmek
+4)Olan Ingredientlerin sayini artirib azaltmaq imkani olsun(sifarish verilenden sonra sifarish qebul olunubsa demek stockdan say azalmalidir,ingredient sayi)
+
+
+
+Restoran=>name,address,city,budget(budce),Admin(programin adminleri)
+budce evvel 0 olsun yemekler alindiqca budce artsin
+
+Yemeyin umumi hazirlanma strukturasini son restoran tapshirigimizda goture bilersiniz
+ELAVE OLARAQ - her bir ingredient in qiymeti var(menudaki yemeyin qiymeti onlara esasen toplanib hesablanir)
+
+Table=>table_no(string),Order**(array),messageFromKitchen(bu metbexden mushteriye gelen bildirishdir)
+
+Meal=>elave olaraq RATING (double)
+
+Mushteri yemeyi aldiqdan sonra onu [1-5] arasi deyerlendirir
+
+
+
+
+
+
