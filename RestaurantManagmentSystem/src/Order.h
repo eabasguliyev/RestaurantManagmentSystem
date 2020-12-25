@@ -21,4 +21,6 @@ public:
 	void setMeal(std::shared_ptr<Meal>);
 	std::shared_ptr<Meal> getMeal() const;
 	bool operator==(const Order&) const;
+	friend std::ostream& operator<<(std::ostream&, const Order&);
+	void fullInfo() const;
 };

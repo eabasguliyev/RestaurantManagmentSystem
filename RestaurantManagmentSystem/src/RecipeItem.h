@@ -15,6 +15,20 @@ public:
 		setIngredient(ingredient);
 	}
 
+	RecipeItem(const RecipeItem& other) noexcept
+	{
+		setIngredient(other.ingredient);
+		setID(other.getID());
+		setAmount(other.getAmount());
+	}
+
+	RecipeItem& operator=(const RecipeItem& other) noexcept
+	{
+		setIngredient(other.ingredient);
+		setID(other.getID());
+		setAmount(other.getAmount());
+		return *this;
+	}
 	void setIngredient(std::shared_ptr<Ingredient>);
 	std::shared_ptr<Ingredient> getIngredient() const;
 	RecipeItem(RecipeItem&& item) noexcept

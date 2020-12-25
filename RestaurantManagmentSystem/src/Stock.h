@@ -13,4 +13,7 @@ public:
 	void deleteIngredient(const size_t&);
 	void increaseIngredientAmount(const size_t&, const size_t&);
 	void decreaseIngredientAmount(const size_t&, const size_t&);
+
+	void showAllIngredient(const bool& shortInfo = false);
+	std::shared_ptr<Ingredient> getIngredient(const size_t&);
 };

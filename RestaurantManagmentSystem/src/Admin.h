@@ -22,6 +22,6 @@ public:
 	std::string getUsername() const;
 	void setPassword(const std::string&);
 	std::string getPassword() const;
-
+	friend std::ostream& operator<<(std::ostream& out, const Admin& admin);
 	bool operator==(const Admin&) const;
 };
