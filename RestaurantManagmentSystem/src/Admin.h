@@ -5,18 +5,23 @@ class Admin : public Base
 {
 	std::string username;
 	std::string password;
-
+	bool is_master;
 public:
+	static size_t current_id;
 	Admin() : username(""), password("") {}
 
-	Admin(const size_t& id, const std::string& username, const std::string& password) : Base(id)
+	Admin(const std::string& username, const std::string& password) : Base(++current_id)
 	{
 		setUsername(username);
 		setPassword(password);
 	}
 	
+	void setMasterStatus(const bool&);
+	bool getMasterStatus() const;
 	void setUsername(const std::string&);
 	std::string getUsername() const;
 	void setPassword(const std::string&);
 	std::string getPassword() const;
+
+	bool operator==(const Admin&) const;
 };

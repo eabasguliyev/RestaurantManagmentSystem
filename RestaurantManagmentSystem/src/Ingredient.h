@@ -10,9 +10,9 @@ class Ingredient : public Base
 	size_t kcal;
 
 public:
-
-	Ingredient(const size_t& id, const std::string& name, const double& fats, const double& protein,
-		const double& carbohydrates, const size_t& kcal) : Base(id)
+	static size_t current_id;
+	Ingredient(const std::string& name, const double& fats, const double& protein,
+		const double& carbohydrates, const size_t& kcal) : Base(++current_id)
 	{
 		setName(name);
 		setFats(fats);
@@ -33,4 +33,6 @@ public:
 	size_t getKcal() const;
 	void shortInfo();
 	void fullInfo();
+
+	bool operator==(const Ingredient&) const;
 };

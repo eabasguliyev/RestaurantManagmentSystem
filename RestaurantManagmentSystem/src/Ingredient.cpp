@@ -1,5 +1,7 @@
 #include "Ingredient.h"
 
+size_t Ingredient::current_id = NULL;
+
 void Ingredient::setName(const std::string& name) { this->name = name; }
 std::string Ingredient::getName() const { return this->name; }
 void Ingredient::setFats(const double& fats) { this->fats = fats; }
@@ -25,3 +27,4 @@ void Ingredient::fullInfo()
 	std::cout << "Carbohydrates: " << getCarboHydrates() << std::endl;
 	std::cout << "Kcal: " << getKcal() << std::endl;
 }
+bool Ingredient::operator==(const Ingredient& ingredient) const { return this->getID() == ingredient.getID(); }

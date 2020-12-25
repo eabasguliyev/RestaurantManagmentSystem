@@ -1,10 +1,11 @@
 #pragma once
 #include "Base.h"
-
+#include "Order.h"
+#include <list>
 class Table : public Base
 {
 	std::string table_no;
-	//Order** orders;
+	std::list<Order> orders;
 	std::string notfFromKitchen;
 public:
 	Table() : table_no(""), notfFromKitchen("") {}
@@ -17,4 +18,7 @@ public:
 	std::string getTableNo()const;
 	void setNotfFromKitchen(const std::string&);
 	std::string getNotfFromKitchen() const;
+
+	void addOrder(std::shared_ptr<Meal>, const size_t&);
+	void deleteOrder(const size_t& id);
 };

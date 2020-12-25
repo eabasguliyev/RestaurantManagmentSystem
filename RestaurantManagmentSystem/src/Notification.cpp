@@ -1,5 +1,7 @@
 #include "Notification.h"
 
+size_t Notification::current_id = NULL;
+
 void Notification::setFrom(const std::string& from) { this->from = from; }
 std::string Notification::getFrom() const { return this->from; }
 void Notification::setDate(const std::string& date) { this->date = date; }

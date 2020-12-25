@@ -9,9 +9,11 @@ class Notification: public Base
 	std::string message;
 
 public:
+	static size_t current_id;
+
 	Notification() : is_read(false), from(""), date(""), message("") {}
-	Notification(const size_t & id, const std::string & from, const std::string & date,
-		const std::string & message): Base(id)
+	Notification(const std::string & from, const std::string & date,
+		const std::string & message): Base(++current_id)
 	{
 		setReadStatus(false);
 		setFrom(from);

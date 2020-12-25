@@ -1,35 +1,37 @@
 #pragma once
+#include "Base.h"
 #include "ItemBase.h"
 #include "Ingredient.h"
 
-class RecipeItem: public ItemBase
+class RecipeItem: public ItemBase, public Base
 {
-	Ingredient* ingredient;
+	std::shared_ptr<Ingredient> ingredient;
 public:
-	RecipeItem() :ingredient(NULL) {}
+	static size_t current_id;
 
-	RecipeItem(Ingredient* ingredient, const size_t& amount): ItemBase(amount)
+	RecipeItem() :ingredient(NULL) {}
+	RecipeItem(std::shared_ptr<Ingredient> ingredient, const size_t& amount): Base(++current_id), ItemBase(amount)
 	{
 		setIngredient(ingredient);
 	}
 
-	void setIngredient(Ingredient*);
-	Ingredient* getIngredient() const;
-	RecipeItem(RecipeItem&& ingredients) noexcept
+	void setIngredient(std::shared_ptr<Ingredient>);
+	std::shared_ptr<Ingredient> getIngredient() const;
+	RecipeItem(RecipeItem&& item) noexcept
 	{
-		this->ingredient = ingredients.ingredient;
-		ingredients.ingredient = NULL;
-		this->amount = ingredients.amount;
-		ingredients.amount = 0;
+		this->ingredient = item.ingredient;
+		item.ingredient = NULL;
+		this->amount = item.amount;
+		item.amount = 0;
 	}
-	RecipeItem& operator=(RecipeItem&& ingredients) noexcept
+	RecipeItem& operator=(RecipeItem&& item) noexcept
 	{
-		delete this->ingredient;
-		this->ingredient = ingredients.ingredient;
-		ingredients.ingredient = NULL;
-		this->amount = ingredients.amount;
-		ingredients.amount = 0;
+		this->ingredient = item.ingredient;
+		item.ingredient = NULL;
+		this->amount = item.amount;
+		item.amount = 0;
 
 		return *this;
 	}
+	bool operator==(const RecipeItem&) const;
 };

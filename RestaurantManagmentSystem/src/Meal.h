@@ -1,20 +1,17 @@
 #pragma once
 #include "RecipeItem.h"
-/*class Meal: public Base
-	RecipeItem** ingredients;
-	int ingredient_count;
-	string name;*/
+#include <list>
 
 class Meal :public Base
 {
-	RecipeItem** ingredients;
-	size_t amount;
+	std::list<RecipeItem> ingredients;
 	std::string name;
 
 public:
-	Meal() :ingredients(NULL), amount(0), name("") {}
+	static size_t current_id;
 
-	Meal(const size_t& id, const std::string& name) : Base(id)
+	Meal() :ingredients(NULL), name("") {}
+	Meal(const std::string& name) : Base(++current_id)
 	{
 		setName(name);
 	}
@@ -23,7 +20,9 @@ public:
 	std::string getName() const;
 	virtual void printRecipe() const;
 	virtual void taste() const;
-	void addIngredient(Ingredient*, const size_t&);
+	void addIngredient(std::shared_ptr<Ingredient>, const size_t&);
 	size_t getAmount() const;
-	void setAmount(const size_t&);
+	void deleteIngredientByID(const size_t&);
+	void decreaseAmountOfIngredient(const size_t&);
+	void increaseAmountOfIngredient(const size_t&);
 };
