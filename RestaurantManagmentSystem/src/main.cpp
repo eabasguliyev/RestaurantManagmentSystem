@@ -1,8 +1,11 @@
 #include <iostream>
 #include "Database.h"
+#include "Screen.h"
 
 void main()
 {
+	Console::Setting::start();
+
 	Database db;
 
 	db.addAdmin("test", "test");
@@ -37,4 +40,5 @@ void main()
 
 	db.showAllOrder();
 	//db.stock.showAllIngredient();
+	std::cin.get();
 }
