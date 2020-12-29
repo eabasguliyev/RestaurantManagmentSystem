@@ -21,12 +21,13 @@ public:
 		setMessage(message);
 	}
 
-	void setFrom(const std::string&);
+	void setFrom(const std::string& from);
+	void setDate(const std::string& date);
+	void setMessage(const std::string& message);
+	void setReadStatus(const bool& status);
+	
 	std::string getFrom() const;
-	void setDate(const std::string&);
 	std::string getDate() const;
-	void setMessage(const std::string&);
 	std::string getMessage() const;
-	void setReadStatus(const bool&);
 	bool getReadStatus() const;
 };

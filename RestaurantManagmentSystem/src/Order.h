@@ -6,7 +6,7 @@
 class Order : public Base, public ItemBase
 {
 	std::string table_no;
-	std::shared_ptr<Meal> meal;
+	std::shared_ptr<Meal> meal; // yeni meal obyekt yaransin
 public:
 	static size_t current_id;
 	Order() {}
@@ -16,11 +16,14 @@ public:
 		setMeal(item);
 	}
 
-	void setTableNo(const std::string&);
+	void setTableNo(const std::string& table_no);
+	void setMeal(std::shared_ptr<Meal> meal);
+
 	std::string getTableNo() const;
-	void setMeal(std::shared_ptr<Meal>);
 	std::shared_ptr<Meal> getMeal() const;
-	bool operator==(const Order&) const;
-	friend std::ostream& operator<<(std::ostream&, const Order&);
+
 	void fullInfo() const;
+
+	bool operator==(const Order& order) const;
+	friend std::ostream& operator<<(std::ostream& out, const Order& order);
 };

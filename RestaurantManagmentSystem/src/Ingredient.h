@@ -21,18 +21,20 @@ public:
 		setKcal(kcal);
 	}
 
-	void setName(const std::string&);
+	void setName(const std::string& name);
+	void setFats(const double& fats);
+	void setProtein(const double& protein);
+	void setCarboHydrates(const double& carbohydrates);
+	void setKcal(const size_t& kcal);
+
 	std::string getName() const;
-	void setFats(const double&);
 	double getFats() const;
-	void setProtein(const double&);
 	double getProtein() const;
-	void setCarboHydrates(const double&);
 	double getCarboHydrates() const;
-	void setKcal(const size_t&);
 	size_t getKcal() const;
+
 	void shortInfo();
 	void fullInfo();
 
-	bool operator==(const Ingredient&) const;
+	bool operator==(const Ingredient& ingredient) const;
 };

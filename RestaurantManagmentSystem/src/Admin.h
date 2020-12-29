@@ -16,12 +16,14 @@ public:
 		setPassword(password);
 	}
 	
-	void setMasterStatus(const bool&);
+	void setMasterStatus(const bool& status);
+	void setUsername(const std::string& username);
+	void setPassword(const std::string& password);
+	
 	bool getMasterStatus() const;
-	void setUsername(const std::string&);
 	std::string getUsername() const;
-	void setPassword(const std::string&);
 	std::string getPassword() const;
+	
 	friend std::ostream& operator<<(std::ostream& out, const Admin& admin);
-	bool operator==(const Admin&) const;
+	bool operator==(const Admin& admin) const;
 };

@@ -13,15 +13,6 @@ public:
 		setMeal(meal);
 	}
 
-	void setMeal(std::shared_ptr<Meal>);
-	std::shared_ptr<Meal> getMeal() const;
-	MealItem(MealItem&& item) noexcept
-	{
-		this->meal = item.meal;
-		item.meal = NULL;
-		this->amount = item.amount;
-		item.amount = 0;
-	}
 	MealItem& operator=(MealItem&& item) noexcept
 	{
 		this->meal = item.meal;
@@ -31,6 +22,18 @@ public:
 
 		return *this;
 	}
+	MealItem(MealItem&& item) noexcept
+	{
+		this->meal = item.meal;
+		item.meal = NULL;
+		this->amount = item.amount;
+		item.amount = 0;
+	}
+
+	void setMeal(std::shared_ptr<Meal> meal);
+
+	std::shared_ptr<Meal> getMeal() const;
+
 	void increaseMealAmount();
 	void decreaseMealAmount();
 };

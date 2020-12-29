@@ -15,9 +15,9 @@ public:
 	class Menu
 	{
 	public:
-		static short menuInputWithMouse(char** options, int size);
-		static short menuInputWithKeyboard(char** options, short size);
-		static void printMenu(char** options, int size, int selected);
+		static short menuInputWithMouse(std::string* options, int size);
+		static short menuInputWithKeyboard(std::string* options, short size);
+		static void printMenu(std::string* options, int size, int selected);
 	};
 	static void GetCoordinateWithMouse(COORD& coordinate);
 };

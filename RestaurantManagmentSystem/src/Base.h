@@ -12,7 +12,8 @@ public:
 		setID(id);
 	}
 
-	void setID(const size_t&);
+	void setID(const size_t& id);
+
 	size_t getID() const;
 	virtual ~Base() = 0 {}
 };

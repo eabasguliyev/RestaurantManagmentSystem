@@ -17,22 +17,15 @@ public:
 		setSource(source);
 	}
 
-	void setTriggeredLine(const size_t&);
+	void setTriggeredLine(const size_t& line);
+	void setSource(const std::string& source);
+	void setTriggeredTime(const std::string& time);
+	void setText(const std::string& text);
 
 	size_t getTriggeredLine()const;
-
-	void setSource(const std::string&);
-
 	std::string getSource()const;
-
-	void setTriggeredTime(const std::string&);
-
 	std::string getTriggeredTime() const;
-
-	void setText(const std::string&);
-
 	std::string getText() const;
-
 	void echo() const;
 };
 

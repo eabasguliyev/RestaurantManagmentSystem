@@ -40,7 +40,7 @@ void Console::Setting::start()
 	setFixedWindow();
 	disableCursor(false);
 }
-short Console::Menu::menuInputWithMouse(char** options, int size)
+short Console::Menu::menuInputWithMouse(std::string * options, int size)
 {
 	HANDLE hConsoleIN = GetStdHandle(STD_INPUT_HANDLE);
 
@@ -87,7 +87,7 @@ short Console::Menu::menuInputWithMouse(char** options, int size)
 		SetConsoleCursorPosition(hConsoleOUT, { 0,13 });
 	}
 }
-short Console::Menu::menuInputWithKeyboard(char** options, short size)
+short Console::Menu::menuInputWithKeyboard(std::string* options, short size)
 {
 	short selected = 1;
 	while (true)
@@ -121,7 +121,7 @@ short Console::Menu::menuInputWithKeyboard(char** options, short size)
 		}
 	}
 }
-void Console::Menu::printMenu(char** options, int size, int selected)
+void Console::Menu::printMenu(std::string* options, int size, int selected)
 {
 	HANDLE hConsoleOUT = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD coordinate = { 50, 10 };

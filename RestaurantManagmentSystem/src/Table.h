@@ -15,13 +15,16 @@ public:
 	Table(const std::string& table_no) : Base(++current_id) {
 		setTableNo(table_no);
 	}
-	void setTableNo(const std::string&);
-	std::string getTableNo()const;
-	void setNotfFromKitchen(const std::string&);
-	std::string getNotfFromKitchen() const;
 
-	void addOrder(std::shared_ptr<Order>);
-	void deleteOrder(const size_t& id);
+	void setTableNo(const std::string& table_no);
+	void setNotfFromKitchen(const std::string& message);
+
+	std::string getTableNo()const;
+	std::string getNotfFromKitchen() const;
 	std::list<std::shared_ptr<Order>> getOrders() const;
+
+	void addOrder(std::shared_ptr<Order> order);
+	void deleteOrder(const size_t& id);
+
 	bool operator==(const Table&) const;
 };

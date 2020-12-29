@@ -21,7 +21,6 @@ public:
 		setID(other.getID());
 		setAmount(other.getAmount());
 	}
-
 	RecipeItem& operator=(const RecipeItem& other) noexcept
 	{
 		setIngredient(other.ingredient);
@@ -29,8 +28,7 @@ public:
 		setAmount(other.getAmount());
 		return *this;
 	}
-	void setIngredient(std::shared_ptr<Ingredient>);
-	std::shared_ptr<Ingredient> getIngredient() const;
+
 	RecipeItem(RecipeItem&& item) noexcept
 	{
 		this->ingredient = item.ingredient;
@@ -47,5 +45,10 @@ public:
 
 		return *this;
 	}
+
+	void setIngredient(std::shared_ptr<Ingredient> ingredient);
+
+	std::shared_ptr<Ingredient> getIngredient() const;
+
 	bool operator==(const RecipeItem&) const;
 };

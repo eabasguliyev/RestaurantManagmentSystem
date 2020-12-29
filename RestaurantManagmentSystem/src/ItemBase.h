@@ -13,5 +13,6 @@ public:
 	}
 
 	void setAmount(const int&);
+
 	size_t getAmount() const;
 };
