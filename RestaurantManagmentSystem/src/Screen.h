@@ -1,23 +1,151 @@
 #pragma once
 #include <strsafe.h>
 #include <Windows.h>
-class Console
+#include <iostream>
+#include <vector>
+
+class Screen
 {
-public:
-	class Setting
+	struct Button
 	{
-	public:
-		static void setConsoleTitle(const STRSAFE_LPCWSTR& title);
-		static void setFixedWindow();
-		static void disableCursor(const bool& status);
-		static void start();
+		short id;
+		COORD leftBottom;
+		COORD rightTop;
+
+		Button() {};
+		Button(const short& id, const COORD& leftBottom, const COORD& rightTop) : id(id), leftBottom(leftBottom), rightTop(rightTop) {}
 	};
+public:
+
+	static void printExit(const bool& mouseOver = false);
+	static void printBack(const bool& mouseOver = false);
+
+	static COORD COORDINATE;
+	static void printButton(const std::string& text, COORD& coo, const unsigned short& length = 24);
+	static size_t getButtonIdByCoordinate(const COORD& coo, const std::vector<Button> &buttons);
+
+	
+	class MainScreen {
+	public:
+		static size_t mouseOver;
+		static std::vector<std::string> options;
+		static std::vector<Button> buttons;
+
+		static void print();
+		static void start();
+		static void load();
+
+		class AdminScreen {
+		public:
+			static size_t selected;
+			static size_t mouseOver;
+			static std::vector<std::string> options;
+			static std::vector<Button> buttons;
+			static void print();
+			static void start();
+			static void load();
+
+			class KitchenScreen {
+			public:
+				static size_t selected;
+
+				static short print();
+			};
+
+			class StockScreen {
+			public:
+				static size_t selected;
+
+				static short print();
+			};
+
+			class DatabaseScreen {
+			public:
+				static size_t selected;
+
+				static short print();
+
+				class OrdersScreen {
+				public:
+					static size_t selected;
+
+					static short print();
+				};
+
+				class AdminsScreen {
+				public:
+					static size_t selected;
+
+					static short print();
+				};
+
+				class MealsScreen {
+				public:
+					static size_t selected;
+
+					static short print();
+				};
+
+				class TablesScreen {
+				public:
+					static size_t selected;
+
+					static short print();
+				};
+
+				class NotificationsScreen {
+				public:
+					static size_t selected;
+
+					static short print();
+				};
+
+				class StockScreen {
+				public:
+					static size_t selected;
+
+					static short print();
+				};
+			};
+		};
+
+		class ClientScreen {
+		public:
+			static size_t mouseOver;
+			static std::vector<Button> buttons;
+
+			static void printTables();
+			static void start();
+			static void load();
+
+			class TableScreen {
+			public:
+				static size_t selected;
+
+				static short print();
+
+				class AboutScreen {
+				public:
+					static size_t selected;
+
+					static short print();
+				};
+
+				class OrderScreen {
+				public:
+					static size_t selected;
+
+					static short print();
+				};
+			};
+		};
+	};
+
 	class Menu
 	{
 	public:
-		static short menuInputWithMouse(std::string* options, int size);
-		static short menuInputWithKeyboard(std::string* options, short size);
-		static void printMenu(std::string* options, int size, int selected);
+		static short menuInputWithMouse(const std::vector<std::string>& options);
+		static short menuInputWithKeyboard(const std::vector<std::string>& options);
+		static void printMenu(const std::vector<std::string>& options, const unsigned short& selected);
 	};
-	static void GetCoordinateWithMouse(COORD& coordinate);
 };

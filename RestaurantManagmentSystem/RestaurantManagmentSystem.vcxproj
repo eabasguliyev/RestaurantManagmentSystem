@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\DatabaseHelper.cpp" />
     <ClCompile Include="src\Restaurant.cpp" />
     <ClCompile Include="src\Database.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="src\Table.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Console.h" />
     <ClInclude Include="src\Restaurant.h" />
     <ClInclude Include="src\Database.h" />
     <ClInclude Include="src\DatabaseHelper.h" />

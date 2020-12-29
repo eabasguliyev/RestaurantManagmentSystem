@@ -1,12 +1,19 @@
 #include <iostream>
 #include "Database.h"
 #include "Screen.h"
+#include "Console.h"
 
 void main()
 {
 	Console::Setting::start();
+	/*Screen::MainScreen::load();
+	Screen::MainScreen::print();*/
 
-	Database db;
+	Screen::MainScreen::start();
+
+	
+	// trash code
+	/*Database db;
 
 	db.addAdmin("test", "test");
 	db.addAdmin("abil", "abil1234");
@@ -32,13 +39,13 @@ void main()
 	db.addOrder("T-12", pizza, 2);
 
 	db.showAllOrder();
-	/*db.showOrdersByTable("T-11");
-	db.showOrdersByTable("T-12");*/
+	//db.showOrdersByTable("T-11");
+	//db.showOrdersByTable("T-12");
 
 
 	db.deleteOrder(1);
 
 	db.showAllOrder();
 	//db.stock.showAllIngredient();
-	std::cin.get();
+	std::cin.get();*/
 }
