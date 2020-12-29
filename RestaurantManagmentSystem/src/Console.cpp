@@ -12,11 +12,24 @@ void Console::Setting::setConsoleTitle(const STRSAFE_LPCWSTR& title)
 
 	SetConsoleTitle(consoleNewTitle);
 }
-void Console::Setting::setFixedWindow()
+void Console::Setting::setCustomWindow()
 {
 	HWND consoleWindow = GetConsoleWindow();
 	MoveWindow(consoleWindow, 500, 58, 895, 518, TRUE);
-	SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE)& ~WS_S_END);
+	SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_S_END);//& ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
+}
+void Console::Setting::disableCloseButton() {
+	HWND hwnd = GetConsoleWindow();
+	HMENU hmenu = GetSystemMenu(hwnd, FALSE);
+	EnableMenuItem(hmenu, SC_CLOSE, MF_GRAYED);
+}
+void Console::Setting::disableQuickEditMode()
+{
+	HANDLE hInput;
+	DWORD prev_mode;
+	hInput = GetStdHandle(STD_INPUT_HANDLE);
+	GetConsoleMode(hInput, &prev_mode);
+	SetConsoleMode(hInput, prev_mode & ENABLE_EXTENDED_FLAGS);
 }
 void Console::Setting::disableCursor(const bool& status)
 {
@@ -29,7 +42,9 @@ void Console::Setting::disableCursor(const bool& status)
 void Console::Setting::start()
 {
 	setConsoleTitle(TEXT("Restaurant Managment System: Main Menu"));
-	setFixedWindow();
+	setCustomWindow();
+	//disableCloseButton();
+	disableQuickEditMode();
 	disableCursor(false);
 }
 

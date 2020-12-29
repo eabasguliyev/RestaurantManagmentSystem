@@ -10,8 +10,10 @@ public:
 	{
 	public:
 		static void setConsoleTitle(const STRSAFE_LPCWSTR& title);
-		static void setFixedWindow();
+		static void setCustomWindow();
 		static void disableCursor(const bool& status);
+		static void disableCloseButton();
+		static void disableQuickEditMode();
 		static void start();
 	};
 	static bool GetCoordinateWithMouse(COORD& coordinate);
