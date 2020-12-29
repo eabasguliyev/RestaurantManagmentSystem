@@ -1,17 +1,8 @@
-#include <iostream>
-#include "Database.h"
-#include "Screen.h"
-#include "Console.h"
+#include "RestaurantManagment.h"
 
 void main()
 {
-	Console::Setting::start();
-	/*Screen::MainScreen::load();
-	Screen::MainScreen::print();*/
-
-	Screen::MainScreen::start();
-
-	
+	RestaurantManagment::start();
 	// trash code
 	/*Database db;
 

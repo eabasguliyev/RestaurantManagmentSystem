@@ -4,6 +4,11 @@
 #include <iostream>
 #include <vector>
 
+#define MainScreenM Screen::MainScreen
+#define AdminScreenM Screen::MainScreen::AdminScreen
+#define ClientScreenM Screen::MainScreen::ClientScreen
+#define DatabaseScreenM Screen::MainScreen::AdminScreen::DatabaseScreen
+
 class Screen
 {
 	struct Button
@@ -32,7 +37,7 @@ public:
 		static std::vector<Button> buttons;
 
 		static void print();
-		static void start();
+		static size_t start();
 		static void load();
 
 		class AdminScreen {
@@ -41,8 +46,9 @@ public:
 			static size_t mouseOver;
 			static std::vector<std::string> options;
 			static std::vector<Button> buttons;
+
 			static void print();
-			static void start();
+			static size_t start();
 			static void load();
 
 			class KitchenScreen {
@@ -52,18 +58,16 @@ public:
 				static short print();
 			};
 
-			class StockScreen {
-			public:
-				static size_t selected;
-
-				static short print();
-			};
-
 			class DatabaseScreen {
 			public:
 				static size_t selected;
+				static size_t mouseOver;
+				static std::vector<std::string> options;
+				static std::vector<Button> buttons;
 
-				static short print();
+				static void print();
+				static size_t start();
+				static void load();
 
 				class OrdersScreen {
 				public:
@@ -115,7 +119,7 @@ public:
 			static std::vector<Button> buttons;
 
 			static void printTables();
-			static void start();
+			static size_t start();
 			static void load();
 
 			class TableScreen {
