@@ -8,6 +8,7 @@
 #define AdminScreenM Screen::MainScreen::AdminScreen
 #define ClientScreenM Screen::MainScreen::ClientScreen
 #define DatabaseScreenM Screen::MainScreen::AdminScreen::DatabaseScreen
+#define StockScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::StockScreen
 
 class Screen
 {
@@ -107,8 +108,13 @@ public:
 				class StockScreen {
 				public:
 					static size_t selected;
+					static size_t mouseOver;
+					static std::vector<std::string> options;
+					static std::vector<Button> buttons;
 
-					static short print();
+					static void print();
+					static size_t start();
+					static void load();
 				};
 			};
 		};

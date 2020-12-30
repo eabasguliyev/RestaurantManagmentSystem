@@ -17,4 +17,6 @@ public:
 		static void start();
 	};
 	static bool GetCoordinateWithMouse(COORD& coordinate);
+	static void clearConsoleArea(const COORD& pos1, const COORD& pos2);
+	static void wait();
 };

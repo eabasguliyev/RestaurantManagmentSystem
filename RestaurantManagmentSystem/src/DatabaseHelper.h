@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include "Ingredient.h"
+
 class DatabaseHelper
 {
 public:
@@ -8,4 +10,6 @@ public:
 	static void writeToFile(const std::string& data);
 
 	static std::string readFromFile();
+	static bool checkNumericInput(const char* str);
+	static std::shared_ptr<Ingredient> inputNewIngredient();
 };

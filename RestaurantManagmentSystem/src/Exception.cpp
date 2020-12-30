@@ -3,7 +3,7 @@
 
 void Exception::setTriggeredLine(const size_t& line)
 {
-	this->triggered_line = triggered_line;
+	this->triggered_line = line;
 }
 void Exception::setSource(const std::string& source)
 {
@@ -11,7 +11,7 @@ void Exception::setSource(const std::string& source)
 }
 void Exception::setTriggeredTime(const std::string& time)
 {
-	this->triggered_time = triggered_time;
+	this->triggered_time = time;
 }
 void Exception::setText(const std::string& text)
 {

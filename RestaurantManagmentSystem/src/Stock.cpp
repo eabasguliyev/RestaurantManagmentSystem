@@ -3,33 +3,45 @@
 
 void Stock::addIngredient(std::shared_ptr<Ingredient> ingredient, const size_t& amount)
 {
-	RecipeItem ri(ingredient, amount);
-	ingredient_items.push_back(ri);
-	ingredient_items.begin()->getAmount();
+	ingredient_items.push_back(std::shared_ptr<RecipeItem>(new RecipeItem(ingredient, amount)));
+}
+void Stock::updateIngredient(std::shared_ptr<Ingredient> oldIngredient, std::shared_ptr<Ingredient> newIngredient)
+{
+	oldIngredient->setName(newIngredient->getName());
+	oldIngredient->setFats(newIngredient->getFats());
+	oldIngredient->setProtein(newIngredient->getProtein());
+	oldIngredient->setCarboHydrates(newIngredient->getCarboHydrates());
+	oldIngredient->setKcal(newIngredient->getKcal());
 }
 void Stock::deleteIngredient(const size_t& id)
 {
 	for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
 	{
-		if (id == i->getID())
+		if (id == (*i)->getID())
+		{
 			ingredient_items.remove(*i); return;
+		}
 	}
+
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id -> " + std::to_string(id)));
 }
-void Stock::increaseIngredientAmount(const size_t& id, const size_t& amount)
+void Stock::increaseIngredientAmount(std::shared_ptr<RecipeItem>& item, const int& amount)
 {
-	for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
+	if (amount > 0)
 	{
-		if (id == i->getID())
-			i->setAmount(i->getAmount() + amount); return;
+		item->setAmount(item->getAmount() + amount);
+		return;
 	}
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("Amount must be greater than zero"));
 }
-void Stock::decreaseIngredientAmount(const size_t& id, const size_t& amount)
+void Stock::decreaseIngredientAmount(std::shared_ptr<RecipeItem>& item, const int& amount)
 {
-	for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
+	if (amount > 0)
 	{
-		if (id == i->getID())
-			i->setAmount(i->getAmount() - amount); return;
+		item->setAmount(item->getAmount() - amount);
+		return;
 	}
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("Amount must be greater than zero"));
 }
 void Stock::showAllIngredient(const bool& shortInfo)
 {
@@ -37,24 +49,38 @@ void Stock::showAllIngredient(const bool& shortInfo)
 	{
 		for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
 		{
-			(*i).getIngredient()->shortInfo(); std::cout << std::endl;
-			std::cout << "Amount: " << (*i).getAmount() << std::endl;
+			(*i)->getIngredient()->shortInfo();
+			std::cout << "Amount: " << (*i)->getAmount() << std::endl;	
 		}
 	}
-
-	for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
+	else
 	{
-		(*i).getIngredient()->fullInfo(); std::cout << std::endl;
-		std::cout << "Amount: " << (*i).getAmount() << std::endl;
+		for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
+		{
+			(*i)->getIngredient()->fullInfo(); std::cout << std::endl;
+			std::cout << "Amount: " << (*i)->getAmount() << std::endl;
+		}
 	}
+	std::cout << "######################################" << std::endl;
 }
 std::shared_ptr<Ingredient> Stock::getIngredient(const size_t& id)
 {
 	for (auto i = ingredient_items.begin() ; i != ingredient_items.end(); i++)
 	{
-		if (id == (*i).getID())
-			return (*i).getIngredient();
+		if (id == (*i)->getID())
+			return (*i)->getIngredient();
 	}
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id -> " + std::to_string(id)));
 }
+std::shared_ptr<RecipeItem> Stock::getItem(const size_t& id)
+{
+	for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
+	{
+		if (id == (*i)->getID())
+			return (*i);
+	}
+
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id -> " + std::to_string(id)));
+}
+size_t Stock::getIngredientCount() const { return this->ingredient_items.size(); }

@@ -528,3 +528,81 @@ size_t DatabaseScreenM::start()
 	}
 
 }
+
+
+//StockScreen
+size_t StockScreenM::mouseOver = 0;
+std::vector<std::string> StockScreenM::options;
+std::vector<Screen::Button> StockScreenM::buttons;
+
+void StockScreenM::load()
+{
+	if (options.size() == 0)
+	{
+		options.reserve(7);
+		options.emplace_back("Show all");
+		options.emplace_back("Show ingredient");
+		options.emplace_back("Add");
+		options.emplace_back("Update");
+		options.emplace_back("Delete");
+		options.emplace_back("Increase amount");
+		options.emplace_back("Decrease amount");
+	}
+
+	if (buttons.size() == 0)
+	{
+		buttons.reserve(3);
+		buttons.emplace_back(Button(1, { 46, 4 }, { 71, 2 }));
+		buttons.emplace_back(Button(2, { 46, 8 }, { 71, 6 }));
+		buttons.emplace_back(Button(3, { 46, 12 }, { 71, 10 }));
+		buttons.emplace_back(Button(4, { 46, 16 }, { 71, 14 }));
+		buttons.emplace_back(Button(5, { 46, 20 }, { 71, 18 }));
+		buttons.emplace_back(Button(6, { 46, 24 }, { 71, 22 }));
+		buttons.emplace_back(Button(7, { 46, 28 }, { 71, 26 }));
+		buttons.emplace_back(Button(8, { 0, 2 }, { 7, 0 }));
+	}
+}
+void StockScreenM::print()
+{
+	COORDINATE = { 46, 2 };
+	Menu::printMenu(options, mouseOver - 1);
+}
+size_t StockScreenM::start()
+{
+	load();
+	bool updateScreen = true;
+	COORD last_coo{ 0, 0 };
+	system("CLS");
+	while (1)
+	{
+		if (updateScreen)
+		{
+			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Stock Control"));
+			print();
+
+			if (mouseOver == 8)
+				printBack(true);
+			else
+				printBack();
+
+			updateScreen = false;
+		}
+		COORD coo;
+		bool mouseClicked = Console::GetCoordinateWithMouse(coo);
+		mouseOver = getButtonIdByCoordinate(coo, buttons);
+		if (mouseOver)
+		{
+			if (mouseClicked)
+			{
+				// code
+				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+
+				if (mouseOver == 8)
+					system("CLS");
+				return mouseOver;
+			}
+			updateScreen = true;
+		}
+	}
+
+}

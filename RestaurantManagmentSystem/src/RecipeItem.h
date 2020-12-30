@@ -49,6 +49,8 @@ public:
 	void setIngredient(std::shared_ptr<Ingredient> ingredient);
 
 	std::shared_ptr<Ingredient> getIngredient() const;
-
+	
+	void showItem() const;
+	void showItemShort() const;
 	bool operator==(const RecipeItem&) const;
 };

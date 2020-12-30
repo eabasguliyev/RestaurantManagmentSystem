@@ -9,3 +9,17 @@ std::shared_ptr<Ingredient> RecipeItem::getIngredient() const { return this->ing
 bool RecipeItem::operator==(const RecipeItem& item) const {
 	return this->getID() == item.getID();
 }
+
+void RecipeItem::showItem() const
+{
+	ingredient->fullInfo();
+	std::cout << "Amount: " << getAmount() << std::endl;
+	std::cout << "######################################" << std::endl;
+}
+
+void RecipeItem::showItemShort() const
+{
+	ingredient->shortInfo();
+	std::cout << "Amount: " << getAmount() << std::endl;
+	std::cout << "######################################" << std::endl;
+}

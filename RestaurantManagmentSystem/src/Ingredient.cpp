@@ -17,6 +17,7 @@ size_t Ingredient::getKcal() const { return this->kcal; }
 void Ingredient::shortInfo()
 {
 	std::cout << "######################################" << std::endl;
+	std::cout << "ID: " << getID() << std::endl;
 	std::cout << "Name: " << getName() << std::endl;
 	std::cout << "Kcal: " << getKcal() << std::endl;
 }
