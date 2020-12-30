@@ -16,7 +16,19 @@ bool DatabaseHelper::checkNumericInput(const char* str)
 {
 	for (int i = 0; str[i] != '\0'; i++) {
 		if (!isdigit(str[i]))
-			return false;
+		{
+			if (str[i] == '.')
+			{
+				if (i > 0 && str[i + 1] != '\0' && isdigit(str[i - 1]) && isdigit(str[i + 1]))
+					continue;
+				else if (i >= 0 && str[i + 1] != '\0' && isdigit(str[i + 1]))
+					continue;
+				else
+					return false;
+			}
+			else
+				return false;
+		}
 	}
 	return true;
 }
@@ -28,6 +40,9 @@ std::shared_ptr<Ingredient> DatabaseHelper::inputNewIngredient()
 
 	std::cout << "Ingredient name: ";
 	std::getline(std::cin, name);
+
+	if (name.empty())
+		throw DatabaseException(__LINE__, __TIME__, __FILE__, "Name can't be blank!");
 
 	std::cout << "Fats: ";
 	std::cin >> fats;
@@ -57,6 +72,34 @@ std::shared_ptr<Ingredient> DatabaseHelper::inputNewIngredient()
 	if (!DatabaseHelper::checkNumericInput(kcal))
 		throw DatabaseException(__LINE__, __TIME__, __FILE__, "Kcal must be numeric value!");
 
-	std::shared_ptr<Ingredient> ingredient(new Ingredient(name, atoi(fats), atoi(protein), atoi(carbohydrates), atoi(kcal)));
-	return ingredient;
+	return std::shared_ptr<Ingredient>(new Ingredient(name, atof(fats), atof(protein), atof(carbohydrates), atof(kcal)));
+}
+
+std::shared_ptr<Meal> DatabaseHelper::inputNewMeal()
+{
+	std::string name;
+	std::string category;
+	char menu_rating[255]{};
+
+	std::cout << "Meal name: ";
+	std::getline(std::cin, name);
+
+	if (name.empty())
+		throw DatabaseException(__LINE__, __TIME__, __FILE__, "Name can't be blank!");
+
+	std::cout << "Category: ";
+	std::getline(std::cin, category);
+
+	if (category.empty())
+		throw DatabaseException(__LINE__, __TIME__, __FILE__, "Category can't be blank!");
+
+	std::cout << "Menu rating: ";
+	std::cin >> menu_rating;
+	std::cin.ignore();
+	std::cin.clear();
+
+	if (!DatabaseHelper::checkNumericInput(menu_rating))
+		throw DatabaseException(__LINE__, __TIME__, __FILE__, "Menu rating must be numeric value!");
+	
+	return std::shared_ptr<Meal>(new Meal(name, category, atof(menu_rating)));
 }

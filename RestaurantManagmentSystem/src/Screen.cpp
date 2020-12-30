@@ -2,6 +2,7 @@
 #include "Console.h"
 #include <conio.h>
 #include <string>
+
 std::string center(int width, const std::string& str) {
 	int len = str.length();
 	if (width < len) { return str; }
@@ -172,18 +173,54 @@ void Screen::Menu::printMenu(const std::vector<std::string>& options, const unsi
 {
 	HANDLE hConsoleOUT = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD coordinate = COORDINATE;
-	for (size_t i = 0, length = options.size(); i < length; i++)
+
+	if (options.size() >= 8)
 	{
-		SetConsoleCursorPosition(hConsoleOUT, coordinate);
-		if (i == selected)
+		COORD tmp = coordinate;
+		for (size_t i = 0; i < 7; i++)
 		{
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GREEN);
-			printButton(options[i], coordinate);
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+			SetConsoleCursorPosition(hConsoleOUT, tmp);
+			if (i == selected)
+			{
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GREEN);
+				printButton(options[i], tmp);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+			}
+			else
+				printButton(options[i], tmp);
+			tmp.Y++;
 		}
-		else
-			printButton(options[i], coordinate);
-		coordinate.Y++;
+
+		coordinate.X += 31;
+		for (size_t i = 7, length = options.size(); i < length; i++)
+		{
+			SetConsoleCursorPosition(hConsoleOUT, coordinate);
+			if (i == selected)
+			{
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GREEN);
+				printButton(options[i], coordinate);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+			}
+			else
+				printButton(options[i], coordinate);
+			coordinate.Y++;
+		}
+	}
+	else
+	{
+		for (size_t i = 0, length = options.size(); i < length; i++)
+		{
+			SetConsoleCursorPosition(hConsoleOUT, coordinate);
+			if (i == selected)
+			{
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GREEN);
+				printButton(options[i], coordinate);
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+			}
+			else
+				printButton(options[i], coordinate);
+			coordinate.Y++;
+		}
 	}
 }
 
@@ -598,6 +635,85 @@ size_t StockScreenM::start()
 				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 8)
+					system("CLS");
+				return mouseOver;
+			}
+			updateScreen = true;
+		}
+	}
+
+}
+
+//MealScreen
+size_t MealScreenM::mouseOver = 0;
+std::vector<std::string> MealScreenM::options;
+std::vector<Screen::Button> MealScreenM::buttons;
+
+void MealScreenM::load()
+{
+	if (options.size() == 0)
+	{
+		options.reserve(8);
+		options.emplace_back("Show All");
+		options.emplace_back("Show meal");
+		options.emplace_back("Add");
+		options.emplace_back("Delete");
+		options.emplace_back("Delete All");
+		options.emplace_back("Update");
+		options.emplace_back("Add ingredient");
+		options.emplace_back("Delete ingredient");
+	}
+
+	if (buttons.size() == 0)
+	{
+		buttons.reserve(9);
+		buttons.emplace_back(Button(1, { 31, 3 }, { 56, 1 }));
+		buttons.emplace_back(Button(2, { 31, 7 }, { 56, 5 }));
+		buttons.emplace_back(Button(3, { 31, 11 }, { 56, 9 }));
+		buttons.emplace_back(Button(4, { 31, 15 }, { 56, 13 }));
+		buttons.emplace_back(Button(5, { 31, 19 }, { 56, 17 }));
+		buttons.emplace_back(Button(6, { 31, 23 }, { 56, 21 }));
+		buttons.emplace_back(Button(7, { 31, 27 }, { 56, 25 }));
+		buttons.emplace_back(Button(8, { 62, 3 }, { 87, 1 }));
+		buttons.emplace_back(Button(9, { 0, 2 }, { 7, 0 }));
+	}
+}
+void MealScreenM::print()
+{
+	COORDINATE = { 31, 1 };
+	Menu::printMenu(options, mouseOver - 1);
+}
+size_t MealScreenM::start()
+{
+	load();
+	bool updateScreen = true;
+	system("CLS");
+	while (1)
+	{
+		if (updateScreen)
+		{
+			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Meal Control"));
+			print();
+
+			if (mouseOver == 9)
+				printBack(true);
+			else
+				printBack();
+
+			updateScreen = false;
+		}
+		COORD coo;
+		bool mouseClicked = Console::GetCoordinateWithMouse(coo);
+		mouseOver = getButtonIdByCoordinate(coo, buttons);
+
+		if (mouseOver)
+		{
+			if (mouseClicked)
+			{
+				// code
+				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+
+				if (mouseOver == 9)
 					system("CLS");
 				return mouseOver;
 			}

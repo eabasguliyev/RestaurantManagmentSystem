@@ -1,17 +1,19 @@
 #include "Stock.h"
 #include "Exception.h"
 
-void Stock::addIngredient(std::shared_ptr<Ingredient> ingredient, const size_t& amount)
+void Stock::addIngredient(const std::shared_ptr<Ingredient> &ingredient, const size_t& amount)
 {
 	ingredient_items.push_back(std::shared_ptr<RecipeItem>(new RecipeItem(ingredient, amount)));
 }
-void Stock::updateIngredient(std::shared_ptr<Ingredient> oldIngredient, std::shared_ptr<Ingredient> newIngredient)
+void Stock::updateIngredient(std::shared_ptr<Ingredient>& oldIngredient, const std::shared_ptr<Ingredient>& newIngredient)
 {
 	oldIngredient->setName(newIngredient->getName());
 	oldIngredient->setFats(newIngredient->getFats());
 	oldIngredient->setProtein(newIngredient->getProtein());
 	oldIngredient->setCarboHydrates(newIngredient->getCarboHydrates());
 	oldIngredient->setKcal(newIngredient->getKcal());
+
+	Ingredient::current_id--;
 }
 void Stock::deleteIngredient(const size_t& id)
 {

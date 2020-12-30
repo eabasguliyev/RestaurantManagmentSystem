@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "Ingredient.h"
+#include "Meal.h"
 
 class DatabaseHelper
 {
@@ -12,4 +12,5 @@ public:
 	static std::string readFromFile();
 	static bool checkNumericInput(const char* str);
 	static std::shared_ptr<Ingredient> inputNewIngredient();
+	static std::shared_ptr<Meal> inputNewMeal();
 };

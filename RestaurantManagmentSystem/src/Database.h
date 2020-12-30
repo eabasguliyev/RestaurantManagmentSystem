@@ -27,13 +27,26 @@ public:
 	void deleteAdmin(const std::string& username);
 	void updateAdmin(const std::string& username, std::shared_ptr<Admin>);
 	void showAllAdmins() const;
-	void addOrder(const std::string& table_no, std::shared_ptr<Meal> meal, const size_t& amount);
+
+	void addOrder(const std::string& table_no, std::shared_ptr<Meal>& meal, const size_t& amount);
 	void deleteOrder(const size_t& id);
 	void showAllOrder(const bool& shortInfo = false);
 	void showOrdersByTable(const std::string& table_no, const bool& shortInfo = false);
 	void showOrdersByTable(const size_t& id, const bool& shortInfo = false);
+
 	void addTable(const std::string& table_no);
 	void deleteTable(const std::string& table_no);
 	void deleteTable(const size_t& id);
+
+	void addMeal(const std::shared_ptr<Meal>& meal);
+	void deleteMeal(const size_t& id);
+	void deleteAllMeal();
+	void updateMeal(std::shared_ptr<Meal>& old_meal, const std::shared_ptr<Meal>& new_meal);
+	void deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount);
+	void addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount);
+	void showAllMeal(const bool& shortInfo = false) const;
+	//void showMealIngredients(const size_t& id, const bool& shortInfo = false) const;
+	std::shared_ptr<Meal>& getMeal(const size_t& id);
+	size_t getMealCount() const;
 	// her bir obyekt uchun ferqili read/write funksiyasi olmalidi.
 };

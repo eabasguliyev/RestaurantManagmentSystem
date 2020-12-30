@@ -9,8 +9,8 @@ class Stock
 public:
 	Stock() : ingredient_items(NULL) {}
 
-	void addIngredient(std::shared_ptr<Ingredient> ingredient, const size_t& amount);
-	void updateIngredient(std::shared_ptr<Ingredient> oldIngredient, std::shared_ptr<Ingredient> newIngredient);
+	void addIngredient(const std::shared_ptr<Ingredient>& ingredient, const size_t& amount);
+	void updateIngredient(std::shared_ptr<Ingredient>& oldIngredient, const std::shared_ptr<Ingredient>& newIngredient);
 	void deleteIngredient(const size_t& id);
 	void increaseIngredientAmount(std::shared_ptr<RecipeItem> &item, const int& amount);
 	void decreaseIngredientAmount(std::shared_ptr<RecipeItem>& item, const int& amount);

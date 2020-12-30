@@ -47,7 +47,8 @@ void Database::showAllAdmins() const
 		std::cout << *i << std::endl;
 	}
 }
-void Database::addOrder(const std::string& table_no, std::shared_ptr<Meal> meal, const size_t& amount)
+
+void Database::addOrder(const std::string& table_no, std::shared_ptr<Meal>& meal, const size_t& amount)
 {
 	std::shared_ptr<Order> order_ptr(new Order(table_no, meal, amount));
 	orders.push_back(order_ptr);
@@ -168,6 +169,7 @@ void Database::showOrdersByTable(const size_t& id, const bool& shortInfo)
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no table associated this table id -> " + id));
 }
+
 void Database::addTable(const std::string& table_no) {
 	tables.push_back(Table(table_no));
 }
@@ -194,3 +196,96 @@ void Database::deleteTable(const size_t& id)
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no table associated this table no -> " + std::to_string(id)));
 }
+
+void Database::addMeal(const std::shared_ptr<Meal>& meal) {
+	this->meals.push_back(meal);
+}
+void Database::deleteMeal(const size_t& id){
+	for (auto& meal : this->meals)
+	{
+		if (id == meal->getID())
+		{
+			meals.remove(meal);
+			return;
+		}
+	}
+
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no meal associated this ->" + std::to_string(id)));
+}
+void Database::deleteAllMeal()
+{
+	this->meals.clear();
+}
+void Database::updateMeal(std::shared_ptr<Meal> &old_meal, const std::shared_ptr<Meal>& new_meal){
+	old_meal->setName(new_meal->getName());
+	old_meal->setCategory(new_meal->getCategory());
+	old_meal->setMenuRating(new_meal->getMenuRating());
+
+	Meal::current_id--;
+}
+void Database::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount){
+	std::list<std::shared_ptr<RecipeItem>> ingredient_items = meal->getIngredientItems();
+	for (auto& ingredient_item : ingredient_items)
+	{
+		if (ingredient_id == ingredient_item->getIngredient()->getID())
+		{
+			if (amount == 0)
+			{
+				meal->deleteIngredientByID(ingredient_id);
+			}
+			else
+			{
+				meal->decreaseAmountOfIngredient(ingredient_item, amount);
+			}
+			return;
+		}
+	}
+
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id ->" + std::to_string(ingredient_id)));
+}
+void Database::addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount)
+{
+	std::list<std::shared_ptr<RecipeItem>> ingredient_items = meal->getIngredientItems();
+
+	for (auto& i : ingredient_items)
+	{
+		if (ingredient->getID() == i->getIngredient()->getID())
+		{
+			i->setAmount(i->getAmount() + amount);
+			return;
+		}
+	}
+
+	// eger meal icherisinde hemin ingredient olmasa yenisi elave olunur
+
+	meal->addIngredient(ingredient, amount);
+}
+std::shared_ptr<Meal>& Database::getMeal(const size_t& id){
+	for (auto& i : this->meals)
+	{
+		if (id == i->getID())
+			return i;
+	}
+
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no meal associated this id ->" + std::to_string(id)));
+}
+void Database::showAllMeal(const bool& shortInfo) const
+{
+	if (shortInfo)
+	{
+		for (auto& meal : this->meals)
+		{
+			meal->showShortInfo();
+		}
+	}
+	else
+	{
+		for (auto& meal : this->meals)
+		{
+			meal->showFullInfo();
+		}
+	}
+	std::cout << "####################################" << std::endl;
+}
+
+size_t Database::getMealCount() const { return this->meals.size(); }
