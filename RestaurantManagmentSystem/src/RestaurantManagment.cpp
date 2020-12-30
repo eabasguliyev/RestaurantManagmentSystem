@@ -3,23 +3,22 @@
 #include "Screen.h"
 #include "Console.h"
 #include "RestaurantManagment.h"
+#include "Restaurant.h"
+#include "DatabaseSide.h"
+#include "ClientSide.h"
+#include "AdminSide.h"
 
 enum MainMenuButtons
 {
 	ADMIN = 1, CLIENT
 };
-enum AdminMenuChoices
-{
-	KITCHEN = 1, DATABASE
-};
-enum DatabaseMenuChoices
-{
-	ADMINCONTROL = 1, STOCKCONTROL, MEALCONTROL, ORDERCONTROL, NOTIFICATIONCONTROL, TABLECONTROL
-};
+
 
 void RestaurantManagment::start()
 {
 	Console::Setting::start();
+
+	Restaurant restaurant("Green Garden 145", "Baku", "Azerbaijan", "F.Bayramov St. 1130/33", 0);
 
 	while (1)
 	{
@@ -27,63 +26,11 @@ void RestaurantManagment::start()
 
 		if (mainChoice == ADMIN)
 		{
-			while (1)
-			{
-				size_t adminChoice = AdminScreenM::start();
-
-				if (adminChoice == KITCHEN)
-					continue;
-				else if (adminChoice == DATABASE)
-				{
-					while (1)
-					{
-						size_t databaseChoice = DatabaseScreenM::start();
-
-						if (databaseChoice == ADMINCONTROL)
-						{
-							continue;
-						}
-						else if (databaseChoice == STOCKCONTROL)
-						{
-							continue;
-						}
-						else if (databaseChoice == MEALCONTROL)
-						{
-							continue;
-						}
-						else if (databaseChoice == ORDERCONTROL)
-						{
-							continue;
-						}
-						else if (databaseChoice == NOTIFICATIONCONTROL)
-						{
-							continue;
-						}
-						else if (databaseChoice == TABLECONTROL)
-						{
-							continue;
-						}
-						else
-							break;
-					}
-				}
-				else
-					break;
-			}
+			AdminSide::AdminSide::start(restaurant.db);
 		}
 		else if (mainChoice == CLIENT)
 		{
-			while (1)
-			{
-				size_t clientChoice = ClientScreenM::start();
-
-				if (clientChoice == 101)
-					break;
-				else
-				{
-					continue;
-				}
-			}
+			ClientSide::ClientSide::start();
 		}
 		else
 			exit(0);

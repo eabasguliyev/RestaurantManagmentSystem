@@ -48,7 +48,6 @@ void Console::Setting::start()
 	disableCursor(false);
 }
 
-
 bool Console::GetCoordinateWithMouse(COORD& coordinate)
 {
 	HANDLE hConsoleIN = GetStdHandle(STD_INPUT_HANDLE);
