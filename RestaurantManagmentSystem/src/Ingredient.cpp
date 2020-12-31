@@ -16,14 +16,14 @@ size_t Ingredient::getKcal() const { return this->kcal; }
 
 void Ingredient::shortInfo()
 {
-	std::cout << "######################################" << std::endl;
+	std::cout << std::string(37, '#') << std::endl;
 	std::cout << "ID: " << getID() << std::endl;
 	std::cout << "Name: " << getName() << std::endl;
 	std::cout << "Kcal: " << getKcal() << std::endl;
 }
 void Ingredient::fullInfo()
 {
-	std::cout << "######################################" << std::endl;
+	std::cout << std::string(37, '#') << std::endl;
 	std::cout << "Name: " << getName() << std::endl;
 	std::cout << "Fats: " << getFats() << std::endl;
 	std::cout << "Protein: " << getProtein() << std::endl;

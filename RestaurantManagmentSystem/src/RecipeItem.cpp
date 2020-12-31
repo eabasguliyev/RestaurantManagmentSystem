@@ -14,12 +14,12 @@ void RecipeItem::showItem() const
 {
 	ingredient->fullInfo();
 	std::cout << "Amount: " << getAmount() << std::endl;
-	std::cout << "######################################" << std::endl;
+	std::cout << std::string(37, '#') << std::endl;
 }
 
 void RecipeItem::showItemShort() const
 {
 	ingredient->shortInfo();
 	std::cout << "Amount: " << getAmount() << std::endl;
-	std::cout << "######################################" << std::endl;
+	std::cout << std::string(37, '#') << std::endl;
 }

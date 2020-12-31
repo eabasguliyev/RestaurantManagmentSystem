@@ -63,7 +63,7 @@ void Stock::showAllIngredient(const bool& shortInfo)
 			std::cout << "Amount: " << (*i)->getAmount() << std::endl;
 		}
 	}
-	std::cout << "######################################" << std::endl;
+	std::cout << std::string(37, '#') << std::endl;
 }
 std::shared_ptr<Ingredient> Stock::getIngredient(const size_t& id)
 {

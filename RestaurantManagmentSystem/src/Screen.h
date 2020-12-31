@@ -6,10 +6,12 @@
 
 #define MainScreenM Screen::MainScreen
 #define AdminScreenM Screen::MainScreen::AdminScreen
-#define ClientScreenM Screen::MainScreen::ClientScreen
 #define DatabaseScreenM Screen::MainScreen::AdminScreen::DatabaseScreen
 #define StockScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::StockScreen
 #define MealScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::MealsScreen
+#define ClientScreenM Screen::MainScreen::ClientScreen
+#define TableScreenM Screen::MainScreen::ClientScreen::TableScreen
+#define OrderScreenM Screen::MainScreen::ClientScreen::TableScreen::OrderScreen
 
 class Screen
 {
@@ -136,9 +138,13 @@ public:
 
 			class TableScreen {
 			public:
-				static size_t selected;
+				static size_t mouseOver;
+				static std::vector<std::string> options;
+				static std::vector<Button> buttons;
 
-				static short print();
+				static void print();
+				static size_t start();
+				static void load();
 
 				class AboutScreen {
 				public:
@@ -149,9 +155,13 @@ public:
 
 				class OrderScreen {
 				public:
-					static size_t selected;
+					static size_t mouseOver;
+					static std::vector<std::string> options;
+					static std::vector<Button> buttons;
 
-					static short print();
+					static void print();
+					static size_t start();
+					static void load();
 				};
 			};
 		};

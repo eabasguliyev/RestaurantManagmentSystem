@@ -22,9 +22,11 @@ public:
 	std::string getTableNo()const;
 	std::string getNotfFromKitchen() const;
 	std::list<std::shared_ptr<Order>> getOrders() const;
+	std::shared_ptr<Order>& getOrder(const size_t& id);
 
-	void addOrder(std::shared_ptr<Order> order);
-	void deleteOrder(const size_t& id);
-
+	void addOrder(const std::shared_ptr<Order>& order);
+	void deleteOrder(const std::shared_ptr<Order>& order);
+	void deleteAllOrders();
+	void showOrders() const;
 	bool operator==(const Table&) const;
 };

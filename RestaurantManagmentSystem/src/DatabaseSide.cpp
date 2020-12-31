@@ -106,7 +106,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 						db.stock.updateIngredient(ingredient, newIngredient);
 						newIngredient->fullInfo();
-						std::cout << "######################################" << std::endl;
+						std::cout << std::string(37, '#') << std::endl;
 						std::cout << "Ingredient updated!" << std::endl;
 					}
 					catch (const DatabaseException& ex)
@@ -208,7 +208,8 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 				{
 					std::shared_ptr<Meal> meal1(new Meal("Dolma", "Isti yemekler", 4.5));
 					std::shared_ptr<Meal> meal2(new Meal("Pizza", "Italian", 3.6));
-					std::shared_ptr<Meal> meal3(new Meal("Burger", "Fastfood", 4.3));
+					std::shared_ptr<Meal> meal3(new Meal("Burger 1", "Fastfood", 4.3));
+					std::shared_ptr<Meal> meal4(new Meal("Burger 2", "Fastfood", 4.8));
 					try
 					{
 						meal1->addIngredient(db.stock.getIngredient(1), 5);
@@ -220,6 +221,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					db.addMeal(meal1);
 					db.addMeal(meal2);
 					db.addMeal(meal3);
+					db.addMeal(meal4);
 				}
 
 				size_t mealChoice = MealScreenM::start();
@@ -247,7 +249,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 						std::shared_ptr<Meal> meal = db.getMeal(atoi(meal_id));
 						meal->showFullInfo();
-						std::cout << "####################################" << std::endl;
+						std::cout << std::string(37, '#') << std::endl;
 					}
 					catch (const DatabaseException& ex)
 					{
@@ -312,7 +314,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						std::shared_ptr<Meal> meal = db.getMeal(atoi(meal_id));
 						db.updateMeal(meal, DatabaseHelper::inputNewMeal());
 						meal->showFullInfo();
-						std::cout << "####################################" << std::endl;
+						std::cout << std::string(37, '#') << std::endl;
 						std::cout << "Meal updated!" << std::endl;
 					}
 					catch (const DatabaseException& ex)

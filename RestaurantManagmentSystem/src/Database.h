@@ -15,7 +15,7 @@ struct NotificationGroups
 class Database
 {
 	std::list<Admin> admins;
-	std::list<Table> tables;
+	std::list<std::shared_ptr<Table>> tables;
 	//std::list<Notification> notifications;
 	NotificationGroups notf_group;
 	std::list<std::shared_ptr<Order>> orders;
@@ -28,13 +28,16 @@ public:
 	void updateAdmin(const std::string& username, std::shared_ptr<Admin>);
 	void showAllAdmins() const;
 
-	void addOrder(const std::string& table_no, std::shared_ptr<Meal>& meal, const size_t& amount);
-	void deleteOrder(const size_t& id);
+	void addOrder(const std::shared_ptr<Table>& table, const std::shared_ptr<Meal>& meal, const size_t& amount);
+	void deleteOrder(const std::shared_ptr<Order>& order);
+	void deleteAllOrders();
 	void showAllOrder(const bool& shortInfo = false);
 	void showOrdersByTable(const std::string& table_no, const bool& shortInfo = false);
 	void showOrdersByTable(const size_t& id, const bool& shortInfo = false);
+	std::shared_ptr<Order>& getOrder(const size_t& id);
 
-	void addTable(const std::string& table_no);
+	std::shared_ptr<Table> addTable(const std::string& table_no);
+	std::shared_ptr<Table> getTableByNo(const std::string& table_no);
 	void deleteTable(const std::string& table_no);
 	void deleteTable(const size_t& id);
 
@@ -45,6 +48,7 @@ public:
 	void deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount);
 	void addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount);
 	void showAllMeal(const bool& shortInfo = false) const;
+	void filterMeals(const std::string& mealName);
 	//void showMealIngredients(const size_t& id, const bool& shortInfo = false) const;
 	std::shared_ptr<Meal>& getMeal(const size_t& id);
 	size_t getMealCount() const;

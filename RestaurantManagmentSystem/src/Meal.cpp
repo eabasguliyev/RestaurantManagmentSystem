@@ -16,12 +16,14 @@ void Meal::setCategory(const std::string& category)
 	//strcpy_s(this->category, length, category);
 }
 void Meal::setPrice(const double& price) { this->price = price; }
+void Meal::setIngredientItems(const std::list<std::shared_ptr<RecipeItem>>& ing_items) { this->ingredients = ing_items; }
+
+std::list<std::shared_ptr<RecipeItem>>& Meal::getIngredientItems() { return this->ingredients; }
 
 double Meal::getPrice() const { return this->price; }
 std::string Meal::getCategory() const { return this->category; }
 std::string Meal::getName() const { return this->name; }
 double Meal::getMenuRating() const { return menu_rating; }
-std::list<std::shared_ptr<RecipeItem>>& Meal::getIngredientItems() { return this->ingredients; }
 size_t Meal::getAmount() const { return this->ingredients.size(); }
 
 
@@ -71,7 +73,7 @@ void Meal::taste() const
 
 void Meal::showShortInfo() const
 {
-	std::cout << "####################################" << std::endl;
+	std::cout << std::string(37, '#') << std::endl;
 	std::cout << "ID: " << getID() << std::endl;
 	std::cout << "Name: " << getName() << std::endl;
 	std::cout << "Category: " << getCategory() << std::endl;
@@ -80,7 +82,7 @@ void Meal::showShortInfo() const
 }
 void Meal::showFullInfo() const
 {
-	std::cout << "####################################" << std::endl;
+	std::cout << std::string(37, '#') << std::endl;
 	std::cout << "ID: " << getID() << std::endl;
 	std::cout << "Name: " << getName() << std::endl;
 	std::cout << "Category: " << getCategory() << std::endl;

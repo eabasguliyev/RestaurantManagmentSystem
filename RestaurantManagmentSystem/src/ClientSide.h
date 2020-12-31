@@ -1,12 +1,14 @@
 #pragma once
 #include "Screen.h"
-#define BACK 101
+#include "Database.h"
+
+#define BACKFRMCLIENTSIDE 101
 
 namespace ClientSide
 {
 	class ClientSide
 	{
 	public:
-		static void start();
+		static void start(Database& db);
 	};
 }

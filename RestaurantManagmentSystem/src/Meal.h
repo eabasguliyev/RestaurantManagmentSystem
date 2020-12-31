@@ -19,17 +19,26 @@ public:
 		setMenuRating(menu_rating);
 		setCategory(category);
 	}
-
+	Meal(const std::shared_ptr<Meal>& meal)
+	{
+		setID(meal->getID());
+		setName(meal->getName());
+		setCategory(meal->getCategory());
+		setMenuRating(meal->getMenuRating());
+		setIngredientItems(meal->getIngredientItems());
+	}
 	void setName(const std::string& name);
 	void setCategory(const std::string& category);
 	void setMenuRating(double menu_rating);
 	void setPrice(const double& price);
+	void setIngredientItems(const std::list<std::shared_ptr<RecipeItem>>& ing_items);
+
 
 	std::string getName() const;
 	std::string getCategory() const;
 	double getMenuRating() const;
 	double getPrice() const;
-
+	std::list<std::shared_ptr<RecipeItem>>& getIngredientItems();
 	virtual void printRecipe() const;
 	virtual void taste() const;
 	void addIngredient(std::shared_ptr<Ingredient> ingredient, const size_t& amount);
@@ -40,5 +49,4 @@ public:
 
 	void showShortInfo() const;
 	void showFullInfo() const;
-	std::list<std::shared_ptr<RecipeItem>>& getIngredientItems();
 };

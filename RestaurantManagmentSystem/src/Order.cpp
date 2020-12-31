@@ -10,7 +10,8 @@ std::string Order::getTableNo() const { return this->table_no; }
 
 void Order::fullInfo() const
 {
-	std::cout << "#################################" << std::endl;
+	std::cout << std::string(37, '#') << std::endl;
+	std::cout << "ID: " << getID() << std::endl;
 	std::cout << "Table no: " << getTableNo() << std::endl;
 	std::cout << "Meal name: " << getMeal()->getName() << std::endl;
 	std::cout << "Amount: " << getAmount() << std::endl;
@@ -20,7 +21,7 @@ void Order::fullInfo() const
 bool Order::operator==(const Order& order) const { return this->getID() == order.getID(); }
 std::ostream& operator<<(std::ostream& out, const Order& order)
 {
-	out << "###################################" << std::endl;
+	out << std::string(37, '#') << std::endl;
 	out << "Table no: " << order.getTableNo() << std::endl;
 	out << "Meal: " << order.getMeal()->getName() << std::endl;
 	return out;

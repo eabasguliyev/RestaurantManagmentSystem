@@ -13,4 +13,5 @@ public:
 	static bool checkNumericInput(const char* str);
 	static std::shared_ptr<Ingredient> inputNewIngredient();
 	static std::shared_ptr<Meal> inputNewMeal();
+	static std::string stringToLower(const std::string& str);
 };

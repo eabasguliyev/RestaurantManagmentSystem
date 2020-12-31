@@ -103,3 +103,13 @@ std::shared_ptr<Meal> DatabaseHelper::inputNewMeal()
 	
 	return std::shared_ptr<Meal>(new Meal(name, category, atof(menu_rating)));
 }
+
+std::string DatabaseHelper::stringToLower(const std::string & str)
+{
+	std::string lowerString = str;
+	for (auto& c : lowerString)
+	{
+		c = tolower(c);
+	}
+	return lowerString;
+}

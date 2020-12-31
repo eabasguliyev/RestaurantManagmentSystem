@@ -30,7 +30,7 @@ void RestaurantManagment::start()
 		}
 		else if (mainChoice == CLIENT)
 		{
-			ClientSide::ClientSide::start();
+			ClientSide::ClientSide::start(restaurant.db);
 		}
 		else
 			exit(0);

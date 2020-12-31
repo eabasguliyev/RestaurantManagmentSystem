@@ -76,9 +76,10 @@ bool Console::GetCoordinateWithMouse(COORD& coordinate)
 void Console::clearConsoleArea(const COORD& pos1, const COORD& pos2)
 {
 	HANDLE hConsoleOUT = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleCursorPosition(hConsoleOUT, { 0 , 0 });
+	
 	for (size_t i = pos1.Y; i < pos2.Y; i++)
 	{
+		SetConsoleCursorPosition(hConsoleOUT, { pos1.X , pos1.Y });
 		for (size_t j = pos1.X; j < pos2.X; j++)
 		{
 			std::cout << ' ';
@@ -90,4 +91,10 @@ void Console::wait()
 {
 	std::cout << "\nPress enter to continue...\n";
 	std::cin.get();
+}
+
+void Console::clearInputBuff()
+{
+	std::cin.ignore();
+	std::cin.clear();
 }
