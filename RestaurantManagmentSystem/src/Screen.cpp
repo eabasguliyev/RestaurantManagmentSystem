@@ -377,6 +377,150 @@ size_t AdminScreenM::start()
 
 }
 
+//KitchenScreen
+
+size_t KitchenScreenM::mouseOver = 0;
+std::vector<std::string> KitchenScreenM::options;
+std::vector<Screen::Button> KitchenScreenM::buttons;
+
+void KitchenScreenM::load()
+{
+	if (options.size() == 0)
+	{
+		options.reserve(4);
+		options.emplace_back("Show all");
+		options.emplace_back("Show order");
+		options.emplace_back("Accept all");
+		options.emplace_back("Decline all");
+	}
+
+	if (buttons.size() == 0)
+	{
+		buttons.reserve(5);
+		buttons.emplace_back(Button(1, { 46, 12 }, { 71, 10 }));
+		buttons.emplace_back(Button(2, { 46, 16 }, { 71, 14 }));
+		buttons.emplace_back(Button(3, { 46, 20 }, { 71, 18 }));
+		buttons.emplace_back(Button(4, { 46, 24 }, { 71, 22 }));
+		buttons.emplace_back(Button(5, { 0, 2 }, { 7, 0 }));
+	}
+}
+void KitchenScreenM::print()
+{
+	COORDINATE = { 46, 10 };
+	Menu::printMenu(options, mouseOver - 1);
+}
+size_t KitchenScreenM::start()
+{
+	load();
+	bool updateScreen = true;
+	system("CLS");
+	while (1)
+	{
+		if (updateScreen)
+		{
+			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Kitchen"));
+			print();
+
+			if (mouseOver == 5)
+				printBack(true);
+			else
+				printBack();
+
+			updateScreen = false;
+		}
+		COORD coo;
+		bool mouseClicked = Console::GetCoordinateWithMouse(coo);
+		mouseOver = getButtonIdByCoordinate(coo, buttons);
+
+		if (mouseOver)
+		{
+			if (mouseClicked)
+			{
+				// code
+				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+
+				if (mouseOver == 5)
+				{
+					system("CLS");
+				}
+				return mouseOver;
+			}
+			updateScreen = true;
+		}
+	}
+
+}
+
+//OrderControlScreen
+
+size_t OrderControlScreenM::mouseOver = 0;
+std::vector<std::string> OrderControlScreenM::options;
+std::vector<Screen::Button> OrderControlScreenM::buttons;
+
+void OrderControlScreenM::load()
+{
+	if (options.size() == 0)
+	{
+		options.reserve(2);
+		options.emplace_back("Accept");
+		options.emplace_back("Decline");
+	}
+
+	if (buttons.size() == 0)
+	{
+		buttons.reserve(3);
+		buttons.emplace_back(Button(1, { 93, 13 }, { 118, 11 }));
+		buttons.emplace_back(Button(2, { 93, 17 }, { 118, 15 }));
+		buttons.emplace_back(Button(3, { 0, 2 }, { 7, 0 }));
+	}
+}
+void OrderControlScreenM::print()
+{
+	COORDINATE = { 93, 11 };
+	Menu::printMenu(options, mouseOver - 1);
+}
+size_t OrderControlScreenM::start()
+{
+	load();
+	bool updateScreen = true;
+	Console::clearConsoleArea({ 92, 0 }, { 119, 29 });
+	while (1)
+	{
+		if (updateScreen)
+		{
+			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Order Control"));
+			print();
+
+			if (mouseOver == 3)
+				printBack(true);
+			else
+				printBack();
+
+			updateScreen = false;
+		}
+		COORD coo;
+		bool mouseClicked = Console::GetCoordinateWithMouse(coo);
+		mouseOver = getButtonIdByCoordinate(coo, buttons);
+
+		if (mouseOver)
+		{
+			if (mouseClicked)
+			{
+				// code
+				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+
+				if (mouseOver == 3)
+				{
+					system("CLS");
+				}
+				return mouseOver;
+			}
+			updateScreen = true;
+		}
+	}
+
+}
+
 //DatabaseScreen
 size_t DatabaseScreenM::mouseOver = 0;
 std::vector<std::string> DatabaseScreenM::options;

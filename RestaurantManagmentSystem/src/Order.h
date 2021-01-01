@@ -7,6 +7,7 @@ class Order : public Base, public ItemBase
 {
 	std::string table_no;
 	std::shared_ptr<Meal> meal; // yeni meal obyekt yaransin
+	//std::shared_ptr<Table> table;
 public:
 	static size_t current_id;
 	Order() {}

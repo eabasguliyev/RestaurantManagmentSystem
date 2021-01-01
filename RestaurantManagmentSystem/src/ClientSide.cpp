@@ -2,15 +2,7 @@
 #include <String>
 #include "Console.h"
 #include "Exception.h"
-enum TABLECHOICES
-{
-	SEARCHTMEAL = 1, SHOWTMEALS, ORDERTMEAL, SHOWTORDERS, DELTORDER, UPDATETORDER, DELTORDERS
-};
 
-enum ORDERCHOICES
-{
-	ORDERMEAL = 1, ADDMOREING, DEFAULTING, DELINGFRMMEAL, INCORDAMOUNT, DECORDAMOUNT
-};
 
 void ClientSide::ClientSide::start(Database& db)
 {
@@ -215,6 +207,7 @@ void ClientSide::ClientSide::start(Database& db)
 					catch (const Exception& ex)
 					{
 						ex.echo();
+						Console::wait();
 					}
 				}
 				else if (tableChoice == SHOWTORDERS)

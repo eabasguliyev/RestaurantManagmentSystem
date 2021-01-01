@@ -150,6 +150,7 @@
     <ClCompile Include="src\AdminSide.cpp" />
     <ClCompile Include="src\ClientSide.cpp" />
     <ClCompile Include="src\DatabaseSide.cpp" />
+    <ClCompile Include="src\KitchenSide.cpp" />
     <ClCompile Include="src\RestaurantManagment.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\DatabaseHelper.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="src\AdminSide.h" />
     <ClInclude Include="src\ClientSide.h" />
     <ClInclude Include="src\DatabaseSide.h" />
+    <ClInclude Include="src\KitchenSide.h" />
     <ClInclude Include="src\RestaurantManagment.h" />
     <ClInclude Include="src\Console.h" />
     <ClInclude Include="src\Restaurant.h" />

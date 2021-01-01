@@ -6,6 +6,8 @@
 
 #define MainScreenM Screen::MainScreen
 #define AdminScreenM Screen::MainScreen::AdminScreen
+#define KitchenScreenM Screen::MainScreen::AdminScreen::KitchenScreen
+#define OrderControlScreenM Screen::MainScreen::AdminScreen::KitchenScreen::OrderControlScreen
 #define DatabaseScreenM Screen::MainScreen::AdminScreen::DatabaseScreen
 #define StockScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::StockScreen
 #define MealScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::MealsScreen
@@ -58,8 +60,25 @@ public:
 			class KitchenScreen {
 			public:
 				static size_t selected;
+				static size_t mouseOver;
+				static std::vector<std::string> options;
+				static std::vector<Button> buttons;
 
-				static short print();
+				static void print();
+				static size_t start();
+				static void load();
+
+				class OrderControlScreen {
+				public:
+					static size_t selected;
+					static size_t mouseOver;
+					static std::vector<std::string> options;
+					static std::vector<Button> buttons;
+
+					static void print();
+					static size_t start();
+					static void load();
+				};
 			};
 
 			class DatabaseScreen {

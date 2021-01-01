@@ -1,5 +1,6 @@
 #include "AdminSide.h"
 #include "DatabaseSide.h"
+#include "KitchenSide.h"
 
 void AdminSide::AdminSide::start(Database & db)
 {
@@ -8,12 +9,14 @@ void AdminSide::AdminSide::start(Database & db)
 		size_t adminChoice = AdminScreenM::start();
 
 		if (adminChoice == KITCHEN)
-			continue;
+		{
+			KitchenSide::KitchenSide::start(db);
+		}
 		else if (adminChoice == DATABASE)
 		{
 			DatabaseSide::DatabaseSide::start(db);
 		}
 		else
-			break;
+			return;
 	}
 }

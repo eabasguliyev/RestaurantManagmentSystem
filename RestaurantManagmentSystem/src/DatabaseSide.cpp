@@ -4,14 +4,6 @@
 #include "Exception.h"
 #include "DatabaseHelper.h"
 
-enum STOCKCHOICES
-{
-	SHOWALLING = 1, SHOWING, ADDING, UPDATEING, DELETEING, INCREASEINGAMOUNT, DECREASEINGAMOUNT
-};
-enum MEALCHOICES
-{
-	SHOWALLMEAL = 1, SHOWMEAL, ADDMEAL, DELMEAL, DELALLMEAL, UPDATEMEAL, ADDINGTOMEAL, DELINGFRMMEAL
-};
 void DatabaseSide::DatabaseSide::start(Database & db)
 {
 	while (1)
@@ -425,6 +417,6 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 			continue;
 		}
 		else
-			break;
+			return;
 	}
 }
