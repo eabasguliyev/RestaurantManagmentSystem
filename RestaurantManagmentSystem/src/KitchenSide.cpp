@@ -4,6 +4,9 @@
 #include "Exception.h"
 #include "DatabaseHelper.h"
 #include <string>
+#include "Order.h"
+
+
 void KitchenSide::KitchenSide::start(Database& db)
 {
 	while (1)
@@ -45,38 +48,32 @@ void KitchenSide::KitchenSide::start(Database& db)
 				continue;
 			}
 
-			while (1)
+			system("CLS");
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 7 });
+			order->fullInfo();
+
+			size_t orderControlChoice = OrderControlScreenM::start();
+
+			if (orderControlChoice == ACCEPTORDER)
 			{
-				system("CLS");
-				SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 7 });
-				order->fullInfo();
-
-				size_t orderControlChoice = OrderControlScreenM::start();
-
-				if (orderControlChoice == 3)
-					break;
-
-				if (orderControlChoice == ACCEPTORDER)
-				{
-					Console::wait();
-					continue;
-				}
-				else if (orderControlChoice == DECLINEORDER)
-				{
-					Console::wait();
-					continue;
-				}
+				db.acceptOrder(order);
+			}
+			else if (orderControlChoice == DECLINEORDER)
+			{
+				db.declineOrder(order);
 			}
 		}
 		else if (kitchenChoices == ACCEPTALLORDER)
 		{
+			db.acceptAllOrder();
+			std::cout << "All order accepted!" << std::endl;
 			Console::wait();
-			continue;
 		}
 		else if (kitchenChoices == DECLINEALLORDER)
 		{
+			db.declineAllOrder();
+			std::cout << "All order declined!" << std::endl;
 			Console::wait();
-			continue;
 		}
 	}
 }

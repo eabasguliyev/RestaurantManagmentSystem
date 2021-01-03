@@ -1,8 +1,11 @@
-#include "RestaurantManagment.h"
+﻿#include "RestaurantManagment.h"
+#include <iostream>
 
 void main()
 {
 	RestaurantManagment::start();
+
+	return;
 	// trash code
 	/*Database db;
 

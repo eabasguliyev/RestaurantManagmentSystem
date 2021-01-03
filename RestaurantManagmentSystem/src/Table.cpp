@@ -1,10 +1,13 @@
 #include "Table.h"
 #include "Exception.h"
+#include "Order.h"
 
 size_t Table::current_id = NULL;
 
 void Table::setTableNo(const std::string& table_no) { this->table_no = table_no; }
-void Table::setNotfFromKitchen(const std::string& message) { this->notfFromKitchen = message; }
+void Table::setNotfFromKitchen(const std::string& message) { 
+	this->notfFromKitchen.append(message + '\n');
+}
 
 std::string Table::getTableNo()const { return this->table_no; }
 std::string Table::getNotfFromKitchen() const { return this->notfFromKitchen; }

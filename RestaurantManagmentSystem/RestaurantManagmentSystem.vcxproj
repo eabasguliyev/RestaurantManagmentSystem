@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\LoginSide.cpp" />
     <ClCompile Include="src\AdminSide.cpp" />
     <ClCompile Include="src\ClientSide.cpp" />
     <ClCompile Include="src\DatabaseSide.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="src\ClientSide.h" />
     <ClInclude Include="src\DatabaseSide.h" />
     <ClInclude Include="src\KitchenSide.h" />
+    <ClInclude Include="src\LoginSide.h" />
     <ClInclude Include="src\RestaurantManagment.h" />
     <ClInclude Include="src\Console.h" />
     <ClInclude Include="src\Restaurant.h" />

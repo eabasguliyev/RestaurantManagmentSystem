@@ -7,6 +7,7 @@
 #include "Meal.h"
 #include <string>
 #include <list>
+#include <map>
 
 struct NotificationGroups
 {
@@ -23,18 +24,32 @@ class Database
 public:
 	Stock stock;
 	
+	// elave kimi develop ele
+	struct insufficientIngredient
+	{
+		size_t id;
+		std::string name;
+		size_t totalAmount;
+		size_t orderedAmount;
+	};
 	void addAdmin(const std::string& username, const std::string& password);
 	void deleteAdmin(const std::string& username);
 	void updateAdmin(const std::string& username, std::shared_ptr<Admin>);
 	void showAllAdmins() const;
+	std::list<Admin>& getAdmins();
 
 	void addOrder(const std::shared_ptr<Table>& table, const std::shared_ptr<Meal>& meal, const size_t& amount);
+	void acceptOrder(std::shared_ptr<Order> order);
+	void acceptAllOrder();
+	void declineOrder(std::shared_ptr<Order> order);
+	void declineAllOrder();
 	void deleteOrder(const std::shared_ptr<Order>& order);
 	void deleteAllOrders();
 	void showAllOrder(const bool& shortInfo = false);
 	void showOrdersByTable(const std::string& table_no, const bool& shortInfo = false);
 	void showOrdersByTable(const size_t& id, const bool& shortInfo = false);
 	std::shared_ptr<Order>& getOrder(const size_t& id);
+	bool checkStockForOrder(const std::list<std::shared_ptr<RecipeItem>>& orderIngredientItems, const size_t& orderCount, std::map<std::string, size_t>& insufficientIngredients) const;
 
 	std::shared_ptr<Table> addTable(const std::string& table_no);
 	std::shared_ptr<Table> getTableByNo(const std::string& table_no);
@@ -53,4 +68,6 @@ public:
 	std::shared_ptr<Meal>& getMeal(const size_t& id);
 	size_t getMealCount() const;
 	// her bir obyekt uchun ferqili read/write funksiyasi olmalidi.
+
+	void login(const std::string& username, const std::string& password) const;
 };

@@ -1,8 +1,8 @@
 #pragma once
 #include "Base.h"
-#include "Order.h"
 #include <list>
 
+class Order;
 class Table : public Base
 {
 	std::string table_no;

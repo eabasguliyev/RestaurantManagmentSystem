@@ -75,7 +75,7 @@ std::shared_ptr<Ingredient> Stock::getIngredient(const size_t& id)
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id -> " + std::to_string(id)));
 }
-std::shared_ptr<RecipeItem> Stock::getItem(const size_t& id)
+std::shared_ptr<RecipeItem> Stock::getItem(const size_t& id) const
 {
 	for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
 	{
@@ -86,3 +86,9 @@ std::shared_ptr<RecipeItem> Stock::getItem(const size_t& id)
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id -> " + std::to_string(id)));
 }
 size_t Stock::getIngredientCount() const { return this->ingredient_items.size(); }
+bool Stock::checkIngredientAmount(const size_t& id, const size_t& amount) const
+{
+	if (getItem(id)->getAmount() >= amount)
+		return true;
+	return false;
+}

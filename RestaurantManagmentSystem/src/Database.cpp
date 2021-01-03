@@ -1,6 +1,7 @@
 #include "Database.h"
 #include "DatabaseHelper.h"
 #include "Exception.h"
+#include "Order.h"
 
 void Database::addAdmin(const std::string& username, const std::string& password)
 {
@@ -48,10 +49,10 @@ void Database::showAllAdmins() const
 		std::cout << *i << std::endl;
 	}
 }
-
+std::list<Admin>& Database::getAdmins() { return this->admins; }
 void Database::addOrder(const std::shared_ptr<Table>& table, const std::shared_ptr<Meal>& meal, const size_t& amount)
 {
-	std::shared_ptr<Order> order_ptr(new Order(table->getTableNo(), meal, amount));
+	std::shared_ptr<Order> order_ptr(new Order(table, meal, amount));
 	orders.push_back(order_ptr); // add to all order list
 	table->addOrder(order_ptr); // add to table order list
 }
@@ -61,7 +62,7 @@ void Database::deleteOrder(const std::shared_ptr<Order>& order)
 
 	for (auto& i : this->tables)
 	{
-		if (order->getTableNo() == i->getTableNo())
+		if (order->getTable()->getTableNo() == i->getTableNo())
 		{
 			i->deleteOrder(order);
 		}
@@ -71,7 +72,6 @@ void Database::deleteAllOrders()
 {
 	this->orders.clear();
 }
-
 void Database::showAllOrder(const bool &shortInfo)
 {
 	if (shortInfo)
@@ -87,6 +87,50 @@ void Database::showAllOrder(const bool &shortInfo)
 		{
 			(*i)->fullInfo();
 		}
+	}
+}
+void Database::acceptOrder(std::shared_ptr<Order> order)
+{
+	std::list<std::shared_ptr<RecipeItem>> orderIngredientItems = order->getMeal()->getIngredientItems();
+	size_t orderCount = order->getAmount();
+	
+	std::map<std::string, size_t> insufficientIngredients;
+	if (checkStockForOrder(orderIngredientItems, orderCount, insufficientIngredients))
+	{
+		for (auto& i : orderIngredientItems)
+		{
+			std::shared_ptr<RecipeItem> ingredientItem = stock.getItem(i->getIngredient()->getID());
+			ingredientItem->setAmount(ingredientItem->getAmount() - (i->getAmount() * orderCount));
+		}
+		order->getTable()->setNotfFromKitchen(std::string("This order accepted -> " + order->getMeal()->getName()));
+	}
+	else
+	{
+		std::string reason = "This order declined -> " + order->getMeal()->getName() + "\nReason: Insufficient Ingredients\nIngredients:\n";
+		for (auto& i : insufficientIngredients)
+		{
+			reason.append("Name: " + i.first + " | " + "Amount: " + std::to_string(i.second) + '\n');
+		}
+
+		order->getTable()->setNotfFromKitchen(reason);
+	}
+}
+void Database::acceptAllOrder()
+{
+	for (auto& i : this->orders)
+	{
+		acceptOrder(i);
+	}
+}
+void Database::declineOrder(std::shared_ptr<Order> order)
+{
+	std::string reason = "This order declined -> " + order->getMeal()->getName() + "\nReason: by Admin\n";
+}
+void Database::declineAllOrder()
+{
+	for (auto& i : this->orders)
+	{
+		declineOrder(i);
 	}
 }
 void Database::showOrdersByTable(const std::string& table_no, const bool& shortInfo)
@@ -168,6 +212,20 @@ std::shared_ptr<Order>& Database::getOrder(const size_t& id)
 	}
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no order associated this id ->" + std::to_string(id)));
+}
+bool Database::checkStockForOrder(const std::list<std::shared_ptr<RecipeItem>>& orderIngredientItems, const size_t& orderCount, std::map<std::string, size_t> & insufficientIngredients) const
+{
+	for (auto& i : orderIngredientItems)
+	{
+		if (!stock.checkIngredientAmount(i->getIngredient()->getID(), i->getAmount() * orderCount))
+		{
+			insufficientIngredients.insert({ i->getIngredient()->getName(), i->getAmount() * orderCount });
+		}
+	}
+
+	if (insufficientIngredients.size())
+		return false;
+	return true;
 }
 
 std::shared_ptr<Table> Database::addTable(const std::string& table_no) {
@@ -320,4 +378,20 @@ void Database::filterMeals(const std::string& mealName)
 		throw ClientException(__LINE__, __TIME__, __FILE__, std::string("There is no meal associated this meal -> " + mealName));
 
 	std::cout << std::string(37, '#') << std::endl;
+}
+
+void Database::login(const std::string& username, const std::string& password) const
+{
+	for (auto& i : this->admins)
+	{
+		if (i.getUsername() == username)
+		{
+			if (i.getPassword() == std::to_string(DatabaseHelper::generateHash(password)))
+				return;
+			else
+				throw std::string("Password is incorrect!");
+		}
+	}
+
+	throw std::string("Username is incorrect!");
 }

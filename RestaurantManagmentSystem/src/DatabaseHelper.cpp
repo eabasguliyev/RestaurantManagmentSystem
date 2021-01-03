@@ -2,6 +2,16 @@
 #include "Exception.h"
 #include <string>
 
+std::string DatabaseHelper::center(int width, const std::string& str) {
+	int len = str.length();
+	if (width < len) { return str; }
+
+	int diff = width - len;
+	int pad1 = diff / 2;
+	int pad2 = diff - pad1;
+	return std::string(pad1, ' ') + str + std::string(pad2, ' ');
+}
+
 size_t DatabaseHelper::generateHash(const std::string& data)
 {
 	std::hash<std::string > hash;

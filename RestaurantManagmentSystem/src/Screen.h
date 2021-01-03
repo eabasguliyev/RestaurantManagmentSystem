@@ -5,6 +5,7 @@
 #include <vector>
 
 #define MainScreenM Screen::MainScreen
+#define LoginScreenM Screen::MainScreen::LoginScreen
 #define AdminScreenM Screen::MainScreen::AdminScreen
 #define KitchenScreenM Screen::MainScreen::AdminScreen::KitchenScreen
 #define OrderControlScreenM Screen::MainScreen::AdminScreen::KitchenScreen::OrderControlScreen
@@ -33,6 +34,7 @@ public:
 
 	static COORD COORDINATE;
 	static void printButton(const std::string& text, COORD& coo, const unsigned short& length = 24);
+	static void printPanel(COORD leftTop, COORD rightBottom);
 	static size_t getButtonIdByCoordinate(const COORD& coo, const std::vector<Button> &buttons);
 
 	
@@ -45,6 +47,18 @@ public:
 		static void print();
 		static size_t start();
 		static void load();
+
+		class LoginScreen
+		{
+		public:
+			static size_t mouseOver;
+			static std::vector<std::string> options;
+			static std::vector<Button> buttons;
+
+			static void print();
+			static size_t start();
+			static void load();
+		};
 
 		class AdminScreen {
 		public:
@@ -192,5 +206,6 @@ public:
 		static short menuInputWithMouse(const std::vector<std::string>& options);
 		static short menuInputWithKeyboard(const std::vector<std::string>& options);
 		static void printMenu(const std::vector<std::string>& options, const unsigned short& selected);
+		static void printMenuAxis(const std::vector<std::string>& options, const unsigned short& selected);
 	};
 };

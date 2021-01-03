@@ -1,17 +1,8 @@
-#include "Screen.h"
+﻿#include "Screen.h"
 #include "Console.h"
 #include <conio.h>
 #include <string>
-
-std::string center(int width, const std::string& str) {
-	int len = str.length();
-	if (width < len) { return str; }
-
-	int diff = width - len;
-	int pad1 = diff / 2;
-	int pad2 = diff - pad1;
-	return std::string(pad1, ' ') + str + std::string(pad2, ' ');
-}
+#include "DatabaseHelper.h"
 
 enum ARROWKEYS {
 	KEY_UP = 72, KEY_DOWN = 80
@@ -62,12 +53,70 @@ void Screen::printButton(const std::string& text, COORD & coo, const unsigned sh
 	std::cout << char(218); for (int i = 0; i < length; i++) std::cout << char(196); std::cout << char(191) << std::endl;
 	coo.Y++;
 	SetConsoleCursorPosition(hConsoleOUT, coo);
-	std::cout << char(179) << center(length, text) << char(179) << std::endl;
+	std::cout << char(179) << DatabaseHelper::center(length, text) << char(179) << std::endl;
 	coo.Y++;
 	SetConsoleCursorPosition(hConsoleOUT, coo);
 	std::cout << char(192); for (int i = 0; i < length; i++) std::cout << char(196); std::cout << char(217) << std::endl;
 	coo.Y++;
 	SetConsoleCursorPosition(hConsoleOUT, coo);
+}
+void Screen::printPanel(COORD leftTop, COORD rightBottom)
+{
+	HANDLE hConsoleOUT = GetStdHandle(STD_OUTPUT_HANDLE);
+	for (size_t i = leftTop.Y; i < rightBottom.Y; i++)
+	{
+		COORD coo = { leftTop.X, i };
+		SetConsoleCursorPosition(hConsoleOUT, coo);
+		if (leftTop.Y == i)
+		{
+			std::cout << char(218);
+			for (size_t j = leftTop.X; j < rightBottom.X; j++)
+			{
+				if (leftTop.X + 12 == j)
+					std::cout << char(194);
+				else
+					std::cout << char(196);
+			}
+			std::cout << char(191);
+		}
+		else if (rightBottom.Y - 1 == i)
+		{
+			std::cout << char(192);
+			for (size_t j = leftTop.X; j < rightBottom.X; j++)
+			{
+				if (leftTop.X + 12 == j)
+					std::cout << char(193);
+				else
+					std::cout << char(196);
+			}
+			std::cout << char(217);
+		}
+		else if (leftTop.Y + 4 == i)
+		{
+			std::cout << char(195);
+			for (size_t j = leftTop.X; j < rightBottom.X; j++)
+			{
+				if (leftTop.X + 12 == j)
+					std::cout << char(197);
+				else
+					std::cout << char(196);
+			}
+			std::cout << char(180);
+		}
+		else
+		{
+			std::cout << char(179);
+			for (size_t j = leftTop.X; j < rightBottom.X; j++)
+			{
+				if (leftTop.X + 12 == j)
+					std::cout << char(179);
+				else
+					std::cout << ' ';
+			}
+			std::cout << char(179);
+		}
+		std::cout << std::endl;
+	}
 }
 size_t Screen::getButtonIdByCoordinate(const COORD& coo, const std::vector<Button>& buttons) {
 	for (auto& btn : buttons)
@@ -84,8 +133,6 @@ size_t Screen::getButtonIdByCoordinate(const COORD& coo, const std::vector<Butto
 	}
 	return NULL;
 }
-
-
 short Screen::Menu::menuInputWithMouse(const std::vector<std::string>& options)
 {
 	HANDLE hConsoleIN = GetStdHandle(STD_INPUT_HANDLE);
@@ -223,7 +270,26 @@ void Screen::Menu::printMenu(const std::vector<std::string>& options, const unsi
 		}
 	}
 }
+void Screen::Menu::printMenuAxis(const std::vector<std::string>& options, const unsigned short& selected)
+{
+	HANDLE hConsoleOUT = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD coordinate = COORDINATE;
 
+	for (size_t i = 0, length = options.size(); i < length; i++)
+	{
+		SetConsoleCursorPosition(hConsoleOUT, coordinate);
+		if (i == selected)
+		{
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), GREEN);
+			printButton(options[i], coordinate);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+		}
+		else
+			printButton(options[i], coordinate);
+		coordinate.X += 27;
+		coordinate.Y -= 3;
+	}
+}
 //MainScreen
 size_t MainScreenM::mouseOver = 0;
 std::vector<std::string> MainScreenM::options;
@@ -303,6 +369,68 @@ size_t MainScreenM::start()
 	}
 
 }
+
+//LoginScreen
+size_t LoginScreenM::mouseOver = 0;
+std::vector<std::string> LoginScreenM::options;
+std::vector<Screen::Button> LoginScreenM::buttons;
+
+void LoginScreenM::load()
+{
+	if (options.size() == 0)
+	{
+		options.reserve(2);
+		options.emplace_back("Login");
+		options.emplace_back("Back");
+	}
+
+	if (buttons.size() == 0)
+	{
+		buttons.reserve(2);
+		buttons.emplace_back(Button(1, { 30, 20 }, { 55, 18 }));
+		buttons.emplace_back(Button(2, { 57, 20 }, { 82, 18 }));
+	}
+}
+void LoginScreenM::print()
+{
+	COORDINATE = { 30, 18 };
+	Menu::printMenuAxis(options, mouseOver - 1);
+}
+size_t LoginScreenM::start()
+{
+	load();
+	bool updateScreen = true;
+
+	Console::clearConsoleArea({ 30, 18 }, { 82, 20 });
+	while (1)
+	{
+		if (updateScreen)
+		{
+			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Login"));
+			print();
+			updateScreen = false;
+		}
+		COORD coo;
+		bool mouseClicked = Console::GetCoordinateWithMouse(coo);
+		mouseOver = getButtonIdByCoordinate(coo, buttons);
+
+		if (mouseOver)
+		{
+			if (mouseClicked)
+			{
+				// code
+				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+
+				if (mouseOver == 2)
+					system("CLS");
+				return mouseOver;
+			}
+			updateScreen = true;
+		}
+	}
+
+}
+
 
 //AdminScreen
 size_t AdminScreenM::mouseOver = 0;

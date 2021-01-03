@@ -18,17 +18,6 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 		{
 			while (1)
 			{
-				// CLEARHERE
-				if (db.stock.getIngredientCount() == 0)
-				{
-					std::shared_ptr<Ingredient> ing1(new Ingredient("Kartof", 5, 5, 5, 5));
-					std::shared_ptr<Ingredient> ing2(new Ingredient("Kok", 5, 5, 5, 5));
-					std::shared_ptr<Ingredient> ing3(new Ingredient("Mushroom", 5, 5, 5, 5));
-					db.stock.addIngredient(ing1, 10);
-					db.stock.addIngredient(ing2, 15);
-					db.stock.addIngredient(ing3, 30);
-				}
-				
 				size_t stockChoice = StockScreenM::start();
 				if (stockChoice == 8)
 					break;
@@ -195,27 +184,6 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 		{
 			while (1)
 			{
-				// CLEARHERE
-				if (db.getMealCount() == 0)
-				{
-					std::shared_ptr<Meal> meal1(new Meal("Dolma", "Isti yemekler", 4.5));
-					std::shared_ptr<Meal> meal2(new Meal("Pizza", "Italian", 3.6));
-					std::shared_ptr<Meal> meal3(new Meal("Burger 1", "Fastfood", 4.3));
-					std::shared_ptr<Meal> meal4(new Meal("Burger 2", "Fastfood", 4.8));
-					try
-					{
-						meal1->addIngredient(db.stock.getIngredient(1), 5);
-					}
-					catch (const Exception& ex)
-					{
-						ex.echo();
-					}
-					db.addMeal(meal1);
-					db.addMeal(meal2);
-					db.addMeal(meal3);
-					db.addMeal(meal4);
-				}
-
 				size_t mealChoice = MealScreenM::start();
 				if (mealChoice == 9)
 					break;

@@ -2,6 +2,7 @@
 #include <String>
 #include "Console.h"
 #include "Exception.h"
+#include "Order.h"
 
 
 void ClientSide::ClientSide::start(Database& db)
@@ -28,6 +29,9 @@ void ClientSide::ClientSide::start(Database& db)
 			
 			while (1)
 			{
+				system("CLS");
+				std::cout << "Notification: " << table->getNotfFromKitchen() << std::endl;
+				Console::wait();
 				size_t tableChoice = TableScreenM::start();
 
 				if (tableChoice == 8)

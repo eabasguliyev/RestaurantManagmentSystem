@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Meal.h"
-
+#include "Database.h"
 class DatabaseHelper
 {
 public:
@@ -14,4 +14,6 @@ public:
 	static std::shared_ptr<Ingredient> inputNewIngredient();
 	static std::shared_ptr<Meal> inputNewMeal();
 	static std::string stringToLower(const std::string& str);
+	static std::string center(int width, const std::string& str);
+	//static bool loginAsAdmin(const std::string& username, const std::string& password);
 };
