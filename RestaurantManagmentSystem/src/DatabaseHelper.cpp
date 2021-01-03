@@ -2,6 +2,8 @@
 #include "Exception.h"
 #include <string>
 
+
+//Database helper
 std::string DatabaseHelper::center(int width, const std::string& str) {
 	int len = str.length();
 	if (width < len) { return str; }
@@ -46,7 +48,7 @@ bool DatabaseHelper::checkNumericInput(const char* str)
 std::shared_ptr<Ingredient> DatabaseHelper::inputNewIngredient()
 {
 	std::string name;
-	char fats[255], protein[255], carbohydrates[255], kcal[255];
+	char fats[255], protein[255], carbohydrates[255], kcal[255], price[255];
 
 	std::cout << "Ingredient name: ";
 	std::getline(std::cin, name);
@@ -82,7 +84,14 @@ std::shared_ptr<Ingredient> DatabaseHelper::inputNewIngredient()
 	if (!DatabaseHelper::checkNumericInput(kcal))
 		throw DatabaseException(__LINE__, __TIME__, __FILE__, "Kcal must be numeric value!");
 
-	return std::shared_ptr<Ingredient>(new Ingredient(name, atof(fats), atof(protein), atof(carbohydrates), atof(kcal)));
+	std::cout << "Price: ";
+	std::cin >> price;
+	std::cin.ignore();
+	std::cin.clear();
+	if (!DatabaseHelper::checkNumericInput(price))
+		throw DatabaseException(__LINE__, __TIME__, __FILE__, "Price must be numeric value!");
+
+	return std::shared_ptr<Ingredient>(new Ingredient(name, atof(fats), atof(protein), atof(carbohydrates), atof(kcal), atof(price)));
 }
 
 std::shared_ptr<Meal> DatabaseHelper::inputNewMeal()
@@ -122,4 +131,26 @@ std::string DatabaseHelper::stringToLower(const std::string & str)
 		c = tolower(c);
 	}
 	return lowerString;
+}
+
+
+//Admin validation
+
+bool AdminValidation::checkFirstCharOfData(const std::string& data)
+{
+	if (isupper(data.front()))
+		return true;
+	return false;
+}
+bool AdminValidation::checkLengthOfPassword(const std::string& password)
+{
+	if (password.length() >= 6)
+		return true;
+	return false;
+}
+bool AdminValidation::checkLengthOfUsername(const std::string& username)
+{
+	if (username.length() >= 4)
+		return true;
+	return false;
 }

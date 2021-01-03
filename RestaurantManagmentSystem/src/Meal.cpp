@@ -17,7 +17,6 @@ void Meal::setCategory(const std::string& category)
 }
 void Meal::setPrice(const double& price) { this->price = price; }
 void Meal::setIngredientItems(const std::list<std::shared_ptr<RecipeItem>>& ing_items) { this->ingredients = ing_items; }
-
 std::list<std::shared_ptr<RecipeItem>>& Meal::getIngredientItems() { return this->ingredients; }
 
 double Meal::getPrice() const { return this->price; }
@@ -27,6 +26,14 @@ double Meal::getMenuRating() const { return menu_rating; }
 size_t Meal::getAmount() const { return this->ingredients.size(); }
 
 
+void Meal::increasePrice(const double& ingredientPrice, const size_t& count)
+{
+	this->price += ingredientPrice * count;
+}
+void Meal::decreasePrice(const double& ingredientPrice, const size_t& count)
+{
+	this->price -= ingredientPrice * count;
+}
 void Meal::printRecipe() const
 {
 	std::cout << "Recipe: " << std::endl;
@@ -42,6 +49,7 @@ void Meal::printRecipe() const
 void Meal::addIngredient(std::shared_ptr<Ingredient> ingredient, const size_t& amount)
 {
 	this->ingredients.push_back(std::shared_ptr<RecipeItem>(new RecipeItem(ingredient, amount)));
+	increasePrice(ingredient->getPrice(), amount);
 }
 
 void Meal::deleteIngredientByID(const size_t& id)
@@ -50,7 +58,9 @@ void Meal::deleteIngredientByID(const size_t& id)
 	{
 		if (id == (*i)->getIngredient()->getID())
 		{
-			ingredients.remove(*i); return;
+			ingredients.remove(*i);
+			decreasePrice((*i)->getIngredient()->getPrice(), (*i)->getAmount());
+			return;
 		}
 	}
 
@@ -90,3 +100,17 @@ void Meal::showFullInfo() const
 	std::cout << "Rating: " << getMenuRating() << "/5" << std::endl;
 	this->printRecipe();
 }
+
+//double Meal::calcIngredientPrice(const double & ingredientPrice, const size_t & amount) const
+//{
+//	//double price = 0;
+//	//for (auto& i : this->ingredients)
+//	//{
+//	//	price += i->getAmount() * i->getIngredient()->getPrice();
+//	//}
+//
+//	//price += (price * 20) / 100.0; // 20% elave qazanc
+//	//return price;
+//
+//	return ingredientPrice * amount;
+//}

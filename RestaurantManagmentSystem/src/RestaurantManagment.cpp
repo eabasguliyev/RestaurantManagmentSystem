@@ -24,9 +24,9 @@ void RestaurantManagment::start()
 
 	if (restaurant.db.stock.getIngredientCount() == 0)
 	{
-		std::shared_ptr<Ingredient> ing1(new Ingredient("Kartof", 5, 5, 5, 5));
-		std::shared_ptr<Ingredient> ing2(new Ingredient("Kok", 5, 5, 5, 5));
-		std::shared_ptr<Ingredient> ing3(new Ingredient("Mushroom", 5, 5, 5, 5));
+		std::shared_ptr<Ingredient> ing1(new Ingredient("Kartof", 5, 5, 5, 5, 5));
+		std::shared_ptr<Ingredient> ing2(new Ingredient("Kok", 5, 5, 5, 5, 6));
+		std::shared_ptr<Ingredient> ing3(new Ingredient("Mushroom", 5, 5, 5, 5, 7));
 		restaurant.db.stock.addIngredient(ing1, 10);
 		restaurant.db.stock.addIngredient(ing2, 15);
 		restaurant.db.stock.addIngredient(ing3, 30);
@@ -61,7 +61,7 @@ void RestaurantManagment::start()
 		if (mainChoice == ADMIN)
 		{
 			if (LoginSide::LoginSide::login(restaurant.db))
-				AdminSide::AdminSide::start(restaurant.db);
+				AdminSide::AdminSide::start(restaurant);
 		}
 		else if (mainChoice == CLIENT)
 		{

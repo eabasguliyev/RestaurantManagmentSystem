@@ -7,7 +7,7 @@
 #include "Order.h"
 
 
-void KitchenSide::KitchenSide::start(Database& db)
+void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& restaurantBudget)
 {
 	while (1)
 	{
@@ -56,7 +56,8 @@ void KitchenSide::KitchenSide::start(Database& db)
 
 			if (orderControlChoice == ACCEPTORDER)
 			{
-				db.acceptOrder(order);
+				if (db.acceptOrder(order))
+					db.increaseBudget(restaurantBudget, order->getAmount() * order->getMeal()->getPrice());
 			}
 			else if (orderControlChoice == DECLINEORDER)
 			{
@@ -65,7 +66,7 @@ void KitchenSide::KitchenSide::start(Database& db)
 		}
 		else if (kitchenChoices == ACCEPTALLORDER)
 		{
-			db.acceptAllOrder();
+			db.acceptAllOrder(restaurantBudget);
 			std::cout << "All order accepted!" << std::endl;
 			Console::wait();
 		}

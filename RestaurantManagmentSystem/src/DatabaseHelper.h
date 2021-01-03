@@ -17,3 +17,11 @@ public:
 	static std::string center(int width, const std::string& str);
 	//static bool loginAsAdmin(const std::string& username, const std::string& password);
 };
+
+class AdminValidation
+{
+public:
+	static bool checkFirstCharOfData(const std::string& data);
+	static bool checkLengthOfPassword(const std::string& password);
+	static bool checkLengthOfUsername(const std::string& username);
+};

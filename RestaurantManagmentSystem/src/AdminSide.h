@@ -1,16 +1,16 @@
 #pragma once
 #include "Screen.h"
-#include "Database.h"
+#include "Restaurant.h"
 namespace AdminSide
 {
 	enum AdminMenuChoices
 	{
-		KITCHEN = 1, DATABASE
+		RESINFO =1, KITCHEN, DATABASE
 	};
 
 	class AdminSide
 	{
 	public:
-		static void start(Database & db);
+		static void start(Restaurant & res);
 	};
 }

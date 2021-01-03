@@ -15,6 +15,6 @@ namespace KitchenSide
 	class KitchenSide
 	{
 	public:
-		static void start(Database& db);
+		static void start(Database& db, std::shared_ptr<double>& restaurantBudget);
 	};
 }

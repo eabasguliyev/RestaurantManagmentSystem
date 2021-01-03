@@ -455,22 +455,24 @@ void AdminScreenM::load()
 {
 	if (options.size() == 0)
 	{
-		options.reserve(2);
+		options.reserve(3);
+		options.emplace_back("Restaurant Info");
 		options.emplace_back("Kitchen");
 		options.emplace_back("Database");
 	}
 
 	if (buttons.size() == 0)
 	{
-		buttons.reserve(3);
-		buttons.emplace_back(Button(1, { 46, 12 }, { 71, 10 }));
-		buttons.emplace_back(Button(2, { 46, 16 }, { 71, 14 }));
-		buttons.emplace_back(Button(3, { 0, 2 }, { 7, 0 }));
+		buttons.reserve(4);
+		buttons.emplace_back(Button(1, { 46, 8 }, { 71, 6 }));
+		buttons.emplace_back(Button(2, { 46, 12 }, { 71, 10 }));
+		buttons.emplace_back(Button(3, { 46, 16 }, { 71, 14 }));
+		buttons.emplace_back(Button(4, { 0, 2 }, { 7, 0 }));
 	}
 }
 void AdminScreenM::print()
 {
-	COORDINATE = { 46, 10 };
+	COORDINATE = { 46, 6 };
 	Menu::printMenu(options, mouseOver - 1);
 }
 size_t AdminScreenM::start()
@@ -485,7 +487,7 @@ size_t AdminScreenM::start()
 			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Admin"));
 			print();
 
-			if (mouseOver == 3)
+			if (mouseOver == 4)
 				printLogout(true);
 			else
 				printLogout();
@@ -503,15 +505,9 @@ size_t AdminScreenM::start()
 				// code
 				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
-				if (mouseOver == 1)
-					return 1;
-				else if (mouseOver == 2)
-					return 2;
-				else
-				{
+				if (mouseOver == 4)
 					system("CLS");
-					return 3;
-				}
+				return mouseOver;
 			}
 			updateScreen = true;
 		}
@@ -738,7 +734,7 @@ size_t DatabaseScreenM::start()
 
 }
 
-//AdminScreen
+//AdminControlScreen
 size_t AdminControlScreenM::mouseOver = 0;
 std::vector<std::string> AdminControlScreenM::options;
 std::vector<Screen::Button> AdminControlScreenM::buttons;
@@ -749,6 +745,7 @@ void AdminControlScreenM::load()
 	{
 		options.reserve(4);
 		options.emplace_back("Show all");
+		options.emplace_back("Show Admin");
 		options.emplace_back("Add");
 		options.emplace_back("Delete");
 		options.emplace_back("Update");
@@ -756,12 +753,13 @@ void AdminControlScreenM::load()
 
 	if (buttons.size() == 0)
 	{
-		buttons.reserve(5);
+		buttons.reserve(6);
 		buttons.emplace_back(Button(1, { 46, 9 }, { 71, 7 }));
 		buttons.emplace_back(Button(2, { 46, 13 }, { 71, 11 }));
 		buttons.emplace_back(Button(3, { 46, 17 }, { 71, 15 }));
 		buttons.emplace_back(Button(4, { 46, 21 }, { 71, 19 }));
-		buttons.emplace_back(Button(5, { 0, 2 }, { 7, 0 }));
+		buttons.emplace_back(Button(5, { 46, 25 }, { 71, 23 }));
+		buttons.emplace_back(Button(6, { 0, 2 }, { 7, 0 }));
 	}
 }
 void AdminControlScreenM::print()
@@ -781,7 +779,7 @@ size_t AdminControlScreenM::start()
 			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Meal Control"));
 			print();
 
-			if (mouseOver == 5)
+			if (mouseOver == 6)
 				printBack(true);
 			else
 				printBack();
@@ -799,7 +797,7 @@ size_t AdminControlScreenM::start()
 				// code
 				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
-				if (mouseOver == 5)
+				if (mouseOver == 6)
 					system("CLS");
 				return mouseOver;
 			}

@@ -20,6 +20,7 @@ class Database
 	//std::list<Notification> notifications;
 	NotificationGroups notf_group;
 	std::list<std::shared_ptr<Order>> orders;
+	std::list<std::shared_ptr<Order>> newOrders;
 	std::list<std::shared_ptr<Meal>> meals;
 public:
 	Stock stock;
@@ -32,15 +33,18 @@ public:
 		size_t totalAmount;
 		size_t orderedAmount;
 	};
+
+	bool isExist(const std::string& username) const;
 	void addAdmin(const std::string& username, const std::string& password);
-	void deleteAdmin(const std::string& username);
-	void updateAdmin(const std::string& username, std::shared_ptr<Admin>);
+	void deleteAdmin(const Admin& admin);
+	void updateAdmin(Admin& oldAdmin, const Admin& newAdmin);
 	void showAllAdmins() const;
 	std::list<Admin>& getAdmins();
+	Admin& getAdmin(const std::string& username);
 
 	void addOrder(const std::shared_ptr<Table>& table, const std::shared_ptr<Meal>& meal, const size_t& amount);
-	void acceptOrder(std::shared_ptr<Order> order);
-	void acceptAllOrder();
+	bool acceptOrder(std::shared_ptr<Order> order);
+	void acceptAllOrder(std::shared_ptr<double>& restaurantBudget);
 	void declineOrder(std::shared_ptr<Order> order);
 	void declineAllOrder();
 	void deleteOrder(const std::shared_ptr<Order>& order);
@@ -70,4 +74,6 @@ public:
 	// her bir obyekt uchun ferqili read/write funksiyasi olmalidi.
 
 	void login(const std::string& username, const std::string& password) const;
+
+	void increaseBudget(std::shared_ptr<double>& restaurantBudget, const double& amount);
 };

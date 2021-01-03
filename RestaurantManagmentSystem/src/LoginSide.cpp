@@ -5,9 +5,9 @@
 #define WHITE 7
 #define GREEN 2
 
-void LoginSide::LoginSide::printInfo(const std::string& info, const bool& fail)
+void LoginSide::LoginSide::printInfo(const std::string& info, const bool& fail, const COORD& coo)
 {
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 42, 9 });
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coo);
 	if (fail)
 	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHTRED);
@@ -49,12 +49,12 @@ bool LoginSide::LoginSide::login(const Database& db)
 		try
 		{
 			db.login(username, password);
-			printInfo("Loading admin menu!", false);
+			printInfo("Loading admin menu!", false, { 42, 9 });
 			return true;
 		}
 		catch (const std::string& ex)
 		{
-			printInfo(ex, true);
+			printInfo(ex, true, { 42, 9 });
 		}
 	}
 }

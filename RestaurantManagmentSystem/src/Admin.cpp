@@ -12,7 +12,7 @@ bool Admin::getMasterStatus() const { return this->is_master; }
 
 bool Admin::operator==(const Admin& admin) const { return this->getID() == admin.getID(); }
 std::ostream& operator<<(std::ostream& out, const Admin& admin) {
-	out << std::string(37, '#') << std::endl;
+	out << std::string(37, '#') << std::endl << std::endl;
 	std::cout << "username: " << admin.getUsername() << std::endl;
 	std::cout << "password: " << std::string(admin.getPassword().length(), '*') << std::endl;
 	return out;

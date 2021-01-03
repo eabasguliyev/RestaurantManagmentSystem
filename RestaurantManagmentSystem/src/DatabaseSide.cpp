@@ -3,11 +3,22 @@
 #include "Console.h"
 #include "Exception.h"
 #include "DatabaseHelper.h"
+#include <string>
+#include "LoginSide.h"
+
+
+const COORD& getCurrentCoordinate()
+{
+	POINT pos;
+	GetCursorPos(&pos);
+	return { short(pos.x), short(pos.y) };
+}
 
 void DatabaseSide::DatabaseSide::start(Database & db)
 {
 	while (1)
 	{
+		Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Admin Control"));
 		size_t databaseChoice = DatabaseScreenM::start();
 
 		if (databaseChoice == ADMINCONTROL)
@@ -16,29 +27,153 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 			{
 				size_t adminChoice = AdminControlScreenM::start();
 
-				if (adminChoice == 5)
+				if (adminChoice == 6)
 					break;
 
 				system("CLS");
 				if (adminChoice == SHOWALLADMIN)
 				{
-					continue;
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: All Admins"));
+					db.showAllAdmins();
 				}
 				else if (adminChoice == SHOWADMIN)
 				{
-					continue;
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Admin Information"));
+					try
+					{
+						std::string username;
+						std::cout << "Username: ";
+						std::getline(std::cin, username);
+
+						auto admin = db.getAdmin(username);
+
+						std::cout << admin << std::endl;
+						std::cout << std::string(37, '#') << std::endl;
+					}
+					catch (const DatabaseException& ex)
+					{
+						ex.echo();
+					}
 				}
 				else if (adminChoice == ADDADMIN)
 				{
-					continue;
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Add new Admin"));
+
+					while (1)
+					{
+						try
+						{
+							std::string username, password;
+							std::cout << "Username: ";
+							std::getline(std::cin, username);
+
+
+							if (!AdminValidation::checkLengthOfUsername(username))
+								throw std::string("Username length require minimum 4 characters!");
+
+							if (!AdminValidation::checkFirstCharOfData(username))
+								throw std::string("Username first char require upper case!");
+
+							if (db.isExist(username))
+								throw  "This username is taken -> " + username;
+
+							std::cout << "Password: ";
+							std::getline(std::cin, password);
+
+							if (!AdminValidation::checkLengthOfPassword(password))
+								throw std::string("Password length require minimum 6 characters!");
+
+							if (!AdminValidation::checkFirstCharOfData(password))
+								throw std::string("Password first char require upper case!");
+
+							db.addAdmin(username, password);
+							
+							LoginSide::LoginSide::printInfo("Admin created!", false, getCurrentCoordinate());
+							break;
+						}
+						catch (const std::string& ex)
+						{
+							LoginSide::LoginSide::printInfo(ex, true, getCurrentCoordinate());
+							system("CLS");
+							SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
+						}
+					}
 				}
 				else if (adminChoice == DELADMIN)
 				{
-					continue;
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Delete admin"));
+					try
+					{
+						std::string username;
+						std::cout << "Username: ";
+						std::getline(std::cin, username);
+
+						auto admin = db.getAdmin(username);
+
+						db.deleteAdmin(admin);
+
+						LoginSide::LoginSide::printInfo("Admin deleted", false, getCurrentCoordinate());
+					}
+					catch (const DatabaseException& ex)
+					{
+						ex.echo();
+					}
 				}
 				else if (adminChoice == UPDATEADMIN)
 				{
-					continue;
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Update Admin"));
+
+					try
+					{
+						std::string username;
+						std::cout << "Username: ";
+						std::getline(std::cin, username);
+
+						auto& admin = db.getAdmin(username);
+
+						while (1)
+						{
+							try
+							{
+								std::string username, password;
+								std::cout << "New username: ";
+								std::getline(std::cin, username);
+
+								if (!AdminValidation::checkLengthOfUsername(username))
+									throw std::string("Username length require minimum 4 characters!");
+
+								if (!AdminValidation::checkFirstCharOfData(username))
+									throw std::string("Username first char require upper case!");
+
+								if (db.isExist(username))
+									throw  "This username is taken -> " + username;
+
+								std::cout << "New password: ";
+								std::getline(std::cin, password);
+
+								if (!AdminValidation::checkLengthOfPassword(password))
+									throw std::string("Password length require minimum 6 characters!");
+
+								if (!AdminValidation::checkFirstCharOfData(password))
+									throw std::string("Password first char require upper case!");
+
+								db.updateAdmin(admin, Admin(username, password));
+
+								LoginSide::LoginSide::printInfo("Admin updated!", false, getCurrentCoordinate());
+								break;
+							}
+							catch (const std::string& ex)
+							{
+								LoginSide::LoginSide::printInfo(ex, true, getCurrentCoordinate());
+								system("CLS");
+								SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 0 });
+							}
+						}
+					}
+					catch (const DatabaseException& ex)
+					{
+						ex.echo();
+					}
 				}
 				Console::wait();
 
@@ -238,6 +373,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
 
 						std::shared_ptr<Meal> meal = db.getMeal(atoi(meal_id));
+						system("CLS");
 						meal->showFullInfo();
 						std::cout << std::string(37, '#') << std::endl;
 					}

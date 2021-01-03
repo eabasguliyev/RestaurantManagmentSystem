@@ -3,44 +3,26 @@
 #include "Exception.h"
 #include "Order.h"
 
+bool Database::isExist(const std::string& username) const
+{
+	for (auto& i : this->admins)
+	{
+		if (username == i.getUsername())
+			return true;
+	}
+	return false;
+}
 void Database::addAdmin(const std::string& username, const std::string& password)
 {
 	admins.push_back(Admin(username, std::to_string(DatabaseHelper::generateHash(password))));
 }
-void Database::deleteAdmin(const std::string& username) {
-	for (auto i = admins.begin(); i != admins.end(); i++)
-	{
-		if (username == i->getUsername())
-			admins.remove(*i); return;
-	}
-	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no admins associated this username -> " + username));
+void Database::deleteAdmin(const Admin& admin) {
+	this->admins.remove(admin);
 }
-void Database::updateAdmin(const std::string& username, std::shared_ptr<Admin> new_admin)
+void Database::updateAdmin(Admin & admin, const Admin& new_admin)
 {
-	bool flag = false;
-	size_t admin_id;
-	for (auto i = admins.begin(); i != admins.end(); i++)
-	{
-		if (username == i->getUsername())
-		{
-			admin_id = i->getID();
-			admins.remove(*i);
-			flag = true;
-			break;
-		}
-	}
-	
-	if (flag)
-	{
-		new_admin->setID(admin_id);
-		admins.push_back(*new_admin);
-	}
-	else
-	{
-		throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no admins associated this username -> " + username));
-	}
-
-
+	admin.setUsername(new_admin.getUsername());
+	admin.setPassword(std::to_string(DatabaseHelper::generateHash(new_admin.getPassword())));
 }
 void Database::showAllAdmins() const
 {
@@ -48,8 +30,20 @@ void Database::showAllAdmins() const
 	{
 		std::cout << *i << std::endl;
 	}
+	if(admins.size())
+		std::cout << std::string(37, '#') << std::endl;
 }
 std::list<Admin>& Database::getAdmins() { return this->admins; }
+Admin& Database::getAdmin(const std::string& username)
+{
+	for (auto& i : this->admins)
+	{
+		if (i.getUsername() == username)
+			return i;
+	}
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, "There is no admin associated this username -> " + username);
+}
+
 void Database::addOrder(const std::shared_ptr<Table>& table, const std::shared_ptr<Meal>& meal, const size_t& amount)
 {
 	std::shared_ptr<Order> order_ptr(new Order(table, meal, amount));
@@ -89,7 +83,7 @@ void Database::showAllOrder(const bool &shortInfo)
 		}
 	}
 }
-void Database::acceptOrder(std::shared_ptr<Order> order)
+bool Database::acceptOrder(std::shared_ptr<Order> order)
 {
 	std::list<std::shared_ptr<RecipeItem>> orderIngredientItems = order->getMeal()->getIngredientItems();
 	size_t orderCount = order->getAmount();
@@ -103,6 +97,7 @@ void Database::acceptOrder(std::shared_ptr<Order> order)
 			ingredientItem->setAmount(ingredientItem->getAmount() - (i->getAmount() * orderCount));
 		}
 		order->getTable()->setNotfFromKitchen(std::string("This order accepted -> " + order->getMeal()->getName()));
+		return true;
 	}
 	else
 	{
@@ -113,13 +108,15 @@ void Database::acceptOrder(std::shared_ptr<Order> order)
 		}
 
 		order->getTable()->setNotfFromKitchen(reason);
+		return false;
 	}
 }
-void Database::acceptAllOrder()
+void Database::acceptAllOrder(std::shared_ptr<double>& restaurantBudget)
 {
 	for (auto& i : this->orders)
 	{
-		acceptOrder(i);
+		if(acceptOrder(i))
+			increaseBudget(restaurantBudget, i->getAmount() * i->getMeal()->getPrice());
 	}
 }
 void Database::declineOrder(std::shared_ptr<Order> order)
@@ -307,6 +304,7 @@ void Database::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_
 			else
 			{
 				meal->decreaseAmountOfIngredient(ingredient_item, amount);
+				meal->decreasePrice(ingredient_item->getIngredient()->getPrice(), amount);
 			}
 			return;
 		}
@@ -323,13 +321,14 @@ void Database::addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<
 		if (ingredient->getID() == i->getIngredient()->getID())
 		{
 			i->setAmount(i->getAmount() + amount);
+			meal->increasePrice(i->getIngredient()->getPrice(), amount);
 			return;
 		}
 	}
 
 	// eger meal icherisinde hemin ingredient olmasa yenisi elave olunur
 
-	meal->addIngredient(ingredient, amount);
+	meal->addIngredient(ingredient, amount);;
 }
 std::shared_ptr<Meal>& Database::getMeal(const size_t& id){
 	for (auto& i : this->meals)
@@ -379,7 +378,6 @@ void Database::filterMeals(const std::string& mealName)
 
 	std::cout << std::string(37, '#') << std::endl;
 }
-
 void Database::login(const std::string& username, const std::string& password) const
 {
 	for (auto& i : this->admins)
@@ -394,4 +392,9 @@ void Database::login(const std::string& username, const std::string& password) c
 	}
 
 	throw std::string("Username is incorrect!");
+}
+
+void Database::increaseBudget(std::shared_ptr<double>& restaurantBudget, const double& amount)
+{
+	*restaurantBudget += amount;
 }

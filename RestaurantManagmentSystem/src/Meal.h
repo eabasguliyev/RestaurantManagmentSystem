@@ -26,23 +26,26 @@ public:
 		setCategory(meal->getCategory());
 		setMenuRating(meal->getMenuRating());
 		setIngredientItems(meal->getIngredientItems());
+		setPrice(meal->getPrice());
 	}
 	void setName(const std::string& name);
 	void setCategory(const std::string& category);
 	void setMenuRating(double menu_rating);
-	void setPrice(const double& price);
+	void increasePrice(const double& ingredientPrice, const size_t& count);
+	void decreasePrice(const double& ingredientPrice, const size_t& count);
 	void setIngredientItems(const std::list<std::shared_ptr<RecipeItem>>& ing_items);
-
+	void setPrice(const double& price);
 
 	std::string getName() const;
 	std::string getCategory() const;
 	double getMenuRating() const;
 	double getPrice() const;
 	std::list<std::shared_ptr<RecipeItem>>& getIngredientItems();
+	size_t getAmount() const;
+
 	virtual void printRecipe() const;
 	virtual void taste() const;
 	void addIngredient(std::shared_ptr<Ingredient> ingredient, const size_t& amount);
-	size_t getAmount() const;
 	void deleteIngredientByID(const size_t& ingredient_id);
 	void decreaseAmountOfIngredient(std::shared_ptr<RecipeItem>& item, const size_t& amount); // delete this
 	void increaseAmountOfIngredient(std::shared_ptr<RecipeItem>& item, const size_t& amount); // delete this

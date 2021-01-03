@@ -95,7 +95,8 @@ void ClientSide::ClientSide::start(Database& db)
 							SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 6 });
 							// Meal info printed.
 							meal->showShortInfo();
-							std::cout << std::endl << std::endl << "Amount: " << orderAmount << std::endl;
+							std::cout << std::endl << std::endl << "Amount: " << orderAmount;
+							std::cout << "    Total price: $" << orderAmount * meal->getPrice() << std::endl;
 							std::cout << std::string(37, '#') << std::endl;
 
 							size_t orderChoice = OrderScreenM::start();
@@ -200,11 +201,13 @@ void ClientSide::ClientSide::start(Database& db)
 							}
 							else if (orderChoice == INCORDAMOUNT)
 							{
-								++orderAmount;
+								if(orderAmount < 100)
+									++orderAmount;
 							}
 							else if (orderChoice == DECORDAMOUNT)
 							{
-								--orderAmount;
+								if(orderAmount > 1)
+									--orderAmount;
 							}
 						}
 					}
