@@ -9,13 +9,9 @@ void AdminSide::AdminSide::start(Database & db)
 		size_t adminChoice = AdminScreenM::start();
 
 		if (adminChoice == KITCHEN)
-		{
 			KitchenSide::KitchenSide::start(db);
-		}
 		else if (adminChoice == DATABASE)
-		{
 			DatabaseSide::DatabaseSide::start(db);
-		}
 		else
 			return;
 	}

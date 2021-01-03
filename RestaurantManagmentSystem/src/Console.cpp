@@ -15,8 +15,9 @@ void Console::Setting::setConsoleTitle(const STRSAFE_LPCWSTR& title)
 void Console::Setting::setCustomWindow()
 {
 	HWND consoleWindow = GetConsoleWindow();
-	MoveWindow(consoleWindow, 500, 58, 895, 518, TRUE);
+	//MoveWindow(consoleWindow, 500, 58, 895, 518, TRUE);
 	SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_S_END);//& ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
+	//SetWindowLong(consoleWindow, GWL_STYLE, GetWindowLong(consoleWindow, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
 }
 void Console::Setting::disableCloseButton() {
 	HWND hwnd = GetConsoleWindow();

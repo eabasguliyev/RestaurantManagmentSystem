@@ -12,7 +12,37 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 		if (databaseChoice == ADMINCONTROL)
 		{
-			continue;
+			while (1)
+			{
+				size_t adminChoice = AdminControlScreenM::start();
+
+				if (adminChoice == 5)
+					break;
+
+				system("CLS");
+				if (adminChoice == SHOWALLADMIN)
+				{
+					continue;
+				}
+				else if (adminChoice == SHOWADMIN)
+				{
+					continue;
+				}
+				else if (adminChoice == ADDADMIN)
+				{
+					continue;
+				}
+				else if (adminChoice == DELADMIN)
+				{
+					continue;
+				}
+				else if (adminChoice == UPDATEADMIN)
+				{
+					continue;
+				}
+				Console::wait();
+
+			}
 		}
 		else if (databaseChoice == STOCKCONTROL)
 		{

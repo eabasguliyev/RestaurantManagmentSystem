@@ -45,6 +45,20 @@ void Screen::printBack(const bool& mouseOver)
 		printButton("BACK", coord, 6);
 	}
 }
+void Screen::printLogout(const bool& mouseOver)
+{
+	COORD coord = { 0, 0 };
+	if (mouseOver)
+	{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHTRED);
+		printButton("LOGOUT", coord, 8);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+	}
+	else
+	{
+		printButton("LOGOUT", coord, 8);
+	}
+}
 void Screen::printButton(const std::string& text, COORD & coo, const unsigned short& length)
 {
 	HANDLE hConsoleOUT = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -472,9 +486,9 @@ size_t AdminScreenM::start()
 			print();
 
 			if (mouseOver == 3)
-				printBack(true);
+				printLogout(true);
 			else
-				printBack();
+				printLogout();
 
 			updateScreen = false;
 		}
@@ -724,6 +738,76 @@ size_t DatabaseScreenM::start()
 
 }
 
+//AdminScreen
+size_t AdminControlScreenM::mouseOver = 0;
+std::vector<std::string> AdminControlScreenM::options;
+std::vector<Screen::Button> AdminControlScreenM::buttons;
+
+void AdminControlScreenM::load()
+{
+	if (options.size() == 0)
+	{
+		options.reserve(4);
+		options.emplace_back("Show all");
+		options.emplace_back("Add");
+		options.emplace_back("Delete");
+		options.emplace_back("Update");
+	}
+
+	if (buttons.size() == 0)
+	{
+		buttons.reserve(5);
+		buttons.emplace_back(Button(1, { 46, 9 }, { 71, 7 }));
+		buttons.emplace_back(Button(2, { 46, 13 }, { 71, 11 }));
+		buttons.emplace_back(Button(3, { 46, 17 }, { 71, 15 }));
+		buttons.emplace_back(Button(4, { 46, 21 }, { 71, 19 }));
+		buttons.emplace_back(Button(5, { 0, 2 }, { 7, 0 }));
+	}
+}
+void AdminControlScreenM::print()
+{
+	COORDINATE = { 46, 7 };
+	Menu::printMenu(options, mouseOver - 1);
+}
+size_t AdminControlScreenM::start()
+{
+	load();
+	bool updateScreen = true;
+	system("CLS");
+	while (1)
+	{
+		if (updateScreen)
+		{
+			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Meal Control"));
+			print();
+
+			if (mouseOver == 5)
+				printBack(true);
+			else
+				printBack();
+
+			updateScreen = false;
+		}
+		COORD coo;
+		bool mouseClicked = Console::GetCoordinateWithMouse(coo);
+		mouseOver = getButtonIdByCoordinate(coo, buttons);
+
+		if (mouseOver)
+		{
+			if (mouseClicked)
+			{
+				// code
+				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+
+				if (mouseOver == 5)
+					system("CLS");
+				return mouseOver;
+			}
+			updateScreen = true;
+		}
+	}
+
+}
 
 //StockScreen
 size_t StockScreenM::mouseOver = 0;

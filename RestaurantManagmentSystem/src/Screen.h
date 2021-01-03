@@ -10,6 +10,7 @@
 #define KitchenScreenM Screen::MainScreen::AdminScreen::KitchenScreen
 #define OrderControlScreenM Screen::MainScreen::AdminScreen::KitchenScreen::OrderControlScreen
 #define DatabaseScreenM Screen::MainScreen::AdminScreen::DatabaseScreen
+#define AdminControlScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::AdminsScreen
 #define StockScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::StockScreen
 #define MealScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::MealsScreen
 #define ClientScreenM Screen::MainScreen::ClientScreen
@@ -31,6 +32,7 @@ public:
 
 	static void printExit(const bool& mouseOver = false);
 	static void printBack(const bool& mouseOver = false);
+	static void printLogout(const bool& mouseOver = false);
 
 	static COORD COORDINATE;
 	static void printButton(const std::string& text, COORD& coo, const unsigned short& length = 24);
@@ -116,8 +118,13 @@ public:
 				class AdminsScreen {
 				public:
 					static size_t selected;
+					static size_t mouseOver;
+					static std::vector<std::string> options;
+					static std::vector<Button> buttons;
 
-					static short print();
+					static void print();
+					static size_t start();
+					static void load();
 				};
 
 				class MealsScreen {
