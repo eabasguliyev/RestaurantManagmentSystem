@@ -8,7 +8,7 @@ namespace ClientSide
 {
 	enum TABLECHOICES
 	{
-		SEARCHTMEAL = 1, SHOWTMEALS, ORDERTMEAL, SHOWTORDERS, DELTORDER, UPDATETORDER, DELTORDERS
+		SEARCHTMEAL = 1, SHOWTNOTF, SHOWTMEALS, ORDERTMEAL, SHOWTORDERS, SHOWNEWTORDERS, DELTORDER, UPDATETORDER, DELTORDERS
 	};
 
 	enum ORDERCHOICES
@@ -19,6 +19,6 @@ namespace ClientSide
 	class ClientSide
 	{
 	public:
-		static void start(Database& db);
+		static void start(Database& db, const short& table_count);
 	};
 }

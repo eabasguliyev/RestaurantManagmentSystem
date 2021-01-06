@@ -20,4 +20,5 @@ public:
 	static void clearConsoleArea(const COORD& leftTop, const COORD& rightBottom);
 	static void wait();
 	static void clearInputBuff();
+	static int displayMessageBox(const std::string& title, const std::string& message, const UINT& uType);
 };

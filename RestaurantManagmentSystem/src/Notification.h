@@ -1,5 +1,6 @@
 #pragma once
 #include "Base.h"
+#include "Time.h"
 
 class Notification: public Base
 {
@@ -12,12 +13,12 @@ public:
 	static size_t current_id;
 
 	Notification() : is_read(false), from(""), date(""), message("") {}
-	Notification(const std::string & from, const std::string & date,
+	Notification(const std::string & from,
 		const std::string & message): Base(++current_id)
 	{
 		setReadStatus(false);
 		setFrom(from);
-		setDate(date);
+		setDate(Time::getDate());
 		setMessage(message);
 	}
 
@@ -30,4 +31,9 @@ public:
 	std::string getDate() const;
 	std::string getMessage() const;
 	bool getReadStatus() const;
+
+	void print() const;
+	void shortInfo() const;
+
+	bool operator==(const Notification& notf) const;
 };

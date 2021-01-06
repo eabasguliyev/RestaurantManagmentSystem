@@ -48,7 +48,6 @@ void Console::Setting::start()
 	disableQuickEditMode();
 	disableCursor(false);
 }
-
 bool Console::GetCoordinateWithMouse(COORD& coordinate)
 {
 	HANDLE hConsoleIN = GetStdHandle(STD_INPUT_HANDLE);
@@ -69,7 +68,12 @@ bool Console::GetCoordinateWithMouse(COORD& coordinate)
 		std::cout << "Y: " << coordinate.Y << std::endl;
 		SetConsoleCursorPosition(hConsoleOUT, { 0, 0 });
 		if (input_record.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-			return true;
+		{
+			if (input_record.Event.MouseEvent.dwEventFlags == DOUBLE_CLICK)
+				return true;
+			else
+				return false;
+		}
 		else
 			return false;
 	}
@@ -93,9 +97,26 @@ void Console::wait()
 	std::cout << "\nPress enter to continue...\n";
 	std::cin.get();
 }
-
 void Console::clearInputBuff()
 {
 	std::cin.ignore();
 	std::cin.clear();
+}
+int Console::displayMessageBox(const std::string& title, const std::string& message, const UINT& uType)
+{
+	std::wstring ttemp = std::wstring(title.begin(), title.end());
+
+	LPCWSTR titleW = ttemp.c_str();
+
+	std::wstring mtemp = std::wstring(message.begin(), message.end());
+
+	LPCWSTR messageW = mtemp.c_str();
+
+	int msgboxID = MessageBox(
+		NULL,
+		messageW,
+		titleW,
+		uType
+	);
+	return msgboxID;
 }

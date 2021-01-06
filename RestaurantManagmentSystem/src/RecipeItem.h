@@ -10,7 +10,7 @@ public:
 	static size_t current_id;
 
 	RecipeItem() :ingredient(NULL) {}
-	RecipeItem(std::shared_ptr<Ingredient> ingredient, const size_t& amount): Base(++current_id), ItemBase(amount)
+	RecipeItem(const std::shared_ptr<Ingredient>& ingredient, const size_t& amount): Base(++current_id), ItemBase(amount)
 	{
 		setIngredient(ingredient);
 	}
@@ -46,7 +46,7 @@ public:
 		return *this;
 	}
 
-	void setIngredient(std::shared_ptr<Ingredient> ingredient);
+	void setIngredient(const std::shared_ptr<Ingredient>& ingredient);
 
 	std::shared_ptr<Ingredient> getIngredient() const;
 	

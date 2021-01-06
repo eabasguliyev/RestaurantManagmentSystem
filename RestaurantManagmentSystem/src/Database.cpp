@@ -3,6 +3,8 @@
 #include "Exception.h"
 #include "Order.h"
 
+
+//admin methods
 bool Database::isExist(const std::string& username) const
 {
 	for (auto& i : this->admins)
@@ -44,13 +46,15 @@ Admin& Database::getAdmin(const std::string& username)
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, "There is no admin associated this username -> " + username);
 }
 
+//order methods
 void Database::addOrder(const std::shared_ptr<Table>& table, const std::shared_ptr<Meal>& meal, const size_t& amount)
 {
 	std::shared_ptr<Order> order_ptr(new Order(table, meal, amount));
 	orders.push_back(order_ptr); // add to all order list
+	newOrders.push_back(order_ptr);
 	table->addOrder(order_ptr); // add to table order list
 }
-void Database::deleteOrder(const std::shared_ptr<Order>& order)
+void Database::deleteOrder(std::shared_ptr<Order> order)
 {
 	this->orders.remove(order);
 
@@ -65,25 +69,80 @@ void Database::deleteOrder(const std::shared_ptr<Order>& order)
 void Database::deleteAllOrders()
 {
 	this->orders.clear();
-}
-void Database::showAllOrder(const bool &shortInfo)
-{
-	if (shortInfo)
+
+	for (auto& i : this->tables)
 	{
-		for (auto i = orders.begin(); i != orders.end(); i++)
+		i->deleteAllOrders();
+	}
+}
+void Database::deleteNewOrder(std::shared_ptr<Order> order)
+{
+	this->newOrders.remove(order);
+	for (auto& i : this->tables)
+	{
+		std::shared_ptr<Table> table = order->getTable();
+		if (table->getTableNo() == i->getTableNo())
 		{
-			std::cout << *(*i) << std::endl;
+			i->deleteNewOrder(order);
+			break;
 		}
+	}
+}
+void Database::deleteAllNewOrders()
+{
+	this->newOrders.clear();
+
+	for (auto& i : this->tables)
+	{
+		i->deleteAllNewOrders(false);
+	}
+}
+bool Database::showAllOrder(const bool& neworders, const bool &shortInfo)
+{
+	if (neworders)
+	{
+		if (newOrders.empty())
+			return false;
+		if (shortInfo)
+		{
+			for (auto i = newOrders.begin(); i != newOrders.end(); i++)
+			{
+				std::cout << *(*i) << std::endl;
+			}
+		}
+		else
+		{
+			for (auto i = newOrders.begin(); i != newOrders.end(); i++)
+			{
+				(*i)->fullInfo();
+			}
+		}
+
 	}
 	else
 	{
-		for (auto i = orders.begin(); i != orders.end(); i++)
+		if (this->orders.empty())
+			return false;
+
+		if (shortInfo)
 		{
-			(*i)->fullInfo();
+			for (auto i = orders.begin(); i != orders.end(); i++)
+			{
+				std::cout << *(*i) << std::endl;
+			}
+		}
+		else
+		{
+			for (auto i = orders.begin(); i != orders.end(); i++)
+			{
+				(*i)->fullInfo();
+			}
 		}
 	}
+
+	return true;
 }
-bool Database::acceptOrder(std::shared_ptr<Order> order)
+bool Database::acceptOrder(std::shared_ptr<Order> order, const bool& del)
 {
 	std::list<std::shared_ptr<RecipeItem>> orderIngredientItems = order->getMeal()->getIngredientItems();
 	size_t orderCount = order->getAmount();
@@ -97,6 +156,9 @@ bool Database::acceptOrder(std::shared_ptr<Order> order)
 			ingredientItem->setAmount(ingredientItem->getAmount() - (i->getAmount() * orderCount));
 		}
 		order->getTable()->setNotfFromKitchen(std::string("This order accepted -> " + order->getMeal()->getName()));
+		order->setOrderStatus(1);
+		if(del)
+			deleteNewOrder(order);
 		return true;
 	}
 	else
@@ -108,27 +170,43 @@ bool Database::acceptOrder(std::shared_ptr<Order> order)
 		}
 
 		order->getTable()->setNotfFromKitchen(reason);
+		order->setOrderStatus(-1);
+		if(del)
+			deleteNewOrder(order);
 		return false;
 	}
 }
-void Database::acceptAllOrder(std::shared_ptr<double>& restaurantBudget)
+bool Database::acceptAllOrder(std::shared_ptr<double>& restaurantBudget)
 {
-	for (auto& i : this->orders)
+	bool anyAcceptedOrder = false;
+	for (auto i : this->newOrders)
 	{
-		if(acceptOrder(i))
+		if (acceptOrder(i))
+		{
 			increaseBudget(restaurantBudget, i->getAmount() * i->getMeal()->getPrice());
+			anyAcceptedOrder = true;
+		}
 	}
+
+	deleteAllNewOrders();
+	return anyAcceptedOrder;
 }
-void Database::declineOrder(std::shared_ptr<Order> order)
+void Database::declineOrder(std::shared_ptr<Order>& order, const bool& del)
 {
 	std::string reason = "This order declined -> " + order->getMeal()->getName() + "\nReason: by Admin\n";
+	order->getTable()->setNotfFromKitchen(reason);
+	order->setOrderStatus(-1);
+	if(del)
+		deleteNewOrder(order);
 }
 void Database::declineAllOrder()
 {
-	for (auto& i : this->orders)
+	for (auto i : this->newOrders)
 	{
 		declineOrder(i);
 	}
+
+	deleteAllNewOrders();
 }
 void Database::showOrdersByTable(const std::string& table_no, const bool& shortInfo)
 {
@@ -202,7 +280,7 @@ void Database::showOrdersByTable(const size_t& id, const bool& shortInfo)
 }
 std::shared_ptr<Order>& Database::getOrder(const size_t& id)
 {
-	for (auto& i : this->orders)
+	for (auto& i : this->newOrders)
 	{
 		if (id == i->getID())
 			return i;
@@ -225,6 +303,7 @@ bool Database::checkStockForOrder(const std::list<std::shared_ptr<RecipeItem>>& 
 	return true;
 }
 
+//table methods
 std::shared_ptr<Table> Database::addTable(const std::string& table_no) {
 	std::shared_ptr<Table> table(new Table(table_no));
 	tables.push_back(table);
@@ -265,6 +344,8 @@ void Database::deleteTable(const size_t& id)
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no table associated this table no -> " + std::to_string(id)));
 }
 
+
+//meal methods
 void Database::addMeal(const std::shared_ptr<Meal>& meal) {
 	this->meals.push_back(meal);
 }
@@ -339,8 +420,11 @@ std::shared_ptr<Meal>& Database::getMeal(const size_t& id){
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no meal associated this id ->" + std::to_string(id)));
 }
-void Database::showAllMeal(const bool& shortInfo) const
+bool Database::showAllMeal(const bool& shortInfo) const
 {
+	if (this->meals.empty())
+		return false;
+
 	if (shortInfo)
 	{
 		for (auto& meal : this->meals)
@@ -356,6 +440,7 @@ void Database::showAllMeal(const bool& shortInfo) const
 		}
 	}
 	std::cout << std::string(37, '#') << std::endl;
+	return true;
 }
 size_t Database::getMealCount() const { return this->meals.size(); }
 void Database::filterMeals(const std::string& mealName)
@@ -397,4 +482,62 @@ void Database::login(const std::string& username, const std::string& password) c
 void Database::increaseBudget(std::shared_ptr<double>& restaurantBudget, const double& amount)
 {
 	*restaurantBudget += amount;
+}
+
+//Notification methods
+void Database::addNotification(const Notification& notf)
+{
+	this->notifications.emplace_back(notf);
+}
+void Database::deleteNotification(const Notification& notf)
+{
+	this->notifications.remove(notf);
+}
+Notification& Database::getNotification(const size_t& id)
+{
+	for (auto& i : this->notifications)
+	{
+		return i;
+	}
+}
+void Database::showAllNotfs(const bool& shortInfo) const
+{
+	if (shortInfo)
+	{
+		for (auto& i : this->notifications)
+		{
+			i.shortInfo();
+		}
+	}
+	else
+	{
+		for (auto& i : this->notifications)
+		{
+			i.print();
+		}
+	}
+}
+void Database::showAllNewNotfs(const bool& shortInfo) const
+{
+	if (shortInfo)
+	{
+		for (auto& i : this->notifications)
+		{
+			if (i.getReadStatus() == false)
+			{
+				i.shortInfo();
+			}
+		}
+	}
+	else
+	{
+		for (auto& i : this->notifications)
+		{
+			if (i.getReadStatus() == false)
+			{
+				i.print();
+			}
+		}
+	}
+
 }

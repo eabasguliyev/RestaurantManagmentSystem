@@ -5,8 +5,10 @@
 class Order;
 class Table : public Base
 {
+	bool status;
 	std::string table_no;
 	std::list<std::shared_ptr<Order>> orders;
+	std::list<std::shared_ptr<Order>> newOrders;
 	std::string notfFromKitchen;
 public:
 	static size_t current_id;
@@ -18,15 +20,23 @@ public:
 
 	void setTableNo(const std::string& table_no);
 	void setNotfFromKitchen(const std::string& message);
+	void clearNotification();
+	void setTableStatus(const bool& status);
 
+	bool getTableStatus() const;
 	std::string getTableNo()const;
 	std::string getNotfFromKitchen() const;
-	std::list<std::shared_ptr<Order>> getOrders() const;
+	std::list<std::shared_ptr<Order>>& getOrders();
+	std::list<std::shared_ptr<Order>>& getNewOrders();
 	std::shared_ptr<Order>& getOrder(const size_t& id);
 
 	void addOrder(const std::shared_ptr<Order>& order);
-	void deleteOrder(const std::shared_ptr<Order>& order);
-	void deleteAllOrders();
-	void showOrders() const;
+	void deleteOrder(std::shared_ptr<Order> order);
+	void deleteAllOrders(const bool& byClient = true);
+	void deleteNewOrder(std::shared_ptr<Order> order);
+	void deleteAllNewOrders(const bool& byClient = true);
+	bool showOrders(const bool& neworders = false) const;
 	bool operator==(const Table&) const;
+
+	void printNotf() const;
 };

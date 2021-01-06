@@ -170,6 +170,7 @@
     <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\Stock.cpp" />
     <ClCompile Include="src\Table.cpp" />
+    <ClCompile Include="src\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AdminSide.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="src\Screen.h" />
     <ClInclude Include="src\Stock.h" />
     <ClInclude Include="src\Table.h" />
+    <ClInclude Include="src\Time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

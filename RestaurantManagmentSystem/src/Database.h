@@ -13,18 +13,19 @@ struct NotificationGroups
 {
 	std::list<Notification> client_side;
 };
+
 class Database
 {
 	std::list<Admin> admins;
 	std::list<std::shared_ptr<Table>> tables;
-	//std::list<Notification> notifications;
-	NotificationGroups notf_group;
+	std::list<Notification> notifications;
+	//NotificationGroups notf_group;
 	std::list<std::shared_ptr<Order>> orders;
 	std::list<std::shared_ptr<Order>> newOrders;
 	std::list<std::shared_ptr<Meal>> meals;
 public:
 	Stock stock;
-	
+
 	// elave kimi develop ele
 	struct insufficientIngredient
 	{
@@ -43,13 +44,15 @@ public:
 	Admin& getAdmin(const std::string& username);
 
 	void addOrder(const std::shared_ptr<Table>& table, const std::shared_ptr<Meal>& meal, const size_t& amount);
-	bool acceptOrder(std::shared_ptr<Order> order);
-	void acceptAllOrder(std::shared_ptr<double>& restaurantBudget);
-	void declineOrder(std::shared_ptr<Order> order);
+	bool acceptOrder(std::shared_ptr<Order> order, const bool& del = false);
+	bool acceptAllOrder(std::shared_ptr<double>& restaurantBudget);
+	void declineOrder(std::shared_ptr<Order>& order, const bool& del = false);
 	void declineAllOrder();
-	void deleteOrder(const std::shared_ptr<Order>& order);
+	void deleteOrder(std::shared_ptr<Order> order);
 	void deleteAllOrders();
-	void showAllOrder(const bool& shortInfo = false);
+	void deleteNewOrder(std::shared_ptr<Order> order);
+	void deleteAllNewOrders();
+	bool showAllOrder(const bool& neworders = false, const bool& shortInfo = false);
 	void showOrdersByTable(const std::string& table_no, const bool& shortInfo = false);
 	void showOrdersByTable(const size_t& id, const bool& shortInfo = false);
 	std::shared_ptr<Order>& getOrder(const size_t& id);
@@ -66,12 +69,18 @@ public:
 	void updateMeal(std::shared_ptr<Meal>& old_meal, const std::shared_ptr<Meal>& new_meal);
 	void deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount);
 	void addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount);
-	void showAllMeal(const bool& shortInfo = false) const;
+	bool showAllMeal(const bool& shortInfo = false) const;
 	void filterMeals(const std::string& mealName);
 	//void showMealIngredients(const size_t& id, const bool& shortInfo = false) const;
 	std::shared_ptr<Meal>& getMeal(const size_t& id);
 	size_t getMealCount() const;
 	// her bir obyekt uchun ferqili read/write funksiyasi olmalidi.
+
+	void addNotification(const Notification& notf);
+	void deleteNotification(const Notification& notf);
+	Notification& getNotification(const size_t& id);
+	void showAllNotfs(const bool& shortInfo = false) const;
+	void showAllNewNotfs(const bool& shortInfo = false) const;
 
 	void login(const std::string& username, const std::string& password) const;
 

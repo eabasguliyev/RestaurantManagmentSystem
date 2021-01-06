@@ -13,14 +13,29 @@ void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& rest
 	{
 		size_t kitchenChoices = KitchenScreenM::start();
 
-		if (kitchenChoices == 5)
+		if (kitchenChoices == 6)
 			return;
 
 		if (kitchenChoices == SHOWALLORDER)
 		{
 			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: All Orders"));
 			system("CLS");
-			db.showAllOrder();
+			if (!db.showAllOrder())
+			{
+				Console::displayMessageBox("Info", "There is no order!", MB_ICONWARNING | MB_OK);
+				continue;
+			}
+			Console::wait();
+		}
+		else if (kitchenChoices == SHOWALLNEWORDER)
+		{
+			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: All New Orders"));
+			system("CLS");
+			if (!db.showAllOrder(true))
+			{
+				Console::displayMessageBox("Info", "There is no order!", MB_ICONWARNING | MB_OK);
+				continue;
+			}
 			Console::wait();
 		}
 		else if (kitchenChoices == SHOWORDER)
@@ -45,6 +60,7 @@ void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& rest
 			catch (const Exception& ex)
 			{
 				ex.echo();
+				Console::wait();
 				continue;
 			}
 
@@ -56,25 +72,40 @@ void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& rest
 
 			if (orderControlChoice == ACCEPTORDER)
 			{
-				if (db.acceptOrder(order))
+				if (db.acceptOrder(order, true))
+				{
 					db.increaseBudget(restaurantBudget, order->getAmount() * order->getMeal()->getPrice());
+					Console::displayMessageBox("Info", "Order accepted!", MB_ICONINFORMATION | MB_OK);
+				}
+				
 			}
 			else if (orderControlChoice == DECLINEORDER)
 			{
-				db.declineOrder(order);
+				db.declineOrder(order, true);
+				Console::displayMessageBox("Info", "Order declined!", MB_ICONINFORMATION | MB_OK);
 			}
 		}
 		else if (kitchenChoices == ACCEPTALLORDER)
 		{
-			db.acceptAllOrder(restaurantBudget);
-			std::cout << "All order accepted!" << std::endl;
-			Console::wait();
+			int id = Console::displayMessageBox("Info", "Are you sure to accept all orders?", MB_ICONWARNING | MB_YESNO);
+			if (id == 6)
+			{
+				if (db.acceptAllOrder(restaurantBudget))
+					Console::displayMessageBox("Info", "All orders accepted!", MB_ICONINFORMATION | MB_OK);
+			}
+			else
+				continue; // send notf
 		}
 		else if (kitchenChoices == DECLINEALLORDER)
 		{
-			db.declineAllOrder();
-			std::cout << "All order declined!" << std::endl;
-			Console::wait();
+			int id = Console::displayMessageBox("Info", "Are you sure to decline all orders?", MB_ICONWARNING | MB_YESNO);
+			if (id == 6)
+			{
+				db.declineAllOrder();
+				Console::displayMessageBox("Info", "All orders declined!", MB_ICONINFORMATION | MB_OK);
+			}
+			else
+				continue; //send notf
 		}
 	}
 }

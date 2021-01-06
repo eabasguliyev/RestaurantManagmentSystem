@@ -20,7 +20,7 @@ void RestaurantManagment::start()
 {
 	Console::Setting::start();
 
-	Restaurant restaurant("Green Garden 145", "Baku", "Azerbaijan", "F.Bayramov St. 1130/33", 0);
+	Restaurant restaurant("Green Garden 145", "Baku", "Azerbaijan", "F.Bayramov St. 1130/33", 40, 0);
 
 	if (restaurant.db.stock.getIngredientCount() == 0)
 	{
@@ -65,7 +65,7 @@ void RestaurantManagment::start()
 		}
 		else if (mainChoice == CLIENT)
 		{
-			ClientSide::ClientSide::start(restaurant.db);
+			ClientSide::ClientSide::start(restaurant.db, restaurant.getTableCount());
 		}
 		else
 			exit(0);

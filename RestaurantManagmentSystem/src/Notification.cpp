@@ -11,3 +11,22 @@ std::string Notification::getFrom() const { return this->from; }
 std::string Notification::getDate() const { return this->date; }
 std::string Notification::getMessage() const { return this->message; }
 bool Notification::getReadStatus() const { return this->is_read; }
+void Notification::print() const
+{
+	std::cout << std::string(37, '#') << std::endl;
+	std::cout << "ID: " << getID() << std::endl;
+	std::cout << "From: " << getFrom() << std::endl;
+	std::cout << "Date: " << getDate() << std::endl;
+	std::cout << "Message: " << getMessage() << std::endl;
+}
+void Notification::shortInfo() const
+{
+	std::cout << std::string(37, '#') << std::endl;
+	std::cout << "ID: " << getID() << std::endl;
+	std::cout << "From: " << getFrom() << std::endl;
+}
+
+bool Notification::operator==(const Notification& notf) const
+{
+	return this->getID() == notf.getID();
+}

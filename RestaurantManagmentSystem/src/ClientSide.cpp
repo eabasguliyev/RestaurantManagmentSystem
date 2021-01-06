@@ -5,11 +5,11 @@
 #include "Order.h"
 
 
-void ClientSide::ClientSide::start(Database& db)
+void ClientSide::ClientSide::start(Database& db, const short& table_count)
 {
 	while (1)
 	{
-		size_t clientChoice = ClientScreenM::start();
+		size_t clientChoice = ClientScreenM::start(table_count);
 
 		if (clientChoice == BACKFRMCLIENTSIDE)
 			break;
@@ -24,19 +24,38 @@ void ClientSide::ClientSide::start(Database& db)
 				table = db.addTable(table_no);
 				//std::cout << "This table -> " << table_no << " created!" << std::endl;
 			}
+
+			if (table->getTableStatus() == false)
+			{
+				table->setTableStatus(true);
+				Console::displayMessageBox("Welcome!", "Enjoy with our delicious meals!", MB_ICONINFORMATION | MB_OK);
+			}
+
 			//else
 				//std::cout << "This table -> " << table_no << " is exist!" << std::endl;
 			
 			while (1)
 			{
-				system("CLS");
-				std::cout << "Notification: " << table->getNotfFromKitchen() << std::endl;
-				Console::wait();
 				size_t tableChoice = TableScreenM::start();
 
-				if (tableChoice == 8)
+				if (tableChoice == 10)
 					break;
-
+				else if (tableChoice == 11)
+				{
+					if (table->getNewOrders().empty())
+					{
+						table->deleteAllOrders();
+						table->clearNotification();
+						table->setTableStatus(false);
+						Console::displayMessageBox("Goodbye", "Thank you for choosing us!", MB_ICONINFORMATION | MB_OK);
+						break;
+					}
+					else
+					{
+						Console::displayMessageBox("Info", "You have new orders! Wait or delete your orders!", MB_ICONINFORMATION | MB_OK);
+						continue;
+					}
+				}
 				system("CLS");
 				if (tableChoice == SEARCHTMEAL)
 				{
@@ -55,10 +74,27 @@ void ClientSide::ClientSide::start(Database& db)
 					}
 					Console::wait();
 				}
+				else if (tableChoice == SHOWTNOTF)
+				{
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Notification from Kitchen"));
+					std::string notification = table->getNotfFromKitchen();
+
+					if (!notification.empty())
+					{
+						std::cout << "Notification: " << std::endl << notification << std::endl;
+						Console::wait();
+					}
+					else
+						Console::displayMessageBox("Info", "There is no notifications for you!", MB_ICONWARNING | MB_OK);
+				}
 				else if (tableChoice == SHOWTMEALS)
 				{
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: All Meals"));
-					db.showAllMeal(true);
+					if (!db.showAllMeal(true))
+					{
+						Console::displayMessageBox(":(", "There is no meal yet!", MB_ICONERROR | MB_OK);
+						continue;
+					}
 					Console::wait();
 				}
 				else if (tableChoice == ORDERTMEAL)
@@ -85,8 +121,12 @@ void ClientSide::ClientSide::start(Database& db)
 						if (atof(amount) - atoi(amount))
 							throw ClientException(__LINE__, __TIME__, __FILE__, "Amount must be integer value!");
 
+						if (atoi(amount) < 1)
+							throw ClientException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero!");
+
+						
 						size_t orderAmount = atoi(amount);
-						std::shared_ptr<Meal> tmp = db.getMeal(atoi(meal_id));
+						Meal tmp = db.getMeal(atoi(meal_id));
 						std::shared_ptr<Meal> meal(new Meal(db.getMeal(atoi(meal_id))));
 
 						while (1)
@@ -102,14 +142,19 @@ void ClientSide::ClientSide::start(Database& db)
 							size_t orderChoice = OrderScreenM::start();
 
 							if (orderChoice == 7)
-								break;
+							{
+								int id = Console::displayMessageBox("Info", "Are you sure? Your order will be deleted!", MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2);
+
+								if(id == 6)
+									break;
+								continue;
+							}
 
 							if (orderChoice == ORDERMEAL)
 							{
 								db.addOrder(table, meal, orderAmount);
 								system("CLS");
-								std::cout << "Order sent! Thank you!" << std::endl;
-								Console::wait();
+								Console::displayMessageBox("Info", "Order sent! Thank you!", MB_ICONINFORMATION | MB_OK);
 								break;
 							}
 							else if (orderChoice == ADDMOREING)
@@ -138,20 +183,28 @@ void ClientSide::ClientSide::start(Database& db)
 										throw AdminException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero!");
 									if (atof(amountIng) - atoi(amountIng))
 										throw ClientException(__LINE__, __TIME__, __FILE__, "Amount must be integer value!");
+
+									if (atoi(amountIng) < 1)
+										throw ClientException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero");
 									db.addIngredientToMeal(meal, db.stock.getIngredient(atoi(ingredient_id)), atoi(amountIng)); // ingredient varsa sayini artirir
 																															 // yoxdursa yenisini elave edir
-									//db.stock.decreaseIngredientAmount(db.stock.getItem(atoi(ingredient_id)), atoi(amount)); order qebul edilerse et
-									std::cout << "Ingredient added!" << std::endl;
+									Console::displayMessageBox("Info", "Ingredient added!", MB_ICONINFORMATION | MB_OK);
 								}
 								catch(const Exception& ex)
 								{
 									ex.echo();
-								}
 								Console::wait();
+								}
 							}
 							else if (orderChoice == DEFAULTING)
 							{
-								meal = tmp;
+								int id = Console::displayMessageBox("Info", "Are you sure?", MB_ICONWARNING | MB_YESNO);
+
+								if (id == 6)
+								{
+									meal = std::shared_ptr<Meal>(new Meal(tmp));
+									continue;
+								}
 							}
 							else if (orderChoice == DELINGFRMMEAL)
 							{
@@ -179,25 +232,32 @@ void ClientSide::ClientSide::start(Database& db)
 
 									// tamamile yoxsa say ile silsin uchun y/n elave et.
 									//db.deleteIngredientFromMeal(meal, atoi(ingredient_id));
-									std::cout << "Amount: ";
+									
+									int id = Console::displayMessageBox("Info", "Do you want to input amount or do you want to delete it completely?", MB_ICONINFORMATION | 
+									MB_YESNO | MB_DEFBUTTON1);
+									
+									if (id == 6)
+									{
+										std::cout << "Amount: ";
 
-									std::cin.getline(amountIng, 255);
+										std::cin.getline(amountIng, 255);
 
-									if (!DatabaseHelper::checkNumericInput(amountIng))
-										throw AdminException(__LINE__, __TIME__, __FILE__, "amount must be numeric value!");
-									if (amountIng <= 0)
-										throw AdminException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero!");
-									if (atof(amountIng) - atoi(amountIng))
-										throw ClientException(__LINE__, __TIME__, __FILE__, "Amount must be integer value!");
+										if (!DatabaseHelper::checkNumericInput(amountIng))
+											throw AdminException(__LINE__, __TIME__, __FILE__, "amount must be numeric value!");
+										if (amountIng <= 0)
+											throw AdminException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero!");
+										if (atof(amountIng) - atoi(amountIng))
+											throw ClientException(__LINE__, __TIME__, __FILE__, "Amount must be integer value!");
+									}
 									db.deleteIngredientFromMeal(meal, atoi(ingredient_id), atoi(amountIng));
 
-									std::cout << "Ingredient deleted!" << std::endl;
+									Console::displayMessageBox("Info", "Ingredient deleted!", MB_ICONINFORMATION | MB_OK);
 								}
 								catch (const DatabaseException& ex)
 								{
 									ex.echo();
+									Console::wait();
 								}
-								Console::wait();
 							}
 							else if (orderChoice == INCORDAMOUNT)
 							{
@@ -220,7 +280,21 @@ void ClientSide::ClientSide::start(Database& db)
 				else if (tableChoice == SHOWTORDERS)
 				{
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: All Orders"));
-					table->showOrders();
+					if (!table->showOrders())
+					{
+						Console::displayMessageBox(":(", "There is no order! Place a new order!", MB_ICONEXCLAMATION | MB_OK);
+						continue;
+					}
+					Console::wait();
+				}
+				else if(tableChoice == SHOWNEWTORDERS)
+				{
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: All new Orders"));
+					if (!table->showOrders(true))
+					{
+						Console::displayMessageBox(":(", "There is no order! Place a new order!", MB_ICONEXCLAMATION | MB_OK);
+						continue;
+					}
 					Console::wait();
 				}
 				else if (tableChoice == DELTORDER)
@@ -239,15 +313,16 @@ void ClientSide::ClientSide::start(Database& db)
 
 						std::shared_ptr<Order> order = db.getOrder(atoi(order_id));
 
-						db.deleteOrder(order);
-
+						order->setOrderStatus(DELETED);
+						db.deleteNewOrder(order);
 						std::cout << "Order deleted!" << std::endl;
+						Console::displayMessageBox("Info", "Order deleted!", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const Exception& ex)
 					{
 						ex.echo();
+						Console::wait();
 					}
-					Console::wait();
 				}
 				else if (tableChoice == UPDATETORDER) //burani tamamla
 				{
@@ -277,7 +352,8 @@ void ClientSide::ClientSide::start(Database& db)
 
 						order->setAmount(atoi(amountOrder));
 
-						std::cout << "Order updated!" << std::endl;
+						Console::displayMessageBox("Info", "Order updated", MB_ICONINFORMATION | MB_OK);
+
 						//std::shared_ptr<Order> new_order(Order(table->getTableNo(), de);
 						//db.deleteOrder(order);
 
@@ -286,16 +362,24 @@ void ClientSide::ClientSide::start(Database& db)
 					catch (const Exception& ex)
 					{
 						ex.echo();
+						Console::wait();
 					}
-					Console::wait();
 				}
-				else if (tableChoice == DELTORDERS)
-				{
-					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Delete All Orders"));
-					table->deleteAllOrders();
-					std::cout << "All orders deleted!" << std::endl;
-					Console::wait();
-				}
+				//else if (tableChoice == DELTORDERS)
+				//{
+				//	Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Delete All Orders"));
+				//	int id = Console::displayMessageBox("Info", "Are you sure to delete all new orders?", MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2);
+
+				//	if (id == 6)
+				//	{
+				//		for (auto& i : table->getNewOrders())
+				//		{
+				//			db.deleteNewOrder(i);
+				//		}
+				//		//table->deleteAllOrders();
+				//		Console::displayMessageBox(":(", "All orders deleted!", MB_ICONINFORMATION | MB_OK);
+				//	}
+				//}
 			}
 		}
 	}

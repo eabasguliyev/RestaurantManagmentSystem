@@ -46,7 +46,7 @@ void Meal::printRecipe() const
 		counter++;
 	}
 }
-void Meal::addIngredient(std::shared_ptr<Ingredient> ingredient, const size_t& amount)
+void Meal::addIngredient(const std::shared_ptr<Ingredient>& ingredient, const size_t& amount)
 {
 	this->ingredients.push_back(std::shared_ptr<RecipeItem>(new RecipeItem(ingredient, amount)));
 	increasePrice(ingredient->getPrice(), amount);

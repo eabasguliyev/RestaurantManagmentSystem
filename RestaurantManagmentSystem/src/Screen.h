@@ -33,6 +33,7 @@ public:
 	static void printExit(const bool& mouseOver = false);
 	static void printBack(const bool& mouseOver = false);
 	static void printLogout(const bool& mouseOver = false);
+	static void printOut(const bool& mouseOver = false);
 
 	static COORD COORDINATE;
 	static void printButton(const std::string& text, COORD& coo, const unsigned short& length = 24);
@@ -149,8 +150,13 @@ public:
 				class NotificationsScreen {
 				public:
 					static size_t selected;
+					static size_t mouseOver;
+					static std::vector<std::string> options;
+					static std::vector<Button> buttons;
 
-					static short print();
+					static void print();
+					static size_t start();
+					static void load();
 				};
 
 				class StockScreen {
@@ -172,9 +178,9 @@ public:
 			static size_t mouseOver;
 			static std::vector<Button> buttons;
 
-			static void printTables();
-			static size_t start();
-			static void load();
+			static void printTables(const short& table_count);
+			static size_t start(const short& table_count);
+			static void load(const short& table_count);
 
 			class TableScreen {
 			public:
