@@ -31,5 +31,15 @@ void Exception::echo() const
 	std::cout << "Error: " << getText() << std::endl;
 }
 
+std::string Exception::getData() const
+{
+	std::string error;
 
-
+	error.append(std::string(37, '#') + '\n');
+	error.append("Source: " + getSource() + "\n");
+	error.append("Line: " + std::to_string(getTriggeredLine()) + "\n");
+	error.append("Time: " + getTriggeredTime() + "\n");
+	error.append("Error: " + getText() + "\n");
+	error.append(std::string(37, '#') + '\n');
+	return error;
+}

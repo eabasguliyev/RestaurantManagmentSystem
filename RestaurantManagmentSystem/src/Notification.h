@@ -22,6 +22,8 @@ public:
 		setMessage(message);
 	}
 
+	static size_t getStaticID();
+	static void setStaticID(const size_t& ID);
 	void setFrom(const std::string& from);
 	void setDate(const std::string& date);
 	void setMessage(const std::string& message);
@@ -36,4 +38,28 @@ public:
 	void shortInfo() const;
 
 	bool operator==(const Notification& notf) const;
+};
+
+class AdminNotification : public Notification
+{
+public:
+	AdminNotification() {}
+	AdminNotification(const std::string& from,
+		const std::string& message) :Notification(from, message) {}
+};
+
+class ClientNotification : public Notification
+{
+public:
+	ClientNotification() {}
+	ClientNotification(const std::string& from,
+		const std::string& message) :Notification(from, message) {}
+};
+
+class KitchenNotification : public Notification
+{
+public:
+	KitchenNotification() {}
+	KitchenNotification(const std::string& from,
+		const std::string& message) :Notification(from, message) {}
 };

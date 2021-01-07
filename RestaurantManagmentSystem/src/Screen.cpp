@@ -372,7 +372,7 @@ size_t MainScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				////std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 1)
 				{
@@ -447,7 +447,7 @@ size_t LoginScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				////std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 2)
 					system("CLS");
@@ -517,7 +517,7 @@ size_t AdminScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				////std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 4)
 					system("CLS");
@@ -590,7 +590,7 @@ size_t KitchenScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 6)
 				{
@@ -660,7 +660,7 @@ size_t OrderControlScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 3)
 				{
@@ -683,24 +683,20 @@ void DatabaseScreenM::load()
 {
 	if (options.size() == 0)
 	{
-		options.reserve(6);
+		options.reserve(4);
 		options.emplace_back("Admin control");
 		options.emplace_back("Stock control");
 		options.emplace_back("Meal control");
-		options.emplace_back("Order control");
 		options.emplace_back("Notification control");
-		options.emplace_back("Table control");
 	}
 
 	if (buttons.size() == 0)
 	{
-		buttons.reserve(7);
+		buttons.reserve(6);
 		buttons.emplace_back(Button(1, { 46, 6 }, { 71, 4 }));
 		buttons.emplace_back(Button(2, { 46, 10 }, { 71, 8 }));
 		buttons.emplace_back(Button(3, { 46, 14 }, { 71, 12 }));
 		buttons.emplace_back(Button(4, { 46, 18 }, { 71, 16 }));
-		buttons.emplace_back(Button(5, { 46, 22 }, { 71, 20 }));
-		buttons.emplace_back(Button(6, { 46, 26 }, { 71, 24 }));
 		buttons.emplace_back(Button(7, { 0, 2 }, { 7, 0 }));
 	}
 }
@@ -737,7 +733,7 @@ size_t DatabaseScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 7)
 					system("CLS");
@@ -791,7 +787,7 @@ size_t AdminControlScreenM::start()
 	{
 		if (updateScreen)
 		{
-			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Meal Control"));
+			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Admin Control"));
 			print();
 
 			if (mouseOver == 6)
@@ -810,7 +806,7 @@ size_t AdminControlScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 6)
 					system("CLS");
@@ -887,7 +883,7 @@ size_t StockScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 8)
 					system("CLS");
@@ -966,9 +962,82 @@ size_t MealScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 9)
+					system("CLS");
+				return mouseOver;
+			}
+			updateScreen = true;
+		}
+	}
+
+}
+
+//NotificationScreen
+size_t NotificationScreenM::mouseOver = 0;
+std::vector<std::string> NotificationScreenM::options;
+std::vector<Screen::Button> NotificationScreenM::buttons;
+
+void NotificationScreenM::load()
+{
+	if (options.size() == 0)
+	{
+		options.reserve(4);
+		options.emplace_back("Show all notifications");
+		options.emplace_back("Show all unread");
+		options.emplace_back("Show notification");
+		options.emplace_back("Mark all read");
+	}
+
+	if (buttons.size() == 0)
+	{
+		buttons.reserve(6);
+		buttons.emplace_back(Button(1, { 46, 9 }, { 71, 7 }));
+		buttons.emplace_back(Button(2, { 46, 13 }, { 71, 11 }));
+		buttons.emplace_back(Button(3, { 46, 17 }, { 71, 15 }));
+		buttons.emplace_back(Button(4, { 46, 21 }, { 71, 19 }));
+		buttons.emplace_back(Button(6, { 0, 2 }, { 7, 0 }));
+	}
+}
+void NotificationScreenM::print()
+{
+	COORDINATE = { 46, 7 };
+	Menu::printMenu(options, mouseOver - 1);
+}
+size_t NotificationScreenM::start()
+{
+	load();
+	bool updateScreen = true;
+	HANDLE outHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	Console::clearConsoleArea({ 0,0 }, { 8, 2 });
+	Console::clearConsoleArea({ 43, 6 }, {73, 22 });
+	while (1)
+	{
+		if (updateScreen)
+		{
+			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Notifications"));
+			print();
+
+			if (mouseOver == 6)
+				printBack(true);
+			else
+				printBack();
+
+			updateScreen = false;
+		}
+		COORD coo;
+		bool mouseClicked = Console::GetCoordinateWithMouse(coo);
+		mouseOver = getButtonIdByCoordinate(coo, buttons);
+
+		if (mouseOver)
+		{
+			if (mouseClicked)
+			{
+				// code
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+
+				if (mouseOver == 6)
 					system("CLS");
 				return mouseOver;
 			}
@@ -1084,7 +1153,7 @@ size_t ClientScreenM::start(const short& table_count)
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 101)
 				{
@@ -1122,7 +1191,7 @@ void TableScreenM::load()
 		options.emplace_back("Show new orders");
 		options.emplace_back("Delete order");
 		options.emplace_back("Update order");
-		//options.emplace_back("Delete all orders");
+		options.emplace_back("Delete all orders");
 	}
 
 	if (buttons.size() == 0)
@@ -1136,7 +1205,7 @@ void TableScreenM::load()
 		buttons.emplace_back(Button(6, { 31, 23 }, { 56, 21 }));
 		buttons.emplace_back(Button(7, { 31, 27 }, { 56, 25 }));
 		buttons.emplace_back(Button(8, { 62, 3 }, { 87, 1 }));
-		//buttons.emplace_back(Button(9, { 62, 7 }, { 87, 5 }));
+		buttons.emplace_back(Button(9, { 62, 7 }, { 87, 5 }));
 		buttons.emplace_back(Button(10, { 0, 2 }, { 7, 0 }));
 		buttons.emplace_back(Button(11, { 105, 27 }, { 114, 25 }));
 	}
@@ -1179,7 +1248,7 @@ size_t TableScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 10 || mouseOver == 11)
 					system("CLS");
@@ -1254,7 +1323,7 @@ size_t OrderScreenM::start()
 			if (mouseClicked)
 			{
 				// code
-				std::cout << "Button " << mouseOver << " clicked!" << std::endl;
+				//std::cout << "Button " << mouseOver << " clicked!" << std::endl;
 
 				if (mouseOver == 7)
 					system("CLS");

@@ -1,0 +1,142 @@
+Green Garden 145
+Baku
+Azerbaijan
+F.Bayramov St. 1130/33
+0
+40
+4
+1
+1
+admin
+17265546554381246504
+1
+16
+4
+1
+Dolma
+Isti yemekler
+4.5
+25
+1
+1
+5
+1
+Kartof
+5
+5
+5
+5
+5
+2
+Pizza
+Italian
+3.6
+0
+0
+3
+Burger 1
+Fastfood
+4.3
+0
+0
+4
+Burger 2
+Fastfood
+4.8
+0
+0
+3
+2
+10
+1
+Kartof
+5
+5
+5
+5
+5
+3
+15
+2
+Kok
+5
+5
+5
+5
+6
+4
+30
+3
+Mushroom
+5
+5
+5
+5
+7
+20
+13
+1
+1
+LoginSide
+7/1/2021 12:3
+admin logged in
+3
+1
+LoginSide
+7/1/2021 12:4
+admin logged in
+6
+1
+LoginSide
+7/1/2021 12:8
+Someone trying to login as admin
+7
+1
+LoginSide
+7/1/2021 12:8
+admin logged in
+12
+1
+LoginSide
+7/1/2021 12:9
+Someone trying to login as hi
+13
+1
+LoginSide
+7/1/2021 12:9
+admin logged in
+14
+1
+LoginSide
+7/1/2021 12:14
+Someone trying to login as hacker
+15
+1
+LoginSide
+7/1/2021 12:14
+admin logged in
+16
+0
+LoginSide
+7/1/2021 12:16
+admin logged in
+17
+0
+LoginSide
+7/1/2021 12:26
+admin logged in
+18
+0
+LoginSide
+7/1/2021 12:30
+admin logged in
+19
+0
+LoginSide
+7/1/2021 12:31
+admin logged in
+20
+1
+LoginSide
+7/1/2021 12:32
+admin logged in

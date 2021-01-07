@@ -15,7 +15,10 @@ public:
 		setUsername(username);
 		setPassword(password);
 	}
-	
+	static void setStaticID(const size_t& ID);
+	static size_t getStaticID();
+
+
 	void setMasterStatus(const bool& status);
 	void setUsername(const std::string& username);
 	void setPassword(const std::string& password);

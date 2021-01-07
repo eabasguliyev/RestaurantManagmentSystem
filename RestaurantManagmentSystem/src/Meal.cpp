@@ -3,6 +3,9 @@
 
 size_t Meal::current_id = NULL;
 
+void Meal::setStaticID(const size_t& ID) { current_id = ID; }
+size_t Meal::getStaticID() { return current_id; }
+
 void Meal::setName(const std::string& name) { this->name = name; }
 void Meal::setMenuRating(double menu_rating)
 {

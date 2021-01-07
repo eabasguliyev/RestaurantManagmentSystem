@@ -27,6 +27,7 @@ public:
 	std::string getTriggeredTime() const;
 	std::string getText() const;
 	void echo() const;
+	std::string getData() const;
 };
 
 class DatabaseException : public Exception

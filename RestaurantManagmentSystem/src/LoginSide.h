@@ -13,6 +13,6 @@ namespace LoginSide
 	{
 	public:
 		static void printInfo(const std::string& info, const bool& fail, const COORD & coo);
-		static bool login(const Database& db);
+		static bool login(Database& db);
 	};
 }

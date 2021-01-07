@@ -19,5 +19,7 @@ public:
 	size_t getIngredientCount() const;
 	std::shared_ptr<Ingredient> getIngredient(const size_t& id);
 	std::shared_ptr<RecipeItem> getItem(const size_t& id) const;
+	std::shared_ptr<RecipeItem> getItemByIngredientID(const size_t& id) const;
 	bool checkIngredientAmount(const size_t& id, const size_t& amount) const;
+	std::list<std::shared_ptr<RecipeItem>>& getIngredientItems();
 };

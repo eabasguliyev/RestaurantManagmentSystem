@@ -5,7 +5,7 @@
 #include "DatabaseHelper.h"
 #include <string>
 #include "Order.h"
-
+#include "FileHelper.h"
 
 void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& restaurantBudget)
 {
@@ -60,6 +60,7 @@ void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& rest
 			catch (const Exception& ex)
 			{
 				ex.echo();
+				FileHelper::writeLog("kitchen_side.log", ex.getData());
 				Console::wait();
 				continue;
 			}

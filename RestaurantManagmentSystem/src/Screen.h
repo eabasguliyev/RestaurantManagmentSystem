@@ -13,6 +13,7 @@
 #define AdminControlScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::AdminsScreen
 #define StockScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::StockScreen
 #define MealScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::MealsScreen
+#define NotificationScreenM Screen::MainScreen::AdminScreen::DatabaseScreen::NotificationsScreen
 #define ClientScreenM Screen::MainScreen::ClientScreen
 #define TableScreenM Screen::MainScreen::ClientScreen::TableScreen
 #define OrderScreenM Screen::MainScreen::ClientScreen::TableScreen::OrderScreen
@@ -108,14 +109,6 @@ public:
 				static void print();
 				static size_t start();
 				static void load();
-
-				class OrdersScreen {
-				public:
-					static size_t selected;
-
-					static short print();
-				};
-
 				class AdminsScreen {
 				public:
 					static size_t selected;
@@ -138,13 +131,6 @@ public:
 					static void print();
 					static size_t start();
 					static void load();
-				};
-
-				class TablesScreen {
-				public:
-					static size_t selected;
-
-					static short print();
 				};
 
 				class NotificationsScreen {

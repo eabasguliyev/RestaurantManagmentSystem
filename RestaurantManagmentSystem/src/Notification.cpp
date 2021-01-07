@@ -1,7 +1,8 @@
 #include "Notification.h"
 
 size_t Notification::current_id = NULL;
-
+size_t Notification::getStaticID() { return current_id; }
+void Notification::setStaticID(const size_t& ID) { current_id = ID; }
 void Notification::setFrom(const std::string& from) { this->from = from; }
 void Notification::setDate(const std::string& date) { this->date = date; }
 void Notification::setMessage(const std::string& message) { this->message = message; }
@@ -24,6 +25,7 @@ void Notification::shortInfo() const
 	std::cout << std::string(37, '#') << std::endl;
 	std::cout << "ID: " << getID() << std::endl;
 	std::cout << "From: " << getFrom() << std::endl;
+	std::cout << "Date: " << getDate() << std::endl;
 }
 
 bool Notification::operator==(const Notification& notf) const

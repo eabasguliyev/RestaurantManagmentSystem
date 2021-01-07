@@ -32,7 +32,7 @@ public:
 
 	void addOrder(const std::shared_ptr<Order>& order);
 	void deleteOrder(std::shared_ptr<Order> order);
-	void deleteAllOrders(const bool& byClient = true);
+	void deleteAllOrders(const bool& byClient = false);
 	void deleteNewOrder(std::shared_ptr<Order> order);
 	void deleteAllNewOrders(const bool& byClient = true);
 	bool showOrders(const bool& neworders = false) const;

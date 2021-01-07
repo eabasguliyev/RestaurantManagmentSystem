@@ -2,7 +2,10 @@
 #include "DatabaseHelper.h"
 #include "Exception.h"
 #include "Order.h"
+#include "FileHelper.h"
 
+bool Database::getModifiedStatus() const { return this->modified; }
+void Database::setModifiedStatus(const bool& status) { this->modified = status; }
 
 //admin methods
 bool Database::isExist(const std::string& username) const
@@ -17,14 +20,21 @@ bool Database::isExist(const std::string& username) const
 void Database::addAdmin(const std::string& username, const std::string& password)
 {
 	admins.push_back(Admin(username, std::to_string(DatabaseHelper::generateHash(password))));
+	setModifiedStatus(true);
+}
+void Database::addAdminObj(const Admin& admin)
+{
+	admins.emplace_back(admin);
 }
 void Database::deleteAdmin(const Admin& admin) {
 	this->admins.remove(admin);
+	setModifiedStatus(true);
 }
 void Database::updateAdmin(Admin & admin, const Admin& new_admin)
 {
 	admin.setUsername(new_admin.getUsername());
 	admin.setPassword(std::to_string(DatabaseHelper::generateHash(new_admin.getPassword())));
+	setModifiedStatus(true);
 }
 void Database::showAllAdmins() const
 {
@@ -152,7 +162,7 @@ bool Database::acceptOrder(std::shared_ptr<Order> order, const bool& del)
 	{
 		for (auto& i : orderIngredientItems)
 		{
-			std::shared_ptr<RecipeItem> ingredientItem = stock.getItem(i->getIngredient()->getID());
+			std::shared_ptr<RecipeItem> ingredientItem = stock.getItemByIngredientID(i->getIngredient()->getID());
 			ingredientItem->setAmount(ingredientItem->getAmount() - (i->getAmount() * orderCount));
 		}
 		order->getTable()->setNotfFromKitchen(std::string("This order accepted -> " + order->getMeal()->getName()));
@@ -343,11 +353,15 @@ void Database::deleteTable(const size_t& id)
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no table associated this table no -> " + std::to_string(id)));
 }
-
+std::list<std::shared_ptr<Table>>& Database::getTables()
+{
+	return this->tables;
+}
 
 //meal methods
 void Database::addMeal(const std::shared_ptr<Meal>& meal) {
 	this->meals.push_back(meal);
+	setModifiedStatus(true);
 }
 void Database::deleteMeal(const size_t& id){
 	for (auto& meal : this->meals)
@@ -355,6 +369,7 @@ void Database::deleteMeal(const size_t& id){
 		if (id == meal->getID())
 		{
 			meals.remove(meal);
+			setModifiedStatus(true);
 			return;
 		}
 	}
@@ -364,12 +379,13 @@ void Database::deleteMeal(const size_t& id){
 void Database::deleteAllMeal()
 {
 	this->meals.clear();
+	setModifiedStatus(true);
 }
 void Database::updateMeal(std::shared_ptr<Meal> &old_meal, const std::shared_ptr<Meal>& new_meal){
 	old_meal->setName(new_meal->getName());
 	old_meal->setCategory(new_meal->getCategory());
 	old_meal->setMenuRating(new_meal->getMenuRating());
-
+	setModifiedStatus(true);
 	Meal::current_id--;
 }
 void Database::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount){
@@ -387,10 +403,11 @@ void Database::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_
 				meal->decreaseAmountOfIngredient(ingredient_item, amount);
 				meal->decreasePrice(ingredient_item->getIngredient()->getPrice(), amount);
 			}
+			setModifiedStatus(true);
+
 			return;
 		}
 	}
-
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id ->" + std::to_string(ingredient_id)));
 }
 void Database::addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount)
@@ -406,10 +423,10 @@ void Database::addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<
 			return;
 		}
 	}
-
 	// eger meal icherisinde hemin ingredient olmasa yenisi elave olunur
 
 	meal->addIngredient(ingredient, amount);;
+	setModifiedStatus(true);
 }
 std::shared_ptr<Meal>& Database::getMeal(const size_t& id){
 	for (auto& i : this->meals)
@@ -419,6 +436,10 @@ std::shared_ptr<Meal>& Database::getMeal(const size_t& id){
 	}
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no meal associated this id ->" + std::to_string(id)));
+}
+std::list<std::shared_ptr<Meal>>& Database::getMeals()
+{
+	return this->meals;
 }
 bool Database::showAllMeal(const bool& shortInfo) const
 {
@@ -487,21 +508,28 @@ void Database::increaseBudget(std::shared_ptr<double>& restaurantBudget, const d
 //Notification methods
 void Database::addNotification(const Notification& notf)
 {
-	this->notifications.emplace_back(notf);
+	this->notifications.push_back(notf);
+	setModifiedStatus(true);
 }
 void Database::deleteNotification(const Notification& notf)
 {
 	this->notifications.remove(notf);
+	setModifiedStatus(true);
 }
 Notification& Database::getNotification(const size_t& id)
 {
 	for (auto& i : this->notifications)
 	{
-		return i;
+		if (id == i.getID())
+			return i;
 	}
+
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no notification associated this id ->" + std::to_string(id)));
 }
-void Database::showAllNotfs(const bool& shortInfo) const
+bool Database::showAllNotfs(const bool& shortInfo) const
 {
+	if (this->notifications.size() == 0)
+		return false;
 	if (shortInfo)
 	{
 		for (auto& i : this->notifications)
@@ -516,9 +544,13 @@ void Database::showAllNotfs(const bool& shortInfo) const
 			i.print();
 		}
 	}
+	return true;
 }
-void Database::showAllNewNotfs(const bool& shortInfo) const
+bool Database::showAllUnReadNotfs(const bool& shortInfo)
 {
+	if (this->notifications.size() == 0)
+		return false;
+
 	if (shortInfo)
 	{
 		for (auto& i : this->notifications)
@@ -526,6 +558,7 @@ void Database::showAllNewNotfs(const bool& shortInfo) const
 			if (i.getReadStatus() == false)
 			{
 				i.shortInfo();
+				//i.setReadStatus(true);
 			}
 		}
 	}
@@ -536,8 +569,36 @@ void Database::showAllNewNotfs(const bool& shortInfo) const
 			if (i.getReadStatus() == false)
 			{
 				i.print();
+				i.setReadStatus(true);
 			}
 		}
 	}
-
+	return true;
 }
+bool Database::markAllRead()
+{
+	bool anyUnread = false;
+	for (auto& i : notifications)
+	{
+		if (i.getReadStatus() == false)
+		{
+			anyUnread = true;
+			i.setReadStatus(true);
+		}
+	}
+
+	return anyUnread;
+}
+size_t Database::countNewNotifications() const {
+	size_t counter = 0;
+	for (auto& i : this->notifications)
+	{
+		if (i.getReadStatus() == false)
+			counter++;
+	}
+
+	return counter;
+}
+std::list<Notification>& Database::getNotifications() {return this->notifications; }
+//std::list<Notification>& Database::getClientNotifications() { return this->client_notifications; }
+//std::list<Notification>& Database::getKitchenNotifications() { return this->kitchen_notifications; }

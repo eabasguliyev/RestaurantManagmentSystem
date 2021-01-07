@@ -5,6 +5,7 @@
 #include "DatabaseHelper.h"
 #include <string>
 #include "LoginSide.h"
+#include "FileHelper.h"
 
 
 const COORD& getCurrentCoordinate()
@@ -53,6 +54,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (adminChoice == ADDADMIN)
@@ -87,8 +89,8 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 								throw std::string("Password first char require upper case!");
 
 							db.addAdmin(username, password);
-							
-							LoginSide::LoginSide::printInfo("Admin created!", false, getCurrentCoordinate());
+							Console::displayMessageBox("Info", "Admin created", MB_ICONINFORMATION | MB_OK);
+							//LoginSide::LoginSide::printInfo("Admin created!", false, getCurrentCoordinate());
 							break;
 						}
 						catch (const std::string& ex)
@@ -111,12 +113,12 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						auto admin = db.getAdmin(username);
 
 						db.deleteAdmin(admin);
-
-						LoginSide::LoginSide::printInfo("Admin deleted", false, getCurrentCoordinate());
+						Console::displayMessageBox("Info", "Admin deleted!", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (adminChoice == UPDATEADMIN)
@@ -159,7 +161,8 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 								db.updateAdmin(admin, Admin(username, password));
 
-								LoginSide::LoginSide::printInfo("Admin updated!", false, getCurrentCoordinate());
+								//LoginSide::LoginSide::printInfo("Admin updated!", false, getCurrentCoordinate());
+								Console::displayMessageBox("Info", "Admin updated", MB_ICONINFORMATION | MB_OK);
 								break;
 							}
 							catch (const std::string& ex)
@@ -173,6 +176,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				Console::wait();
@@ -207,12 +211,13 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						if (!DatabaseHelper::checkNumericInput(ingredient_id))
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
 
-						std::shared_ptr<RecipeItem> item = db.stock.getItem(atoi(ingredient_id));
+						std::shared_ptr<RecipeItem> item = db.stock.getItemByIngredientID(atoi(ingredient_id));
 						item->showItem();
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (stockChoice == ADDING)
@@ -229,11 +234,12 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "Amount must be numeric value!");
 
 						db.stock.addIngredient(ingredient, atoi(amounts));
-						std::cout << "Ingredient added!";
+						Console::displayMessageBox("Info", "Ingredient added!", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (stockChoice == UPDATEING)
@@ -253,11 +259,12 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						db.stock.updateIngredient(ingredient, newIngredient);
 						newIngredient->fullInfo();
 						std::cout << std::string(37, '#') << std::endl;
-						std::cout << "Ingredient updated!" << std::endl;
+						Console::displayMessageBox("Info", "Ingredient updated!", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (stockChoice == DELETEING)
@@ -274,12 +281,12 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
 
 						db.stock.deleteIngredient(atoi(ingredient_id));
-
-						std::cout << "Ingredient deleted!\n";
+						Console::displayMessageBox("Info", "Ingredient deleted!", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (stockChoice == INCREASEINGAMOUNT)
@@ -295,7 +302,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						if (!DatabaseHelper::checkNumericInput(ingredient_id))
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
 						
-						std::shared_ptr<RecipeItem> item = db.stock.getItem(atoi(ingredient_id));
+						std::shared_ptr<RecipeItem> item = db.stock.getItemByIngredientID(atoi(ingredient_id));
 
 						std::cout << "Amount: ";
 						std::cin.getline(amount, 255);
@@ -304,12 +311,13 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "Amount must be numeric value!");
 
 						db.stock.increaseIngredientAmount(item, atoi(amount));
+						Console::displayMessageBox("Info", "Ingredient amount increased!", MB_ICONINFORMATION | MB_OK);
 
-						std::cout << "Ingredient amount increased!\n";
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (stockChoice == DECREASEINGAMOUNT)
@@ -325,7 +333,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						if (!DatabaseHelper::checkNumericInput(ingredient_id))
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
 						
-						std::shared_ptr<RecipeItem> item = db.stock.getItem(atoi(ingredient_id));
+						std::shared_ptr<RecipeItem> item = db.stock.getItemByIngredientID(atoi(ingredient_id));
 
 						std::cout << "Amount: ";
 						std::cin.getline(amount, 255);
@@ -334,12 +342,12 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "Amount must be numeric value!");
 
 						db.stock.decreaseIngredientAmount(item, atoi(amount));
-
-						std::cout << "Ingredient amount decreased!\n";
+						Console::displayMessageBox("Info", "Ingredient amount decreased!!", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				Console::wait();
@@ -380,12 +388,14 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (mealChoice == ADDMEAL)
 				{
 					db.addMeal(DatabaseHelper::inputNewMeal());
-					std::cout << "Meal added!\n";
+					//std::cout << "Meal added!\n";
+					Console::displayMessageBox("Info", "Meal added", MB_ICONINFORMATION | MB_OK);
 				}
 				else if (mealChoice == DELMEAL)
 				{
@@ -401,11 +411,13 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
 
 						db.deleteMeal(atoi(meal_id));
-						std::cout << "Meal deleted!" << std::endl;
+						//std::cout << "Meal deleted!" << std::endl;
+						Console::displayMessageBox("Info", "Meal deleted", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (mealChoice == DELALLMEAL)
@@ -416,12 +428,13 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						// are you sure question? code here
 						
 						db.deleteAllMeal();
-
-						std::cout << "All meals deleted!" << std::endl;
+						Console::displayMessageBox("Info", "All meals deleted", MB_ICONINFORMATION | MB_OK);
+						//std::cout << "All meals deleted!" << std::endl;
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (mealChoice == UPDATEMEAL)
@@ -441,11 +454,13 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						db.updateMeal(meal, DatabaseHelper::inputNewMeal());
 						meal->showFullInfo();
 						std::cout << std::string(37, '#') << std::endl;
-						std::cout << "Meal updated!" << std::endl;
+						//std::cout << "Meal updated!" << std::endl;
+						Console::displayMessageBox("Info", "Meal updated", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (mealChoice == ADDINGTOMEAL)
@@ -484,11 +499,13 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						db.addIngredientToMeal(meal, db.stock.getIngredient(atoi(ingredient_id)), atoi(amount)); // ingredient varsa sayini artirir
 																												 // yoxdursa yenisini elave edir
 						//db.stock.decreaseIngredientAmount(db.stock.getItem(atoi(ingredient_id)), atoi(amount)); order qebul edilerse et
-						std::cout << "Ingredient added!" << std::endl;
+						//std::cout << "Ingredient added!" << std::endl;
+						Console::displayMessageBox("Info", "Ingredient added", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const Exception& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				else if (mealChoice == DELINGFRMMEAL)
@@ -527,28 +544,112 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 							throw AdminException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero!");
 
 						db.deleteIngredientFromMeal(meal, atoi(ingredient_id), atoi(amount));
-
-						std::cout << "Ingredient deleted!" << std::endl;
+						//std::cout << "Ingredient deleted!" << std::endl;
+						Console::displayMessageBox("Info", "Ingredient deleted!", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const DatabaseException& ex)
 					{
 						ex.echo();
+						FileHelper::writeLog("database_side.log", ex.getData());
 					}
 				}
 				Console::wait();
 			}
 		}
-		else if (databaseChoice == ORDERCONTROL)
-		{
-			continue;
-		}
 		else if (databaseChoice == NOTIFICATIONCONTROL)
 		{
-			continue;
-		}
-		else if (databaseChoice == TABLECONTROL)
-		{
-			continue;
+			system("CLS");
+			while(1)
+			{
+				SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 82, 1 });
+				size_t newNotificationCount = db.countNewNotifications();
+				if (newNotificationCount == 0)
+					std::cout << "You don't have new notification\n";
+				else if(newNotificationCount == 1)
+					std::cout << "You have " << newNotificationCount << " new notification\n";
+				else
+					std::cout << "You have " << newNotificationCount << " new notifications\n";
+
+				size_t notfChoice = NotificationScreenM::start();
+
+				if (notfChoice == 6)
+					break;
+
+				if (notfChoice == SHOWALLNOTF)
+				{
+					system("CLS");
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: All notifications"));
+					if (!db.showAllNotfs(true))
+						Console::displayMessageBox("Info", "There is no notifications!", MB_ICONWARNING | MB_OK);
+					std::cout << std::string(37, '#') << std::endl;
+					Console::wait();
+					system("CLS");
+				}
+				else if (notfChoice == SHOWALLUNREADNOTF)
+				{
+					system("CLS");
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: All unread notifications"));
+					if (!db.showAllUnReadNotfs(true))
+						Console::displayMessageBox("Info", "There is no unread notifications!", MB_ICONWARNING | MB_OK);
+					std::cout << std::string(37, '#') << std::endl;
+					Console::wait();
+					system("CLS");
+				}
+				else if (notfChoice == SHOWNOTF)
+				{
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Notification"));
+
+					while (1)
+					{
+						system("CLS");
+						try
+						{
+							char notification_id[255];
+							std::cout << "Notification ID: ";
+
+							std::cin.getline(notification_id, 255);
+
+							if (!DatabaseHelper::checkNumericInput(notification_id))
+								throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
+
+							Notification& notification = db.getNotification(atoi(notification_id));
+
+
+							system("CLS");
+
+							notification.print();
+
+							std::cout << std::string(37, '#') << std::endl;
+
+							notification.setReadStatus(true);
+
+							Console::wait();
+
+							size_t id = Console::displayMessageBox("Info", "Do you want to continue to read new notification?", MB_ICONINFORMATION | MB_YESNO);
+
+							if (id != 6)
+								break;
+						}
+						catch (const DatabaseException& ex)
+						{
+							ex.echo();
+							FileHelper::writeLog("database_side.log", ex.getData());
+							Console::wait();
+							break;
+						}
+					}
+					system("CLS");
+				}
+				else if (notfChoice == MARKALLREAD)
+				{
+					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: New Notifications"));
+
+					if (db.markAllRead())
+						Console::displayMessageBox("Info", "All notifications marked as unread!", MB_ICONINFORMATION | MB_OK);
+					else
+						Console::displayMessageBox("Info", "There is no new notifications!", MB_ICONWARNING | MB_OK);
+				}
+			}
 		}
 		else
 			return;

@@ -52,4 +52,6 @@ public:
 
 	void showShortInfo() const;
 	void showFullInfo() const;
+	static void setStaticID(const size_t& ID);
+	static size_t getStaticID();
 };

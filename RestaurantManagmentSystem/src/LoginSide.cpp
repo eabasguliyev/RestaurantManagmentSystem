@@ -22,7 +22,7 @@ void LoginSide::LoginSide::printInfo(const std::string& info, const bool& fail, 
 	Sleep(1500);
 }
 
-bool LoginSide::LoginSide::login(const Database& db)
+bool LoginSide::LoginSide::login(Database& db)
 {
 	Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Login"));
 	system("CLS");
@@ -50,10 +50,13 @@ bool LoginSide::LoginSide::login(const Database& db)
 		{
 			db.login(username, password);
 			printInfo("Loading admin menu!", false, { 42, 9 });
+			
+			db.addNotification(AdminNotification("LoginSide", std::string(username + " logged in")));
 			return true;
 		}
 		catch (const std::string& ex)
 		{
+			db.addNotification(AdminNotification("LoginSide", std::string("Someone trying to login as " + username)));
 			printInfo(ex, true, { 42, 9 });
 		}
 	}

@@ -1,6 +1,8 @@
 #include "Admin.h"
 
 size_t Admin::current_id = NULL;
+void Admin::setStaticID(const size_t& ID) { current_id = ID; }
+size_t Admin::getStaticID() { return current_id; }
 
 void Admin::setUsername(const std::string& username) { this->username = username; }
 void Admin::setPassword(const std::string& password) { this->password = password; }

@@ -2,7 +2,6 @@
 #include "Exception.h"
 #include <string>
 
-
 //Database helper
 std::string DatabaseHelper::center(int width, const std::string& str) {
 	int len = str.length();
@@ -19,11 +18,6 @@ size_t DatabaseHelper::generateHash(const std::string& data)
 	std::hash<std::string > hash;
 	return hash(data);
 }
-
-void DatabaseHelper::writeToFile(const std::string& data) {}
-
-std::string DatabaseHelper::readFromFile() { return ""; }
-
 bool DatabaseHelper::checkNumericInput(const char* str)
 {
 	for (int i = 0; str[i] != '\0'; i++) {

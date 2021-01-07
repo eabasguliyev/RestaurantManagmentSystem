@@ -1,5 +1,7 @@
 #include "Stock.h"
 #include "Exception.h"
+#include "FileHelper.h"
+std::list<std::shared_ptr<RecipeItem>>& Stock::getIngredientItems() { return this->ingredient_items; }
 
 void Stock::addIngredient(const std::shared_ptr<Ingredient> &ingredient, const size_t& amount)
 {
@@ -19,7 +21,7 @@ void Stock::deleteIngredient(const size_t& id)
 {
 	for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
 	{
-		if (id == (*i)->getID())
+		if (id == (*i)->getIngredient()->getID())
 		{
 			ingredient_items.remove(*i); return;
 		}
@@ -69,8 +71,21 @@ std::shared_ptr<Ingredient> Stock::getIngredient(const size_t& id)
 {
 	for (auto i = ingredient_items.begin() ; i != ingredient_items.end(); i++)
 	{
-		if (id == (*i)->getID())
+		if (id == (*i)->getIngredient()->getID())
 			return (*i)->getIngredient();
+	}
+
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id -> " + std::to_string(id)));
+}
+
+std::shared_ptr<RecipeItem> Stock::getItemByIngredientID(const size_t& id) const
+{
+	for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
+	{
+		if (id == (*i)->getIngredient()->getID())
+		{
+			return (*i);
+		}
 	}
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id -> " + std::to_string(id)));
@@ -80,7 +95,9 @@ std::shared_ptr<RecipeItem> Stock::getItem(const size_t& id) const
 	for (auto i = ingredient_items.begin(); i != ingredient_items.end(); i++)
 	{
 		if (id == (*i)->getID())
+		{
 			return (*i);
+		}
 	}
 
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id -> " + std::to_string(id)));
@@ -88,7 +105,16 @@ std::shared_ptr<RecipeItem> Stock::getItem(const size_t& id) const
 size_t Stock::getIngredientCount() const { return this->ingredient_items.size(); }
 bool Stock::checkIngredientAmount(const size_t& id, const size_t& amount) const
 {
-	if (getItem(id)->getAmount() >= amount)
-		return true;
+	try
+	{
+		if (getItemByIngredientID(id)->getAmount() >= amount)
+			return true;
+	}
+	catch (const DatabaseException& ex)
+	{
+		system("CLS");
+		ex.echo();
+		FileHelper::writeLog("stock_side.log", ex.getData());
+	}
 	return false;
 }
