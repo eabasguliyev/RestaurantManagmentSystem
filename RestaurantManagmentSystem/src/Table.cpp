@@ -2,8 +2,6 @@
 #include "Exception.h"
 #include "Order.h"
 #include <istream>
-#include "DatabaseHelper.h"
-
 size_t Table::current_id = NULL;
 
 void Table::setTableNo(const std::string& table_no) { this->table_no = table_no; }
@@ -137,6 +135,7 @@ void Table::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& 
 	}
 	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id ->" + std::to_string(ingredient_id)));
 }
+
 void Table::addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount)
 {
 	std::list<std::shared_ptr<RecipeItem>> &ingredient_items = meal->getIngredientItems();
@@ -154,14 +153,4 @@ void Table::addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ing
 
 	meal->addIngredient(ingredient, amount);
 	//meal->increasePrice(ingredient->getPrice(), amount);
-}
-size_t Table::countAcceptedOrders() const
-{
-	size_t counter = 0;
-	for (auto& order : this->orders)
-	{
-		if (order->getOrderStatus() == ACCEPTED)
-			counter++;
-	}
-	return counter;
 }

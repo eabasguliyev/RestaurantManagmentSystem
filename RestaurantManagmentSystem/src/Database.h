@@ -97,6 +97,4 @@ public:
 	void login(const std::string& username, const std::string& password) const;
 
 	void increaseBudget(std::shared_ptr<double>& restaurantBudget, const double& amount);
-
-	void setMealRate(const std::shared_ptr<Meal>& meal, const double& menu_rating);
 };

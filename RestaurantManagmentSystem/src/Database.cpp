@@ -609,16 +609,5 @@ size_t Database::countNewNotifications() const {
 	return counter;
 }
 std::list<Notification>& Database::getNotifications() {return this->notifications; }
-void Database::setMealRate(const std::shared_ptr<Meal>& meal, const double& menu_rating)
-{
-	for (auto& meal : this->meals)
-	{
-		if (meal->getID() == meal->getID())
-		{
-			meal->increaseMenuRating(menu_rating);
-			return;
-		}
-	}
-}
 //std::list<Notification>& Database::getClientNotifications() { return this->client_notifications; }
 //std::list<Notification>& Database::getKitchenNotifications() { return this->kitchen_notifications; }

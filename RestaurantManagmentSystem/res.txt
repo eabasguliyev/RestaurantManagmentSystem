@@ -2,7 +2,7 @@ Green Garden 145
 Baku
 Azerbaijan
 F.Bayramov St. 1130/33
-311
+225
 40
 8
 2
@@ -14,12 +14,12 @@ Administrator
 Elgun
 4842626765116403514
 1
-4
+2
 4
 1
 Dolma
 Isti yemekler
-2.25
+4.5
 25
 1
 1
@@ -61,16 +61,16 @@ Mushroom
 5
 5
 7
-8
-basdirma
-qazan
-2.3
+15
+pilov
+qazan yemekleri
+3.6
 0
 0
 7
 5
 4
-90
+0
 1
 Kartof
 5
@@ -106,7 +106,7 @@ kartof
 5
 1
 8
-9
+33
 7
 soghan
 1
@@ -114,8 +114,8 @@ soghan
 3
 7
 1.5
-117
-110
+97
+90
 1
 1
 LoginSide
@@ -565,104 +565,4 @@ Administrator logged in
 1
 LoginSide
 8/1/2021 2:41
-Administrator logged in
-98
-0
-LoginSide
-8/1/2021 2:42
-Administrator logged in
-99
-0
-LoginSide
-8/1/2021 3:12
-Administrator logged in
-100
-0
-Client
-8/1/2021 3:13
-You have a new customer. Table -> T-1
-101
-0
-Client
-8/1/2021 3:13
-Client ordered this meal -> Dolma
-102
-0
-Client
-8/1/2021 3:13
-Client ordered this meal -> Pizza
-103
-1
-Client
-8/1/2021 3:14
-Client ordered this meal -> kartof qizartmasi
-104
-0
-LoginSide
-8/1/2021 3:14
-Administrator logged in
-105
-0
-Client
-8/1/2021 3:18
-Client left the restaurant! Table no -> T-1
-106
-0
-LoginSide
-8/1/2021 3:18
-Administrator logged in
-107
-0
-LoginSide
-8/1/2021 3:36
-Administrator logged in
-108
-0
-LoginSide
-8/1/2021 3:36
-Administrator logged in
-109
-0
-LoginSide
-8/1/2021 3:38
-Administrator logged in
-110
-0
-Client
-8/1/2021 3:38
-You have a new customer. Table -> T-1
-111
-0
-Client
-8/1/2021 3:38
-Client added this ingredient id -> 3 to this meal -> basdirma
-112
-0
-Client
-8/1/2021 3:39
-Client added this ingredient id -> 7 to this meal -> basdirma
-113
-0
-Client
-8/1/2021 3:39
-Client added this ingredient id -> 7 to this meal -> basdirma
-114
-0
-Client
-8/1/2021 3:39
-Client added this ingredient id -> 7 to this meal -> basdirma
-115
-0
-Client
-8/1/2021 3:39
-Client deleted this ingredient from this meal -> basdirma:Ingredient id: 7	- Amount: 5
-116
-0
-Client
-8/1/2021 3:39
-Client ordered this meal -> basdirma
-117
-0
-LoginSide
-8/1/2021 3:40
 Administrator logged in
