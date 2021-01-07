@@ -53,7 +53,7 @@ public:
 	bool acceptOrder(std::shared_ptr<Order> order, const bool& del = false);
 	bool acceptAllOrder(std::shared_ptr<double>& restaurantBudget);
 	void declineOrder(std::shared_ptr<Order>& order, const bool& del = false);
-	void declineAllOrder();
+	bool declineAllOrder();
 	void deleteOrder(std::shared_ptr<Order> order);
 	void deleteAllOrders();
 	void deleteNewOrder(std::shared_ptr<Order> order);

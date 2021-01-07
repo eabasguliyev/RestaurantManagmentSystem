@@ -22,6 +22,8 @@ public:
 		setKcal(kcal);
 		setPrice(price);
 	}
+	static void setStaticID(const size_t& id);
+	static size_t getStaticID();
 
 	void setName(const std::string& name);
 	void setFats(const double& fats);

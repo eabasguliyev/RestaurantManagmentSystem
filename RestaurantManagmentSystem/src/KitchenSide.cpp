@@ -33,7 +33,7 @@ void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& rest
 			system("CLS");
 			if (!db.showAllOrder(true))
 			{
-				Console::displayMessageBox("Info", "There is no order!", MB_ICONWARNING | MB_OK);
+				Console::displayMessageBox("Info", "There is no new order!", MB_ICONWARNING | MB_OK);
 				continue;
 			}
 			Console::wait();
@@ -93,6 +93,8 @@ void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& rest
 			{
 				if (db.acceptAllOrder(restaurantBudget))
 					Console::displayMessageBox("Info", "All orders accepted!", MB_ICONINFORMATION | MB_OK);
+				else
+					Console::displayMessageBox("Info", "There is no new order!!", MB_ICONWARNING | MB_OK);
 			}
 			else
 				continue; // send notf
@@ -102,8 +104,10 @@ void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& rest
 			int id = Console::displayMessageBox("Info", "Are you sure to decline all orders?", MB_ICONWARNING | MB_YESNO);
 			if (id == 6)
 			{
-				db.declineAllOrder();
-				Console::displayMessageBox("Info", "All orders declined!", MB_ICONINFORMATION | MB_OK);
+				if(db.declineAllOrder())
+					Console::displayMessageBox("Info", "All orders declined!", MB_ICONINFORMATION | MB_OK);
+				else
+					Console::displayMessageBox("Info", "There is no new order!!", MB_ICONWARNING | MB_OK);
 			}
 			else
 				continue; //send notf

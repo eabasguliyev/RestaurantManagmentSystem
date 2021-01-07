@@ -1,7 +1,7 @@
 #pragma once
 #include "Base.h"
 #include <list>
-
+#include "Meal.h"
 class Order;
 class Table : public Base
 {
@@ -37,6 +37,7 @@ public:
 	void deleteAllNewOrders(const bool& byClient = true);
 	bool showOrders(const bool& neworders = false) const;
 	bool operator==(const Table&) const;
-
+	void deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount, const size_t& order_count);
+	void addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount);
 	void printNotf() const;
 };

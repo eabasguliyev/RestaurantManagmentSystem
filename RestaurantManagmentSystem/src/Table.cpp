@@ -112,3 +112,45 @@ bool Table::showOrders(const bool& neworders) const
 	return true;
 }
 bool Table::operator==(const Table& table) const { return this->getID() == table.getID(); }
+
+void Table::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount, const size_t& order_count) {
+	std::list<std::shared_ptr<RecipeItem>>& ingredient_items = meal->getIngredientItems();
+	for (auto& ingredient_item : ingredient_items)
+	{
+		if (ingredient_id == ingredient_item->getIngredient()->getID())
+		{
+			if (amount == 0)
+			{
+				meal->deleteIngredientByID(ingredient_id);
+				//meal->decreasePrice(ingredient_item->getIngredient()->getPrice(), ingredient_item->getAmount() * order_count);
+			}
+			else
+			{
+				meal->decreaseAmountOfIngredient(ingredient_item, amount);
+				meal->decreasePrice(ingredient_item->getIngredient()->getPrice(), amount);
+			}
+
+			return;
+		}
+	}
+	throw DatabaseException(__LINE__, __TIME__, __FILE__, std::string("There is no ingredient associated this id ->" + std::to_string(ingredient_id)));
+}
+
+void Table::addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount)
+{
+	std::list<std::shared_ptr<RecipeItem>> &ingredient_items = meal->getIngredientItems();
+
+	for (auto& i : ingredient_items)
+	{
+		if (ingredient->getID() == i->getIngredient()->getID())
+		{
+			i->setAmount(i->getAmount() + amount);
+			meal->increasePrice(i->getIngredient()->getPrice(), amount);
+			return;
+		}
+	}
+	// eger meal icherisinde hemin ingredient olmasa yenisi elave olunur
+
+	meal->addIngredient(ingredient, amount);
+	//meal->increasePrice(ingredient->getPrice(), amount);
+}

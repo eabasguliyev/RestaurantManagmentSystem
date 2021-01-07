@@ -76,7 +76,8 @@ void FileHelper::writeToFile(Restaurant& res) {
 		//stock
 		std::list<std::shared_ptr<RecipeItem>> ingredient_items =
 			res.db.stock.getIngredientItems();
-
+			
+		fout << Ingredient::getStaticID() << std::endl;
 		fout << ingredient_items.size() << std::endl;
 
 		for (auto& ingredient_item : ingredient_items)
@@ -85,6 +86,7 @@ void FileHelper::writeToFile(Restaurant& res) {
 			fout << ingredient_item->getAmount() << std::endl;
 
 			std::shared_ptr<Ingredient> ingredient = ingredient_item->getIngredient();
+
 
 			fout << ingredient->getID() << std::endl;
 			fout << ingredient->getName() << std::endl;
@@ -259,6 +261,8 @@ bool FileHelper::readFromFile(Restaurant& res) {
 
 		//stocks
 
+		std::getline(fin, tmp);
+		Ingredient::setStaticID(stoi(tmp));
 
 		std::getline(fin, tmp);
 		size_t items_count = stoi(tmp);

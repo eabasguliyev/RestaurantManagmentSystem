@@ -29,6 +29,7 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 			{
 				table->setTableStatus(true);
 				Console::displayMessageBox("Welcome!", "Enjoy with our delicious meals!", MB_ICONINFORMATION | MB_OK);
+				db.addNotification(Notification("Client", "You have a new customer. Table -> " + table->getTableNo()));
 			}
 
 			//else
@@ -48,7 +49,7 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 						table->clearNotification();
 						table->setTableStatus(false);
 						Console::displayMessageBox("Goodbye", "Thank you for choosing us!", MB_ICONINFORMATION | MB_OK);
-						db.addNotification(Notification("Client", "Client left the restaurant!"));
+						db.addNotification(Notification("Client", "Client left the restaurant! Table no -> " + table->getTableNo()));
 						break;
 					}
 					else
@@ -68,7 +69,7 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 						std::getline(std::cin, name);
 
 						db.filterMeals(name);
-						db.addNotification(Notification("Client", "Client searched this keyword -> " + name));
+						db.addNotification(Notification("Client", "Client searched this keyword -> " + name + ". Table no -> " + table->getTableNo()));
 					}
 					catch (const Exception& ex)
 					{
@@ -90,7 +91,8 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 					else
 					{
 						Console::displayMessageBox("Info", "There is no notifications for you!", MB_ICONWARNING | MB_OK);
-						db.addNotification(Notification("Client", "Client looked at notifications. He is probably waiting for his order. Check new orders!"));
+						db.addNotification(Notification("Client", "Client looked at notifications. Table no -> " +
+							table->getTableNo() + " . He is probably waiting for his order. Check new orders!"));
 					}
 				}
 				else if (tableChoice == SHOWTMEALS)
@@ -134,6 +136,8 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 						size_t orderAmount = atoi(amount);
 						Meal tmp = db.getMeal(atoi(meal_id));
 						std::shared_ptr<Meal> meal(new Meal(db.getMeal(atoi(meal_id))));
+						Meal::current_id--;
+						meal->setID(tmp.getID());
 
 						while (1)
 						{
@@ -158,11 +162,26 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 
 							if (orderChoice == ORDERMEAL)
 							{
-								db.addOrder(table, meal, orderAmount);
-								system("CLS");
-								Console::displayMessageBox("Info", "Order sent! Thank you!", MB_ICONINFORMATION | MB_OK);
-								db.addNotification(Notification("Client", "Client ordered this meal -> " + meal->getName()));
-								break;
+								size_t ingredient_count = meal->getIngredientItems().size();
+								if (ingredient_count != 0 && meal->getPrice() != 0)
+								{
+									db.addOrder(table, meal, orderAmount);
+									system("CLS");
+									Console::displayMessageBox("Info", "Order sent! Thank you!", MB_ICONINFORMATION | MB_OK);
+									db.addNotification(Notification("Client", "Client ordered this meal -> " + meal->getName()));
+									break;
+								}
+								else
+								{
+									if (ingredient_count == 0)
+									{
+										Console::displayMessageBox("Info", "Please add minimum one ingredient to the meal!", MB_ICONWARNING | MB_OK);
+									}
+									else if (meal->getPrice() == 0)
+									{
+										Console::displayMessageBox("Info", "Please increase ingredient count!", MB_ICONWARNING | MB_OK);
+									}
+								}
 							}
 							else if (orderChoice == ADDMOREING)
 							{
@@ -193,9 +212,9 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 
 									if (atoi(amountIng) < 1)
 										throw ClientException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero");
-									db.addIngredientToMeal(meal, db.stock.getIngredient(atoi(ingredient_id)), atoi(amountIng)); // ingredient varsa sayini artirir
+									table->addIngredientToMeal(meal, db.stock.getIngredient(atoi(ingredient_id)), atoi(amountIng)); // ingredient varsa sayini artirir
 																															 // yoxdursa yenisini elave edir
-									db.addNotification(Notification("Client", "Client added this ingredient -> " + std::to_string(atoi(ingredient_id)) +
+									db.addNotification(Notification("Client", "Client added this ingredient id -> " + std::to_string(atoi(ingredient_id)) +
 										" to this meal -> " + meal->getName()));
 									Console::displayMessageBox("Info", "Ingredient added!", MB_ICONINFORMATION | MB_OK);
 								}
@@ -213,6 +232,8 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 								if (id == 6)
 								{
 									meal = std::shared_ptr<Meal>(new Meal(tmp));
+									Meal::current_id--;
+									meal->setID(tmp.getID());
 									continue;
 								}
 							}
@@ -221,15 +242,8 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 								Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Delete Ingredient from Meal"));
 								try
 								{
-									char meal_id[255], ingredient_id[255], amountIng[255];
-									std::cout << "Meal ID: ";
-
-									std::cin.getline(meal_id, 255);
-
-									if (!DatabaseHelper::checkNumericInput(meal_id))
-										throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
-
-									std::shared_ptr<Meal> meal = db.getMeal(atoi(meal_id));
+									system("CLS");
+									char ingredient_id[255]{}, amountIng[255]{};
 
 									meal->printRecipe();
 
@@ -258,18 +272,15 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 											throw AdminException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero!");
 										if (atof(amountIng) - atoi(amountIng))
 											throw ClientException(__LINE__, __TIME__, __FILE__, "Amount must be integer value!");
-
-										db.addNotification(Notification("Client", "Client deleted this ingredient from this meal -> " + meal->getName() + ":\nIngredient id: " + 
-										std::to_string(atoi(ingredient_id)) + "		-	 Amount: " + std::to_string(atoi(amountIng))));
-
 									}
+
+									table->deleteIngredientFromMeal(meal, atoi(ingredient_id), atoi(amountIng), orderAmount);
+									if(atoi(amountIng) != 0)
+										db.addNotification(Notification("Client", "Client deleted this ingredient from this meal -> " + meal->getName() + ":Ingredient id: " +
+											std::to_string(atoi(ingredient_id)) + "	- Amount: " + std::to_string(atoi(amountIng))));
 									else
-									{
-										db.addNotification(Notification("Client", "Client deleted this ingredient from this meal -> " + meal->getName() + ":\nIngredient id: " +
+										db.addNotification(Notification("Client", "Client deleted this ingredient from this meal -> " + meal->getName() + ":Ingredient id: " +
 											std::to_string(atoi(ingredient_id))));
-									}
-									db.deleteIngredientFromMeal(meal, atoi(ingredient_id), atoi(amountIng));
-
 									Console::displayMessageBox("Info", "Ingredient deleted!", MB_ICONINFORMATION | MB_OK);
 								}
 								catch (const DatabaseException& ex)
@@ -313,7 +324,7 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: All new Orders"));
 					if (!table->showOrders(true))
 					{
-						Console::displayMessageBox(":(", "There is no order! Place a new order!", MB_ICONEXCLAMATION | MB_OK);
+						Console::displayMessageBox(":(", "There is no new order! Place a new order!", MB_ICONEXCLAMATION | MB_OK);
 						continue;
 					}
 					Console::wait();

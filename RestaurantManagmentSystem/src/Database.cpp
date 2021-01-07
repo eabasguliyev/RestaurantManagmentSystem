@@ -198,7 +198,9 @@ bool Database::acceptAllOrder(std::shared_ptr<double>& restaurantBudget)
 		}
 	}
 
-	deleteAllNewOrders();
+	if(anyAcceptedOrder)
+		deleteAllNewOrders();
+
 	return anyAcceptedOrder;
 }
 void Database::declineOrder(std::shared_ptr<Order>& order, const bool& del)
@@ -209,14 +211,19 @@ void Database::declineOrder(std::shared_ptr<Order>& order, const bool& del)
 	if(del)
 		deleteNewOrder(order);
 }
-void Database::declineAllOrder()
+bool Database::declineAllOrder()
 {
+	bool anyDeclinedOrders = false;
 	for (auto i : this->newOrders)
 	{
 		declineOrder(i);
+		anyDeclinedOrders = true;
 	}
 
-	deleteAllNewOrders();
+	if(anyDeclinedOrders)
+		deleteAllNewOrders();
+
+	return anyDeclinedOrders;
 }
 void Database::showOrdersByTable(const std::string& table_no, const bool& shortInfo)
 {
@@ -389,7 +396,7 @@ void Database::updateMeal(std::shared_ptr<Meal> &old_meal, const std::shared_ptr
 	Meal::current_id--;
 }
 void Database::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount){
-	std::list<std::shared_ptr<RecipeItem>> ingredient_items = meal->getIngredientItems();
+	std::list<std::shared_ptr<RecipeItem>>& ingredient_items = meal->getIngredientItems();
 	for (auto& ingredient_item : ingredient_items)
 	{
 		if (ingredient_id == ingredient_item->getIngredient()->getID())
@@ -397,6 +404,7 @@ void Database::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_
 			if (amount == 0)
 			{
 				meal->deleteIngredientByID(ingredient_id);
+				//meal->decreasePrice(ingredient_item->getIngredient()->getPrice(), ingredient_item->getAmount());
 			}
 			else
 			{
@@ -412,7 +420,7 @@ void Database::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_
 }
 void Database::addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount)
 {
-	std::list<std::shared_ptr<RecipeItem>> ingredient_items = meal->getIngredientItems();
+	std::list<std::shared_ptr<RecipeItem>> &ingredient_items = meal->getIngredientItems();
 
 	for (auto& i : ingredient_items)
 	{
@@ -426,6 +434,7 @@ void Database::addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<
 	// eger meal icherisinde hemin ingredient olmasa yenisi elave olunur
 
 	meal->addIngredient(ingredient, amount);;
+	//meal->increasePrice(ingredient->getPrice(), amount);
 	setModifiedStatus(true);
 }
 std::shared_ptr<Meal>& Database::getMeal(const size_t& id){

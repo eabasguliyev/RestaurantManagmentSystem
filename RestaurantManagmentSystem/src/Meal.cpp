@@ -61,8 +61,8 @@ void Meal::deleteIngredientByID(const size_t& id)
 	{
 		if (id == (*i)->getIngredient()->getID())
 		{
-			ingredients.remove(*i);
 			decreasePrice((*i)->getIngredient()->getPrice(), (*i)->getAmount());
+			ingredients.remove(*i);
 			return;
 		}
 	}

@@ -2,15 +2,19 @@ Green Garden 145
 Baku
 Azerbaijan
 F.Bayramov St. 1130/33
-0
+225
 40
-4
+8
+2
 1
+Administrator
+511478433174887626
 1
-admin
-17265546554381246504
+6
+Elgun
+4842626765116403514
 1
-16
+2
 4
 1
 Dolma
@@ -31,32 +35,10 @@ Kartof
 Pizza
 Italian
 3.6
-0
-0
-3
-Burger 1
-Fastfood
-4.3
-0
-0
-4
-Burger 2
-Fastfood
-4.8
-0
-0
-3
-2
-10
+12
 1
-Kartof
-5
-5
-5
-5
-5
-3
-15
+2
+2
 2
 Kok
 5
@@ -64,7 +46,48 @@ Kok
 5
 5
 6
+3
+kartof qizartmasi
+qizartma
+4.9
+14
+1
+3
+2
+3
+Mushroom
+5
+5
+5
+5
+7
+15
+pilov
+qazan yemekleri
+3.6
+0
+0
+7
+5
 4
+0
+1
+Kartof
+5
+5
+5
+5
+5
+5
+5
+2
+Kok
+5
+5
+5
+5
+6
+6
 30
 3
 Mushroom
@@ -73,8 +96,26 @@ Mushroom
 5
 5
 7
-20
-13
+7
+23
+6
+kartof
+1
+2
+3
+5
+1
+8
+33
+7
+soghan
+1
+2
+3
+7
+1.5
+97
+90
 1
 1
 LoginSide
@@ -116,22 +157,22 @@ LoginSide
 7/1/2021 12:14
 admin logged in
 16
-0
+1
 LoginSide
 7/1/2021 12:16
 admin logged in
 17
-0
+1
 LoginSide
 7/1/2021 12:26
 admin logged in
 18
-0
+1
 LoginSide
 7/1/2021 12:30
 admin logged in
 19
-0
+1
 LoginSide
 7/1/2021 12:31
 admin logged in
@@ -140,3 +181,388 @@ admin logged in
 LoginSide
 7/1/2021 12:32
 admin logged in
+21
+1
+LoginSide
+7/1/2021 13:4
+admin logged in
+22
+1
+LoginSide
+7/1/2021 15:22
+admin logged in
+23
+1
+LoginSide
+7/1/2021 15:22
+admin logged in
+24
+1
+LoginSide
+7/1/2021 15:23
+admin logged in
+25
+1
+LoginSide
+7/1/2021 15:24
+admin logged in
+26
+1
+LoginSide
+7/1/2021 15:26
+admin logged in
+27
+1
+LoginSide
+7/1/2021 15:29
+admin logged in
+28
+1
+LoginSide
+7/1/2021 15:31
+admin logged in
+29
+1
+LoginSide
+7/1/2021 15:33
+admin logged in
+30
+1
+LoginSide
+7/1/2021 22:56
+admin logged in
+31
+1
+Client
+7/1/2021 23:7
+Client interested this meal -> Dolma
+32
+1
+Client
+7/1/2021 23:7
+Client left the restaurant!
+33
+1
+LoginSide
+7/1/2021 23:7
+admin logged in
+34
+1
+Client
+7/1/2021 23:10
+Client looked at notifications. He is probably waiting for his order. Check new orders!
+35
+1
+Client
+7/1/2021 23:10
+Client interested this meal -> kartof qizartmasi
+36
+1
+Client
+7/1/2021 23:10
+Client left the restaurant!
+37
+1
+LoginSide
+7/1/2021 23:10
+admin logged in
+38
+1
+LoginSide
+7/1/2021 23:14
+admin logged in
+39
+1
+LoginSide
+7/1/2021 23:15
+admin logged in
+40
+1
+LoginSide
+7/1/2021 23:17
+admin logged in
+41
+1
+LoginSide
+7/1/2021 23:29
+admin logged in
+42
+1
+Client
+7/1/2021 23:50
+Client searched this keyword -> p. Table no -> T-1
+43
+1
+Client
+7/1/2021 23:50
+Client searched this keyword -> pilov. Table no -> T-1
+44
+1
+Client
+7/1/2021 23:51
+Client ordered this meal -> Dolma
+45
+1
+Client
+7/1/2021 23:51
+Client deleted this order id -> 1
+46
+1
+LoginSide
+7/1/2021 23:51
+admin logged in
+47
+1
+Client
+8/1/2021 0:1
+Client ordered this meal -> Dolma
+48
+1
+Client
+8/1/2021 0:1
+Client ordered this meal -> Dolma
+49
+1
+Client
+8/1/2021 0:1
+Client ordered this meal -> Pizza
+50
+1
+Client
+8/1/2021 0:1
+Client deleted this order id -> 2
+51
+1
+Client
+8/1/2021 0:1
+Client deleted this order id -> 3
+52
+1
+Client
+8/1/2021 0:1
+Client deleted this order id -> 4
+53
+1
+Client
+8/1/2021 0:2
+Client ordered this meal -> Dolma
+54
+1
+Client
+8/1/2021 0:2
+Client updated this order id -> 1
+55
+1
+Client
+8/1/2021 0:2
+Client ordered this meal -> Dolma
+56
+1
+Client
+8/1/2021 0:2
+Client ordered this meal -> Pizza
+57
+1
+Client
+8/1/2021 0:8
+Client added this ingredient -> 6 to this meal -> pilov
+58
+1
+Client
+8/1/2021 0:8
+Client added this ingredient -> 7 to this meal -> pilov
+59
+1
+Client
+8/1/2021 0:8
+Client deleted this ingredient from this meal -> pilov: Ingredient id: 7		-	 Amount: 6
+60
+1
+Client
+8/1/2021 0:9
+Client ordered this meal -> pilov
+61
+1
+Client
+8/1/2021 0:10
+Client ordered this meal -> Dolma
+62
+1
+LoginSide
+8/1/2021 0:14
+Someone trying to login as 0
+63
+1
+LoginSide
+8/1/2021 0:14
+admin logged in
+64
+1
+Client
+8/1/2021 0:17
+Client left the restaurant! Table no -> T-1
+65
+1
+LoginSide
+8/1/2021 0:17
+admin logged in
+66
+1
+Client
+8/1/2021 0:19
+Client added this ingredient -> 6 to this meal -> pilov
+67
+1
+Client
+8/1/2021 0:21
+Client ordered this meal -> pilov
+68
+1
+LoginSide
+8/1/2021 0:21
+admin logged in
+69
+1
+Client
+8/1/2021 0:23
+Client left the restaurant! Table no -> T-4
+70
+1
+LoginSide
+8/1/2021 0:23
+admin logged in
+71
+1
+Client
+8/1/2021 0:26
+Client left the restaurant! Table no -> T-39
+72
+1
+Client
+8/1/2021 0:26
+Client ordered this meal -> kartof qizartmasi
+73
+1
+LoginSide
+8/1/2021 0:26
+admin logged in
+74
+0
+Client
+8/1/2021 0:27
+Client left the restaurant! Table no -> T-9
+75
+0
+Client
+8/1/2021 0:27
+Client left the restaurant! Table no -> T-4
+76
+0
+LoginSide
+8/1/2021 0:28
+admin logged in
+77
+0
+Client
+8/1/2021 0:28
+Client left the restaurant! Table no -> T-19
+78
+0
+LoginSide
+8/1/2021 0:53
+admin logged in
+79
+0
+Client
+8/1/2021 2:28
+You have a new customer. Table -> T-1
+80
+0
+Client
+8/1/2021 2:28
+Client added this ingredient id -> 6 to this meal -> Pizza
+81
+0
+Client
+8/1/2021 2:29
+Client deleted this ingredient from this meal -> Pizza:Ingredient id: 6
+82
+0
+Client
+8/1/2021 2:29
+Client added this ingredient id -> 6 to this meal -> Pizza
+83
+0
+Client
+8/1/2021 2:29
+Client deleted this ingredient from this meal -> Pizza:Ingredient id: 6	- Amount: 3
+84
+0
+Client
+8/1/2021 2:29
+Client ordered this meal -> Pizza
+85
+0
+LoginSide
+8/1/2021 2:29
+admin logged in
+86
+0
+Client
+8/1/2021 2:31
+Client left the restaurant! Table no -> T-1
+87
+0
+LoginSide
+8/1/2021 2:31
+admin logged in
+88
+1
+LoginSide
+8/1/2021 2:32
+Elgun logged in
+89
+0
+Client
+8/1/2021 2:36
+You have a new customer. Table -> T-1
+90
+0
+Client
+8/1/2021 2:37
+Client added this ingredient id -> 6 to this meal -> pilov
+91
+0
+Client
+8/1/2021 2:37
+Client deleted this ingredient from this meal -> pilov:Ingredient id: 6	- Amount: 6
+92
+0
+Client
+8/1/2021 2:38
+Client ordered this meal -> pilov
+93
+0
+LoginSide
+8/1/2021 2:38
+Elgun logged in
+94
+0
+Client
+8/1/2021 2:39
+Client left the restaurant! Table no -> T-1
+95
+0
+LoginSide
+8/1/2021 2:39
+Elgun logged in
+96
+0
+LoginSide
+8/1/2021 2:40
+Administrator logged in
+97
+1
+LoginSide
+8/1/2021 2:41
+Administrator logged in

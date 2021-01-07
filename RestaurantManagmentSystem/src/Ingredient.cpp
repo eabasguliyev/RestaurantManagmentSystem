@@ -1,6 +1,8 @@
 #include "Ingredient.h"
 
 size_t Ingredient::current_id = NULL;
+void Ingredient::setStaticID(const size_t& id) { current_id = id; }
+size_t Ingredient::getStaticID() { return current_id; }
 
 void Ingredient::setName(const std::string& name) { this->name = name; }
 void Ingredient::setFats(const double& fats) { this->fats = fats; }
