@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\FileHelper.cpp" />
     <ClCompile Include="src\LoginSide.cpp" />
     <ClCompile Include="src\AdminSide.cpp" />
     <ClCompile Include="src\ClientSide.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="src\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\FileHelper.h" />
     <ClInclude Include="src\AdminSide.h" />
     <ClInclude Include="src\ClientSide.h" />
     <ClInclude Include="src\DatabaseSide.h" />
