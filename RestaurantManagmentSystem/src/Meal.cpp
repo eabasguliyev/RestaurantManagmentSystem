@@ -7,11 +7,16 @@ void Meal::setStaticID(const size_t& ID) { current_id = ID; }
 size_t Meal::getStaticID() { return current_id; }
 
 void Meal::setName(const std::string& name) { this->name = name; }
-void Meal::setMenuRating(double menu_rating)
+void Meal::setMenuRating(const double& menu_rating)
 {
 	//assert(menu_rating >= 0 && menu_rating <= 10 && "Menu rating must be between 0 and 10");
 	this->menu_rating = menu_rating;
 } //tamamla burani
+
+void Meal::increaseMenuRating(const double& menu_rating)
+{
+	this->menu_rating = (this->menu_rating + menu_rating) / 2.0;
+}
 void Meal::setCategory(const std::string& category)
 {
 	//assert(category && "Please enter the category!");

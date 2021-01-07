@@ -39,5 +39,7 @@ public:
 	bool operator==(const Table&) const;
 	void deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount, const size_t& order_count);
 	void addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount);
+	size_t countAcceptedOrders() const;
+	void rateMeals();
 	void printNotf() const;
 };

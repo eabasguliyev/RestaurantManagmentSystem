@@ -173,6 +173,7 @@ bool FileHelper::readFromFile(Restaurant& res) {
 
 		res = restaurant;
 
+		//admins
 		std::string adminStaticID;
 		std::string tmp;
 		size_t adminCounts;

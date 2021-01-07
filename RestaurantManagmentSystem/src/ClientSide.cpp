@@ -45,6 +45,47 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 				{
 					if (table->getNewOrders().empty())
 					{
+						if (table->countAcceptedOrders())
+						{
+							size_t id = Console::displayMessageBox("Rate", "Do you want to rate meals?", MB_ICONINFORMATION | MB_YESNO | MB_DEFBUTTON1);
+
+							if (id == 6)
+							{
+								auto &orders = table->getOrders();
+								for (auto& order : orders)
+								{
+									if (order->getOrderStatus() == ACCEPTED)
+									{
+										while (1)
+										{
+											try
+											{
+												system("CLS");
+												char rating[255];
+												std::cout << "Rate for meal [0-5] : ";
+												std::cin.getline(rating, 255);
+
+												if (!DatabaseHelper::checkNumericInput(rating))
+													throw ClientException(__LINE__, __TIME__, __FILE__, std::string("Rating must be numeric value!"));
+												if (atof(rating) < 0 && atof(rating) > 5)
+													throw ClientException(__LINE__, __TIME__, __FILE__, std::string("Rating must be between 0 and 5"));
+
+												db.setMealRate(order->getMeal(), atof(rating));
+												break;
+											}
+											catch (const ClientException& ex)
+											{
+												ex.echo();
+												FileHelper::writeLog("client_side.log", ex.getData());
+											}
+										}
+									}
+								}
+							}
+
+							Console::displayMessageBox(":)", "Thank you!", MB_ICONINFORMATION | MB_OK);
+						}
+
 						table->deleteAllOrders();
 						table->clearNotification();
 						table->setTableStatus(false);

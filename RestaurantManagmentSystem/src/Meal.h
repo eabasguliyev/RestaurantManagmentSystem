@@ -30,7 +30,8 @@ public:
 	}
 	void setName(const std::string& name);
 	void setCategory(const std::string& category);
-	void setMenuRating(double menu_rating);
+	void setMenuRating(const double& menu_rating);
+	void increaseMenuRating(const double& menu_rating);
 	void increasePrice(const double& ingredientPrice, const size_t& count);
 	void decreasePrice(const double& ingredientPrice, const size_t& count);
 	void setIngredientItems(const std::list<std::shared_ptr<RecipeItem>>& ing_items);
