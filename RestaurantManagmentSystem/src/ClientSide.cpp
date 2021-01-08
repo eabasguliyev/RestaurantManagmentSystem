@@ -45,6 +45,56 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 				{
 					if (table->getNewOrders().empty())
 					{
+						size_t accepted_orders = table->countAcceptedOrders();
+
+						if (accepted_orders != 0)
+						{
+							size_t id = Console::displayMessageBox("Rate", "Do you wante to rate meals?", MB_ICONINFORMATION | MB_YESNO | MB_DEFBUTTON1);
+
+							if (id == 6)
+							{
+								auto& orders = table->getOrders();
+
+								for (auto& order : orders)
+								{
+									if (order->getOrderStatus() == ACCEPTED)
+									{
+										while (1)
+										{
+											try
+											{
+												char rate[255]{};
+												system("CLS");
+												order->fullInfo();
+
+												std::cout << std::string(36, '#') << std::endl;
+
+												std::cout << "Rate: ";
+
+												std::cin.getline(rate, 255);
+
+												if (!DatabaseHelper::checkNumericInput(rate))
+													throw ClientException(__LINE__, __TIME__, __FILE__, "Rate must be numeric value!");
+												else if (atof(rate) < 0 && atof(rate) > 5)
+													throw ClientException(__LINE__, __TIME__, __FILE__, "Rate must be between 0 and 5!");
+
+												db.setMealRating(order->getMeal(), atof(rate));
+												break;
+											}
+											catch (const ClientException& ex)
+											{
+												ex.echo();
+												FileHelper::writeLog("client_side.log", ex.getData());
+												Console::wait();
+											}
+										}
+									}
+								}
+
+								Console::displayMessageBox(":)", "Thank you for your rates!", MB_ICONINFORMATION | MB_OK);
+							}
+						}
+
 						table->deleteAllOrders();
 						table->clearNotification();
 						table->setTableStatus(false);
@@ -136,7 +186,6 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 						size_t orderAmount = atoi(amount);
 						Meal tmp = db.getMeal(atoi(meal_id));
 						std::shared_ptr<Meal> meal(new Meal(db.getMeal(atoi(meal_id))));
-						Meal::current_id--;
 						meal->setID(tmp.getID());
 
 						while (1)
@@ -232,7 +281,6 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 								if (id == 6)
 								{
 									meal = std::shared_ptr<Meal>(new Meal(tmp));
-									Meal::current_id--;
 									meal->setID(tmp.getID());
 									continue;
 								}

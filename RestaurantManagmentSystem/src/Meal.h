@@ -28,6 +28,11 @@ public:
 		setIngredientItems(meal->getIngredientItems());
 		setPrice(meal->getPrice());
 	}
+
+	void increaseRating(const double& rate)
+	{
+		this->menu_rating = (this->menu_rating + rate) / 2.0;
+	}
 	void setName(const std::string& name);
 	void setCategory(const std::string& category);
 	void setMenuRating(double menu_rating);

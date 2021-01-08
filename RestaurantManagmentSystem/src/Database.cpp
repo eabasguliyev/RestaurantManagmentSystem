@@ -393,7 +393,6 @@ void Database::updateMeal(std::shared_ptr<Meal> &old_meal, const std::shared_ptr
 	old_meal->setCategory(new_meal->getCategory());
 	old_meal->setMenuRating(new_meal->getMenuRating());
 	setModifiedStatus(true);
-	Meal::current_id--;
 }
 void Database::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount){
 	std::list<std::shared_ptr<RecipeItem>>& ingredient_items = meal->getIngredientItems();

@@ -4,6 +4,16 @@
 #include <istream>
 size_t Table::current_id = NULL;
 
+size_t Table::countAcceptedOrders() const
+{
+	size_t counter = 0;
+	for (auto& order : this->orders)
+	{
+		if (order->getOrderStatus() == ACCEPTED)
+			counter++;
+	}
+	return counter;
+}
 void Table::setTableNo(const std::string& table_no) { this->table_no = table_no; }
 void Table::setNotfFromKitchen(const std::string& message) { 
 	this->notfFromKitchen.append(message + '\n');
