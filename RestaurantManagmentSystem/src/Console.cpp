@@ -64,8 +64,8 @@ bool Console::GetCoordinateWithMouse(COORD& coordinate)
 		coordinate.X = input_record.Event.MouseEvent.dwMousePosition.X;
 		coordinate.Y = input_record.Event.MouseEvent.dwMousePosition.Y;
 
-		std::cout << "X: " << coordinate.X << std::endl;
-		std::cout << "Y: " << coordinate.Y << std::endl;
+		//std::cout << "X: " << coordinate.X << std::endl;
+		//std::cout << "Y: " << coordinate.Y << std::endl;
 		SetConsoleCursorPosition(hConsoleOUT, { 0, 0 });
 		if (input_record.Event.MouseEvent.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
 		{

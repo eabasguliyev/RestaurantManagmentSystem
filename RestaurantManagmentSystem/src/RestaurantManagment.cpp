@@ -27,7 +27,9 @@ void RestaurantManagment::start()
 	{
 		Restaurant res("Green Garden 145", "Baku", "Azerbaijan", "F.Bayramov St. 1130/33", 40, 0);
 		restaurant = res;
-		if (restaurant.db.stock.getIngredientCount() == 0)
+		restaurant.db.addAdmin("admin", "admin");
+		
+		/*if (restaurant.db.stock.getIngredientCount() == 0)
 		{
 			std::shared_ptr<Ingredient> ing1(new Ingredient("Kartof", 5, 5, 5, 5, 5));
 			std::shared_ptr<Ingredient> ing2(new Ingredient("Kok", 5, 5, 5, 5, 6));
@@ -55,9 +57,8 @@ void RestaurantManagment::start()
 			restaurant.db.addMeal(meal2);
 			restaurant.db.addMeal(meal3);
 			restaurant.db.addMeal(meal4);
-		}
+		}*/
 
-		restaurant.db.addAdmin("admin", "admin1234");
 	}
 	//FileHelper::writeToFile(restaurant);
 

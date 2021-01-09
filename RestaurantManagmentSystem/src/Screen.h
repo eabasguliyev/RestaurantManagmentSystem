@@ -40,7 +40,6 @@ public:
 	static void printButton(const std::string& text, COORD& coo, const unsigned short& length = 24);
 	static void printPanel(COORD leftTop, COORD rightBottom);
 	static size_t getButtonIdByCoordinate(const COORD& coo, const std::vector<Button> &buttons);
-
 	
 	class MainScreen {
 	public:
@@ -202,8 +201,6 @@ public:
 	class Menu
 	{
 	public:
-		static short menuInputWithMouse(const std::vector<std::string>& options);
-		static short menuInputWithKeyboard(const std::vector<std::string>& options);
 		static void printMenu(const std::vector<std::string>& options, const unsigned short& selected);
 		static void printMenuAxis(const std::vector<std::string>& options, const unsigned short& selected);
 	};

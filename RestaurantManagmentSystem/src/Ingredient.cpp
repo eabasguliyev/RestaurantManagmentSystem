@@ -24,6 +24,7 @@ void Ingredient::shortInfo()
 	std::cout << "ID: " << getID() << std::endl;
 	std::cout << "Name: " << getName() << std::endl;
 	std::cout << "Kcal: " << getKcal() << std::endl;
+	std::cout << "Price: " << getPrice() << std::endl;
 }
 void Ingredient::fullInfo()
 {
@@ -34,6 +35,7 @@ void Ingredient::fullInfo()
 	std::cout << "Protein: " << getProtein() << std::endl;
 	std::cout << "Carbohydrates: " << getCarboHydrates() << std::endl;
 	std::cout << "Kcal: " << getKcal() << std::endl << std::endl;
+	std::cout << "Price: " << getPrice() << std::endl;
 }
 
 bool Ingredient::operator==(const Ingredient& ingredient) const { return this->getID() == ingredient.getID(); }
