@@ -79,11 +79,6 @@ void Meal::increaseAmountOfIngredient(std::shared_ptr<RecipeItem>& item, const s
 	item->setAmount(item->getAmount() + amount);
 }
 
-void Meal::taste() const
-{
-	std::cout << "I don't know, what is this?" << std::endl;
-}
-
 void Meal::showShortInfo() const
 {
 	std::cout << std::string(37, '#') << std::endl;

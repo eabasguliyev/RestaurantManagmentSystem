@@ -49,7 +49,6 @@ public:
 	size_t getAmount() const;
 
 	virtual void printRecipe() const;
-	virtual void taste() const;
 	void addIngredient(const std::shared_ptr<Ingredient>& ingredient, const size_t& amount);
 	void deleteIngredientByID(const size_t& ingredient_id);
 	void decreaseAmountOfIngredient(std::shared_ptr<RecipeItem>& item, const size_t& amount); // delete this
