@@ -1,6 +1,7 @@
 #include "Stock.h"
 #include "Exception.h"
 #include "FileHelper.h"
+#include "Console.h"
 std::list<std::shared_ptr<RecipeItem>>& Stock::getIngredientItems() { return this->ingredient_items; }
 
 void Stock::addIngredient(const std::shared_ptr<Ingredient> &ingredient, const size_t& amount)
@@ -114,6 +115,7 @@ bool Stock::checkIngredientAmount(const size_t& id, const size_t& amount) const
 	{
 		system("CLS");
 		ex.echo();
+		Console::wait();
 		FileHelper::writeLog("stock_side.log", ex.getData());
 	}
 	return false;

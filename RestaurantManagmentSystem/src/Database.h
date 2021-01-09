@@ -98,15 +98,6 @@ public:
 
 	void increaseBudget(std::shared_ptr<double>& restaurantBudget, const double& amount);
 
-	void setMealRating(const std::shared_ptr<Meal>& meal, const double& menu_rating)
-	{
-		for (auto& i : this->meals)
-		{
-			if (i->getID() == meal->getID())
-			{
-				i->increaseRating(menu_rating);
-				return;
-			}
-		}
-	}
+	void setMealRating(const std::shared_ptr<Meal>& meal, const double& menu_rating);
+	void sortMealDescOrder();
 };

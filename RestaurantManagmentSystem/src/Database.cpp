@@ -3,7 +3,7 @@
 #include "Exception.h"
 #include "Order.h"
 #include "FileHelper.h"
-
+#include <algorithm>
 bool Database::getModifiedStatus() const { return this->modified; }
 void Database::setModifiedStatus(const bool& status) { this->modified = status; }
 
@@ -369,6 +369,7 @@ std::list<std::shared_ptr<Table>>& Database::getTables()
 void Database::addMeal(const std::shared_ptr<Meal>& meal) {
 	this->meals.push_back(meal);
 	setModifiedStatus(true);
+	sortMealDescOrder();
 }
 void Database::deleteMeal(const size_t& id){
 	for (auto& meal : this->meals)
@@ -610,3 +611,24 @@ size_t Database::countNewNotifications() const {
 std::list<Notification>& Database::getNotifications() {return this->notifications; }
 //std::list<Notification>& Database::getClientNotifications() { return this->client_notifications; }
 //std::list<Notification>& Database::getKitchenNotifications() { return this->kitchen_notifications; }
+
+void Database::sortMealDescOrder()
+{
+	this->meals.sort([](std::shared_ptr<Meal> m1, std::shared_ptr<Meal> m2) -> bool {
+		return m1->getMenuRating() > m2->getMenuRating();
+		});
+}
+
+void Database::setMealRating(const std::shared_ptr<Meal>& meal, const double& menu_rating)
+{
+	for (auto& i : this->meals)
+	{
+		if (i->getID() == meal->getID())
+		{
+			i->increaseRating(menu_rating);
+			sortMealDescOrder();
+			setModifiedStatus(true);
+			return;
+		}
+	}
+}
