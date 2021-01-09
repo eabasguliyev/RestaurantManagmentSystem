@@ -319,7 +319,7 @@ bool Database::checkStockForOrder(const std::list<std::shared_ptr<RecipeItem>>& 
 		return false;
 	return true;
 }
-
+std::list <std::shared_ptr<Order>>& Database::getNewOrders() { return this->newOrders; }
 //table methods
 std::shared_ptr<Table> Database::addTable(const std::string& table_no) {
 	std::shared_ptr<Table> table(new Table(table_no));
@@ -493,6 +493,23 @@ void Database::filterMeals(const std::string& mealName)
 
 	std::cout << std::string(37, '#') << std::endl;
 }
+void Database::deleteIngredientFromMeals(const size_t& ingredient_id)
+{
+	for (auto& meal : meals)
+	{
+		auto& items = meal->getIngredientItems();
+
+		for (auto& item : items)
+		{
+			if (item->getIngredient()->getID() == ingredient_id)
+			{
+				deleteIngredientFromMeal(meal, ingredient_id, 0);
+				break;
+			}
+		}
+	}
+}
+
 void Database::login(const std::string& username, const std::string& password) const
 {
 	for (auto& i : this->admins)

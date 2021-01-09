@@ -106,6 +106,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Delete admin"));
 					try
 					{
+						db.showAllAdmins();
 						std::string username;
 						std::cout << "Username: ";
 						std::getline(std::cin, username);
@@ -127,6 +128,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 					try
 					{
+						db.showAllAdmins();
 						std::string username;
 						std::cout << "Username: ";
 						std::getline(std::cin, username);
@@ -203,6 +205,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					
 					try
 					{
+						db.stock.showAllIngredient();
 						char ingredient_id[255];
 						std::cout << "Ingredient ID: ";
 
@@ -247,6 +250,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Update Ingredient"));
 					try
 					{
+						db.stock.showAllIngredient();
 						char ingredient_id[255];
 						std::cout << "Ingredient ID: ";
 
@@ -273,6 +277,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 					try
 					{
+						db.stock.showAllIngredient();
 						char ingredient_id[255];
 						std::cout << "Ingredient ID: ";
 
@@ -281,6 +286,9 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 							throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
 
 						db.stock.deleteIngredient(atoi(ingredient_id));
+						
+						db.deleteIngredientFromMeals(atoi(ingredient_id));
+
 						Console::displayMessageBox("Info", "Ingredient deleted!", MB_ICONINFORMATION | MB_OK);
 					}
 					catch (const DatabaseException& ex)
@@ -295,6 +303,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 					try
 					{
+						db.stock.showAllIngredient();
 						char ingredient_id[255], amount[255];
 						std::cout << "Ingredient ID: ";
 
@@ -326,6 +335,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 					try
 					{
+						db.stock.showAllIngredient();
 						char ingredient_id[255], amount[255];
 						std::cout << "Ingredient ID: ";
 
@@ -372,6 +382,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Meal"));
 					try
 					{
+						db.showAllMeal();
 						char meal_id[255];
 						std::cout << "Meal ID: ";
 
@@ -402,6 +413,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Delete Meal"));
 					try
 					{
+						db.showAllMeal(true);
 						char meal_id[255];
 						std::cout << "Meal ID: ";
 
@@ -442,6 +454,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Update Meal"));
 					try
 					{
+						db.showAllMeal(true);
 						char meal_id[255];
 						std::cout << "Meal ID: ";
 
@@ -468,6 +481,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Add Ingredient to Meal"));
 					try
 					{
+						db.showAllMeal();
 						char meal_id[255], ingredient_id[255], amount[255];
 						std::cout << "Meal ID: ";
 
@@ -513,7 +527,8 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Delete Ingredient from Meal"));
 					try
 					{
-						char meal_id[255], ingredient_id[255], amount[255];
+						db.showAllMeal();
+						char meal_id[255], ingredient_id[255], amount[255]{};
 						std::cout << "Meal ID: ";
 
 						std::cin.getline(meal_id, 255);
@@ -534,14 +549,20 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						
 						// tamamile yoxsa say ile silsin uchun y/n elave et.
 						//db.deleteIngredientFromMeal(meal, atoi(ingredient_id));
-						std::cout << "Amount: ";
+						
+						int id = Console::displayMessageBox("Info", "Do you want delete amount or completely?", MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2);
 
-						std::cin.getline(amount, 255);
+						if (id == 6)
+						{
+							std::cout << "Amount: ";
 
-						if (!DatabaseHelper::checkNumericInput(amount))
-							throw AdminException(__LINE__, __TIME__, __FILE__, "amount must be numeric value!");
-						if (amount <= 0)
-							throw AdminException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero!");
+							std::cin.getline(amount, 255);
+
+							if (!DatabaseHelper::checkNumericInput(amount))
+								throw AdminException(__LINE__, __TIME__, __FILE__, "amount must be numeric value!");
+							if (amount <= 0)
+								throw AdminException(__LINE__, __TIME__, __FILE__, "Amount must be greater than zero!");
+						}
 
 						db.deleteIngredientFromMeal(meal, atoi(ingredient_id), atoi(amount));
 						//std::cout << "Ingredient deleted!" << std::endl;
@@ -599,46 +620,55 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 				{
 					Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Notification"));
 
-					while (1)
+					size_t newNotfCount = db.countNewNotifications();
+
+					if (newNotfCount != 0)
 					{
-						system("CLS");
-						try
+						while (1)
 						{
-							char notification_id[255];
-							std::cout << "Notification ID: ";
-
-							std::cin.getline(notification_id, 255);
-
-							if (!DatabaseHelper::checkNumericInput(notification_id))
-								throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
-
-							Notification& notification = db.getNotification(atoi(notification_id));
-
-
 							system("CLS");
+							try
+							{
+								db.showAllNotfs(true);
+								std::cout << std::string(37, '#') << std::endl << std::endl;
+								char notification_id[255];
+								std::cout << "Notification ID: ";
 
-							notification.print();
+								std::cin.getline(notification_id, 255);
 
-							std::cout << std::string(37, '#') << std::endl;
+								if (!DatabaseHelper::checkNumericInput(notification_id))
+									throw DatabaseException(__LINE__, __TIME__, __FILE__, "ID must be numeric value!");
 
-							notification.setReadStatus(true);
+								Notification& notification = db.getNotification(atoi(notification_id));
 
-							Console::wait();
 
-							size_t id = Console::displayMessageBox("Info", "Do you want to continue to read new notification?", MB_ICONINFORMATION | MB_YESNO);
+								system("CLS");
 
-							if (id != 6)
+								notification.print();
+
+								std::cout << std::string(37, '#') << std::endl;
+
+								notification.setReadStatus(true);
+
+								Console::wait();
+
+								size_t id = Console::displayMessageBox("Info", "Do you want to continue to read new notification?", MB_ICONINFORMATION | MB_YESNO);
+
+								if (id != 6)
+									break;
+							}
+							catch (const DatabaseException& ex)
+							{
+								ex.echo();
+								FileHelper::writeLog("database_side.log", ex.getData());
+								Console::wait();
 								break;
+							}
 						}
-						catch (const DatabaseException& ex)
-						{
-							ex.echo();
-							FileHelper::writeLog("database_side.log", ex.getData());
-							Console::wait();
-							break;
-						}
+						system("CLS");
 					}
-					system("CLS");
+					else
+						Console::displayMessageBox("Info", "There is no new notification!", MB_ICONWARNING | MB_OK);
 				}
 				else if (notfChoice == MARKALLREAD)
 				{

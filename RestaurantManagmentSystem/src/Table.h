@@ -29,6 +29,7 @@ public:
 	std::list<std::shared_ptr<Order>>& getOrders();
 	std::list<std::shared_ptr<Order>>& getNewOrders();
 	std::shared_ptr<Order>& getOrder(const size_t& id);
+	size_t getOrderCount() const;
 
 	void addOrder(const std::shared_ptr<Order>& order);
 	void deleteOrder(std::shared_ptr<Order> order);

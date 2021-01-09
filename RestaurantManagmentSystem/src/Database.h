@@ -62,6 +62,7 @@ public:
 	void showOrdersByTable(const std::string& table_no, const bool& shortInfo = false);
 	void showOrdersByTable(const size_t& id, const bool& shortInfo = false);
 	std::shared_ptr<Order>& getOrder(const size_t& id);
+	std::list < std::shared_ptr<Order>>& getNewOrders();
 	bool checkStockForOrder(const std::list<std::shared_ptr<RecipeItem>>& orderIngredientItems, const size_t& orderCount, std::map<std::string, size_t>& insufficientIngredients) const;
 
 	std::shared_ptr<Table> addTable(const std::string& table_no);
@@ -75,6 +76,7 @@ public:
 	void deleteAllMeal();
 	void updateMeal(std::shared_ptr<Meal>& old_meal, const std::shared_ptr<Meal>& new_meal);
 	void deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount);
+	void deleteIngredientFromMeals(const size_t& ingredient_id);
 	void addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount);
 	bool showAllMeal(const bool& shortInfo = false) const;
 	void filterMeals(const std::string& mealName);

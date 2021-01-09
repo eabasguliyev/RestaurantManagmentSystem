@@ -122,7 +122,7 @@ bool Table::showOrders(const bool& neworders) const
 	return true;
 }
 bool Table::operator==(const Table& table) const { return this->getID() == table.getID(); }
-
+size_t Table::getOrderCount() const { return this->newOrders.size(); }
 void Table::deleteIngredientFromMeal(std::shared_ptr<Meal>& meal, const size_t& ingredient_id, const size_t& amount, const size_t& order_count) {
 	std::list<std::shared_ptr<RecipeItem>>& ingredient_items = meal->getIngredientItems();
 	for (auto& ingredient_item : ingredient_items)

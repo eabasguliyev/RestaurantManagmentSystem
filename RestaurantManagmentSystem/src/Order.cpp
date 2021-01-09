@@ -40,7 +40,9 @@ std::ostream& operator<<(std::ostream& out, const Order& order)
 {
 	out << std::string(37, '#') << std::endl;
 	//out << "Table no: " << order.getTableNo() << std::endl;
-	out << "Table no" << order.getTable()->getTableNo() << std::endl;
+	out << "ID: " << order.getID() << std::endl;
+	out << "Table no: " << order.getTable()->getTableNo() << std::endl;
 	out << "Meal: " << order.getMeal()->getName() << std::endl;
+	out << "Amount: " << order.getAmount() << std::endl;
 	return out;
 }

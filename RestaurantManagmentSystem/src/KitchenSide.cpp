@@ -40,51 +40,61 @@ void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& rest
 		}
 		else if (kitchenChoices == SHOWORDER)
 		{
-			Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Choose Order"));
-			system("CLS");
+			auto &orders = db.getNewOrders();
 
-			std::shared_ptr<Order> order;
-			try
+			if (orders.size() != 0)
 			{
-				char order_id[255]{};
+				Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Choose Order"));
+				system("CLS");
 
-				std::cout << "Order id: ";
-
-				std::cin.getline(order_id, 255);
-				
-				if (!DatabaseHelper::checkNumericInput(order_id))
-					throw AdminException(__LINE__, __TIME__, __FILE__, std::string("ID must be numeric value!"));
-
-				order = db.getOrder(atoi(order_id));
-			}
-			catch (const Exception& ex)
-			{
-				ex.echo();
-				FileHelper::writeLog("kitchen_side.log", ex.getData());
-				Console::wait();
-				continue;
-			}
-
-			system("CLS");
-			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 7 });
-			order->fullInfo();
-
-			size_t orderControlChoice = OrderControlScreenM::start();
-
-			if (orderControlChoice == ACCEPTORDER)
-			{
-				if (db.acceptOrder(order, true))
+				std::shared_ptr<Order> order;
+				try
 				{
-					db.increaseBudget(restaurantBudget, order->getAmount() * order->getMeal()->getPrice());
-					Console::displayMessageBox("Info", "Order accepted!", MB_ICONINFORMATION | MB_OK);
+					db.showAllOrder(true, true);
+					std::cout << std::string(37, '#') << std::endl;
+
+					char order_id[255]{};
+
+					std::cout << "Order id: ";
+
+					std::cin.getline(order_id, 255);
+					if (!DatabaseHelper::checkNumericInput(order_id))
+						throw AdminException(__LINE__, __TIME__, __FILE__, std::string("ID must be numeric value!"));
+
+					
+					order = db.getOrder(atoi(order_id));
 				}
-				
+				catch (const Exception& ex)
+				{
+					ex.echo();
+					FileHelper::writeLog("kitchen_side.log", ex.getData());
+					Console::wait();
+					continue;
+				}
+
+				system("CLS");
+				SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 7 });
+				order->fullInfo();
+
+				size_t orderControlChoice = OrderControlScreenM::start();
+
+				if (orderControlChoice == ACCEPTORDER)
+				{
+					if (db.acceptOrder(order, true))
+					{
+						db.increaseBudget(restaurantBudget, order->getAmount() * order->getMeal()->getPrice());
+						Console::displayMessageBox("Info", "Order accepted!", MB_ICONINFORMATION | MB_OK);
+					}
+
+				}
+				else if (orderControlChoice == DECLINEORDER)
+				{
+					db.declineOrder(order, true);
+					Console::displayMessageBox("Info", "Order declined!", MB_ICONINFORMATION | MB_OK);
+				}
 			}
-			else if (orderControlChoice == DECLINEORDER)
-			{
-				db.declineOrder(order, true);
-				Console::displayMessageBox("Info", "Order declined!", MB_ICONINFORMATION | MB_OK);
-			}
+			else
+				Console::displayMessageBox("Info", "There is no new order!", MB_ICONWARNING | MB_OK);
 		}
 		else if (kitchenChoices == ACCEPTALLORDER)
 		{
