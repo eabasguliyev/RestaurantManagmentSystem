@@ -447,7 +447,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 						Console::Setting::setConsoleTitle(TEXT("Restaurant Managment System: Meal"));
 						try
 						{
-							db.showAllMeal();
+							db.showAllMeal(true);
 							char meal_id[255];
 							std::cout << "Meal ID: ";
 
@@ -593,6 +593,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 							meal->printRecipe();
 
+							db.stock.showAllIngredient();
 							std::cout << "Ingredient ID: ";
 
 							std::cin.getline(ingredient_id, 255);
