@@ -31,7 +31,10 @@ public:
 
 	void increaseRating(const double& rate)
 	{
-		this->menu_rating = (this->menu_rating + rate) / 2.0;
+		if (this->menu_rating == 0)
+			this->menu_rating = rate;
+		else
+			this->menu_rating = (this->menu_rating + rate) / 2.0;
 	}
 	void setName(const std::string& name);
 	void setCategory(const std::string& category);

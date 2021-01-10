@@ -318,7 +318,7 @@ void DatabaseSide::DatabaseSide::start(Database & db)
 
 							db.stock.deleteIngredient(atoi(ingredient_id));
 
-							db.deleteIngredientFromMeals(atoi(ingredient_id));
+							//db.deleteIngredientFromMeals(atoi(ingredient_id));
 
 							Console::displayMessageBox("Info", "Ingredient deleted!", MB_ICONINFORMATION | MB_OK);
 						}

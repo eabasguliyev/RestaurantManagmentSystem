@@ -165,8 +165,11 @@ bool Database::acceptOrder(std::shared_ptr<Order> order, const bool& del)
 			std::shared_ptr<RecipeItem> ingredientItem = stock.getItemByIngredientID(i->getIngredient()->getID());
 			ingredientItem->setAmount(ingredientItem->getAmount() - (i->getAmount() * orderCount));
 		}
-		order->getTable()->setNotfFromKitchen(std::string("This order accepted -> " + order->getMeal()->getName()));
-		order->setOrderStatus(1);
+
+		std::string message = "This order accepted -> " + order->getMeal()->getName();
+		order->getTable()->setNotfFromKitchen(message);
+		addNotification(Notification("Kitchen", message));
+		order->setOrderStatus(ACCEPTED);
 		if(del)
 			deleteNewOrder(order);
 		return true;
@@ -180,7 +183,8 @@ bool Database::acceptOrder(std::shared_ptr<Order> order, const bool& del)
 		}
 
 		order->getTable()->setNotfFromKitchen(reason);
-		order->setOrderStatus(-1);
+		addNotification(Notification("Kitchen", reason));
+		order->setOrderStatus(DECLINED);
 		if(del)
 			deleteNewOrder(order);
 		return false;
@@ -207,7 +211,7 @@ void Database::declineOrder(std::shared_ptr<Order>& order, const bool& del)
 {
 	std::string reason = "This order declined -> " + order->getMeal()->getName() + "\nReason: by Admin\n";
 	order->getTable()->setNotfFromKitchen(reason);
-	order->setOrderStatus(-1);
+	order->setOrderStatus(DECLINED);
 	if(del)
 		deleteNewOrder(order);
 }
@@ -626,9 +630,6 @@ size_t Database::countNewNotifications() const {
 	return counter;
 }
 std::list<Notification>& Database::getNotifications() {return this->notifications; }
-//std::list<Notification>& Database::getClientNotifications() { return this->client_notifications; }
-//std::list<Notification>& Database::getKitchenNotifications() { return this->kitchen_notifications; }
-
 void Database::sortMealDescOrder()
 {
 	this->meals.sort([](std::shared_ptr<Meal> m1, std::shared_ptr<Meal> m2) -> bool {

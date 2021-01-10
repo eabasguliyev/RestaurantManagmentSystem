@@ -1064,7 +1064,7 @@ size_t ClientScreenM::start(const short& table_count)
 		COORD coo;
 		bool mouseClicked = Console::GetCoordinateWithMouse(coo);
 		mouseOver = getButtonIdByCoordinate(coo, buttons);
-		std::cout << "Mouse over: " << mouseOver << std::endl;
+		//std::cout << "Mouse over: " << mouseOver << std::endl;
 		if (mouseOver)
 		{
 			if (mouseClicked)

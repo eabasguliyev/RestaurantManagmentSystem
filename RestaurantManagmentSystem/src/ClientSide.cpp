@@ -165,7 +165,7 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 					{
 						try
 						{
-							db.showAllMeal();
+							db.showAllMeal(true);
 							char meal_id[255], amount[255];
 							std::cout << "Meal ID: ";
 							std::cin.getline(meal_id, 255);
@@ -243,10 +243,10 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 
 									try
 									{
+										system("CLS");
 										db.stock.showAllIngredient(true);
 										char ingredient_id[255]{};
 										char amountIng[255]{};
-										system("CLS");
 										std::cout << "Ingredient ID: ";
 
 										std::cin.getline(ingredient_id, 255);
@@ -489,7 +489,7 @@ void ClientSide::ClientSide::start(Database& db, const short& table_count)
 						{
 							while (orders.size() != 0)
 							{
-								(*orders.begin())->setOrderStatus(-2);
+								(*orders.begin())->setOrderStatus(DELETED);
 								db.addNotification(Notification("Client", "Client deleted this order id -> " + std::to_string((*orders.begin())->getID())));
 								db.deleteNewOrder(*orders.begin());
 								orders = table->getNewOrders();

@@ -9,33 +9,18 @@
 #include <list>
 #include <map>
 
-//struct NotificationGroups
-//{
-//	std::list<Notification> client_side;
-//};
-
 class Database
 {
 	bool modified;
 	std::list<Admin> admins;
 	std::list<std::shared_ptr<Table>> tables;
 	std::list<Notification> notifications;
-	/*std::list<Notification> client_notifications;
-	std::list<Notification> kitchen_notifications;*/
 	std::list<std::shared_ptr<Order>> orders;
 	std::list<std::shared_ptr<Order>> newOrders;
 	std::list<std::shared_ptr<Meal>> meals;
 public:
 	Stock stock;
 
-	// elave kimi yaz
-	/*struct insufficientIngredient
-	{
-		size_t id;
-		std::string name;
-		size_t totalAmount;
-		size_t orderedAmount;
-	};*/
 
 	bool getModifiedStatus() const;
 	void setModifiedStatus(const bool& status);
@@ -80,11 +65,9 @@ public:
 	void addIngredientToMeal(std::shared_ptr<Meal>& meal, std::shared_ptr<Ingredient> ingredient, const size_t& amount);
 	bool showAllMeal(const bool& shortInfo = false) const;
 	void filterMeals(const std::string& mealName);
-	//void showMealIngredients(const size_t& id, const bool& shortInfo = false) const;
 	std::shared_ptr<Meal>& getMeal(const size_t& id);
 	std::list<std::shared_ptr<Meal>>& getMeals();
 	size_t getMealCount() const;
-	// her bir obyekt uchun ferqili read/write funksiyasi olmalidi.
 
 	void addNotification(const Notification& notf);
 	void deleteNotification(const Notification& notf);
@@ -94,8 +77,6 @@ public:
 	bool showAllUnReadNotfs(const bool& shortInfo = false);
 	bool markAllRead();
 	std::list<Notification>& getNotifications();
-	/*std::list<Notification>& getClientNotifications();
-	std::list<Notification>& getKitchenNotifications();*/
 	void login(const std::string& username, const std::string& password) const;
 
 	void increaseBudget(std::shared_ptr<double>& restaurantBudget, const double& amount);

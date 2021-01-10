@@ -85,6 +85,9 @@ void KitchenSide::KitchenSide::start(Database& db, std::shared_ptr<double>& rest
 						db.increaseBudget(restaurantBudget, order->getAmount() * order->getMeal()->getPrice());
 						Console::displayMessageBox("Info", "Order accepted!", MB_ICONINFORMATION | MB_OK);
 					}
+					else
+						Console::displayMessageBox("Info", "Order declined! Check notifications!", MB_ICONWARNING | MB_OK);
+
 
 				}
 				else if (orderControlChoice == DECLINEORDER)

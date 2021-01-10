@@ -117,39 +117,6 @@ void FileHelper::writeToFile(Restaurant& res) {
 			fout << notf.getMessage() << std::endl;
 		}
 
-		/*std::list <Notification> clientNotfs = res.db.getClientNotifications();
-
-		fout << clientNotfs.size() << std::endl;
-
-		for (auto& notf : clientNotfs)
-		{
-			if (notf.getReadStatus())
-				fout << 1 << std::endl;
-			else
-				fout << 0 << std::endl;
-			//fout << notf.getReadStatus() << std::endl;
-			fout << notf.getFrom() << std::endl;
-			fout << notf.getDate() << std::endl;
-			fout << notf.getMessage() << std::endl;
-		}
-
-		std::list <Notification> kitchenNotfs = res.db.getKitchenNotifications();
-
-		fout << kitchenNotfs.size() << std::endl;
-
-		for (auto& notf : kitchenNotfs)
-		{
-			if (notf.getReadStatus())
-				fout << 1 << std::endl;
-			else
-				fout << 0 << std::endl;
-
-			//fout << notf.getReadStatus() << std::endl;
-			fout << notf.getFrom() << std::endl;
-			fout << notf.getDate() << std::endl;
-			fout << notf.getMessage() << std::endl;
-		}*/
-
 	}
 
 	fout.close();
@@ -323,46 +290,6 @@ bool FileHelper::readFromFile(Restaurant& res) {
 				Notf.setReadStatus(false);
 			res.db.addNotification(Notf);
 		}
-
-		/*size_t clientNotfSize = stoi(tmp);
-
-		for (size_t i = 0; i < clientNotfSize; i++)
-		{
-			std::string notfStatus, notfFrom, notfDate, notfMessage;
-
-			std::getline(fin, notfStatus);
-			std::getline(fin, notfFrom);
-			std::getline(fin, notfDate);
-			std::getline(fin, notfMessage);
-
-			Notification clientNotf(notfFrom, notfMessage);
-			clientNotf.setDate(notfDate);
-			if (notfStatus == "1")
-				clientNotf.setReadStatus(true);
-			else
-				clientNotf.setReadStatus(false);
-			//add code
-		}
-
-		size_t kitchenNotfSize = stoi(tmp);
-
-		for (size_t i = 0; i < kitchenNotfSize; i++)
-		{
-			std::string notfStatus, notfFrom, notfDate, notfMessage;
-
-			std::getline(fin, notfStatus);
-			std::getline(fin, notfFrom);
-			std::getline(fin, notfDate);
-			std::getline(fin, notfMessage);
-
-			Notification kitchenNotf(notfFrom, notfMessage);
-			kitchenNotf.setDate(notfDate);
-			if (notfStatus == "1")
-				kitchenNotf.setReadStatus(true);
-			else
-				kitchenNotf.setReadStatus(false);
-			//add code
-		}*/
 		fin.close();
 		return true;
 	}

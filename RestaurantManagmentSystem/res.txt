@@ -2,7 +2,7 @@ Green Garden 145
 Baku
 Azerbaijan
 F.Bayramov St. 1130/33
-0
+109.75
 40
 1
 1
@@ -123,7 +123,7 @@ chicken
 12
 12
 11
-100
+90
 1
 onion
 2
@@ -132,7 +132,7 @@ onion
 5
 0.6
 12
-100
+95
 2
 butter
 1
@@ -141,7 +141,7 @@ butter
 3
 1
 13
-100
+75
 3
 tomato
 2
@@ -150,7 +150,7 @@ tomato
 5
 0.7
 14
-150
+135
 4
 egg
 1
@@ -159,7 +159,7 @@ egg
 2
 0.45
 15
-100
+94
 5
 pizza cheese
 2
@@ -177,7 +177,7 @@ mozarella cheese
 5
 1.6
 17
-80
+68
 7
 pepperoni
 5
@@ -186,7 +186,7 @@ pepperoni
 10
 2
 18
-150
+120
 8
 mushroom
 2
@@ -195,7 +195,7 @@ mushroom
 4
 1.05
 19
-140
+130
 9
 rice
 1
@@ -230,45 +230,192 @@ yellow ginger
 2
 2
 0.2
-8
-8
+36
+36
 1
-0
+1
 LoginSide
 9/1/2021 15:48
 Someone trying to login as Administrator
 2
-0
+1
 LoginSide
 9/1/2021 15:49
 admin logged in
 3
-0
+1
 LoginSide
 9/1/2021 15:57
 admin logged in
 4
-0
+1
 LoginSide
 9/1/2021 15:58
 admin logged in
 5
-0
+1
 LoginSide
 9/1/2021 16:0
 admin logged in
 6
-0
+1
 LoginSide
 9/1/2021 16:11
 admin logged in
 7
-0
+1
 LoginSide
 9/1/2021 16:14
 admin logged in
 8
-0
+1
 LoginSide
 9/1/2021 16:25
 admin logged in
+9
+1
+LoginSide
+10/1/2021 9:44
+admin logged in
+10
+1
+LoginSide
+10/1/2021 9:45
+admin logged in
+11
+1
+LoginSide
+10/1/2021 9:56
+admin logged in
+12
+1
+Client
+10/1/2021 10:30
+You have a new customer. Table -> T-1
+13
+1
+LoginSide
+10/1/2021 10:39
+admin logged in
+14
+1
+Client
+10/1/2021 10:44
+You have a new customer. Table -> T-1
+15
+1
+LoginSide
+10/1/2021 10:44
+admin logged in
+16
+1
+Client
+10/1/2021 10:44
+You have a new customer. Table -> T-4
+17
+1
+Client
+10/1/2021 10:44
+Client looked at notifications. Table no -> T-4 . He is probably waiting for his order. Check new orders!
+18
+1
+Client
+10/1/2021 10:45
+Client added this ingredient id -> 12 to this meal -> melemen
+19
+1
+Client
+10/1/2021 10:45
+Client ordered this meal -> melemen
+20
+1
+Client
+10/1/2021 10:45
+Client interested this meal -> pizza
+21
+1
+Client
+10/1/2021 10:45
+Client interested this meal -> melemen
+22
+1
+Client
+10/1/2021 10:46
+Client ordered this meal -> pizza
+23
+1
+Client
+10/1/2021 10:46
+Client deleted this order id -> 1
+24
+1
+Client
+10/1/2021 10:46
+Client deleted this order id -> 2
+25
+1
+Client
+10/1/2021 10:46
+Client added this ingredient id -> 9 to this meal -> melemen
+26
+1
+Client
+10/1/2021 10:46
+Client ordered this meal -> melemen
+27
+1
+Client
+10/1/2021 10:46
+Client added this ingredient id -> 10 to this meal -> pizza
+28
+1
+Client
+10/1/2021 10:46
+Client ordered this meal -> pizza
+29
+1
+Client
+10/1/2021 10:47
+Client updated this order id -> 3
+30
+1
+LoginSide
+10/1/2021 10:47
+admin logged in
+31
+1
+Kitchen
+10/1/2021 10:48
+This order accepted -> melemen
+32
+1
+Kitchen
+10/1/2021 10:48
+This order accepted -> pizza
+33
+1
+Client
+10/1/2021 10:52
+You have a new customer. Table -> T-1
+34
+1
+Client
+10/1/2021 10:53
+Client ordered this meal -> melemen
+35
+1
+LoginSide
+10/1/2021 10:53
+admin logged in
+36
+1
+Kitchen
+10/1/2021 10:53
+This order declined -> melemen
+Reason: Insufficient Ingredients
+Ingredients:
+Name: butter | Amount: 99994
+Name: egg | Amount: 299982
+Name: onion | Amount: 199988
+Name: tomato | Amount: 499970
+

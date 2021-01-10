@@ -98,17 +98,3 @@ void Meal::showFullInfo() const
 	std::cout << "Rating: " << getMenuRating() << "/5" << std::endl;
 	this->printRecipe();
 }
-
-//double Meal::calcIngredientPrice(const double & ingredientPrice, const size_t & amount) const
-//{
-//	//double price = 0;
-//	//for (auto& i : this->ingredients)
-//	//{
-//	//	price += i->getAmount() * i->getIngredient()->getPrice();
-//	//}
-//
-//	//price += (price * 20) / 100.0; // 20% elave qazanc
-//	//return price;
-//
-//	return ingredientPrice * amount;
-//}
