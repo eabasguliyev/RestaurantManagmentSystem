@@ -1,5 +1,10 @@
 #include "Exception.h"
 #include <iostream>
+#include <Windows.h>
+
+#define WHITE 7
+#define LIGHTRED 12
+
 
 void Exception::setTriggeredLine(const size_t& line)
 {
@@ -25,10 +30,12 @@ std::string Exception::getText() const { return this->text; }
 
 void Exception::echo() const
 {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHTRED);
 	std::cout << "Source: " << getSource() << std::endl;
 	std::cout << "Line: " << getTriggeredLine() << std::endl;
 	std::cout << "Time: " << getTriggeredTime() << std::endl;
 	std::cout << "Error: " << getText() << std::endl;
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
 }
 
 std::string Exception::getData() const
